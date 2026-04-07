@@ -4,16 +4,17 @@ import {
   createContext,
   useContext,
   ReactNode,
-  useMemo,
   useState,
   useEffect,
 } from "react";
 import { authClient } from "@/lib/auth-client";
-import { User } from "@/prisma/generated/prisma/client";
 import { useRouter } from "next/navigation";
 
+type SessionData = ReturnType<typeof authClient.useSession>["data"];
+type AuthUser = NonNullable<SessionData>["user"];
+
 interface AuthContextValue {
-  user: User | null;
+  user: AuthUser | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isUserPending: boolean;
@@ -25,7 +26,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data, isPending } = authClient.useSession();
-  const user = useMemo(() => data?.user as User, [data?.user]);
+  const user: AuthUser | null = data?.user ?? null;
   const router = useRouter();
   const [isRequestSubmitting, setRequestSubmitting] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setRequestSubmitting(false);
         },
         onSuccess: () => {
-          router.push("/dashboard");
+          router.push("/");
         },
         onError: (error) => {
           setLoginError(
@@ -65,13 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.refresh();
-        },
-      },
-    });
+    await authClient.signOut({}, { onSuccess: () => router.refresh() });
   };
 
   return (

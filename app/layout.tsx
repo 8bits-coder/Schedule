@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/components/context/AuthContext";
+import TopBar from "@/components/custom/header/TopBar";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
@@ -47,7 +48,10 @@ export default function RootLayout({
     >
       <TooltipProvider>
         <AuthProvider>
-          <body className="min-h-full flex flex-col">{children}</body>
+          <body className="min-h-full flex flex-col">
+            <TopBar />
+            {children}
+          </body>
         </AuthProvider>
       </TooltipProvider>
     </html>

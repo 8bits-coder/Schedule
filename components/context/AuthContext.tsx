@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useMemo,
+  useState,
+  useEffect,
+} from "react";
 import { authClient } from "@/lib/auth-client";
 import { User } from "@/prisma/generated/prisma/client";
 import { useRouter } from "next/navigation";
@@ -11,6 +18,7 @@ interface AuthContextValue {
   logout: () => void;
   isUserPending: boolean;
   isRequestSubmitting: boolean;
+  loginError: string | null;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -20,6 +28,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const user = useMemo(() => data?.user as User, [data?.user]);
   const router = useRouter();
   const [isRequestSubmitting, setRequestSubmitting] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (loginError) {
+      const timer = setTimeout(() => {
+        setLoginError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [loginError]);
 
   const login = async (email: string, password: string) => {
     await authClient.signIn.email(
@@ -38,7 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           router.push("/dashboard");
         },
         onError: (error) => {
-          console.error(error);
+          setLoginError(
+            error?.error?.message ?? "An error occurred while logging in.",
+          );
         },
       },
     );
@@ -62,6 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         isUserPending: isPending,
         isRequestSubmitting,
+        loginError,
       }}
     >
       {children}

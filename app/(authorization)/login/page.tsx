@@ -18,7 +18,7 @@ import { useAuth } from "@/components/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, loading } = useAuth();
+  const { login, isRequestSubmitting } = useAuth();
   const form = useForm<Schema>({
     mode: "onChange",
     resolver: valibotResolver(LoginSchema),
@@ -87,8 +87,12 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Signing in..." : "Sign In"}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isRequestSubmitting}
+              >
+                {isRequestSubmitting ? "Signing in..." : "Sign In"}
               </Button>
               <Button
                 type="button"

@@ -42,17 +42,17 @@ export async function clearAuthCookie() {
   });
 }
 
-export async function getSessionEmployee() {
-  const raw = (await cookies()).get("auth_token")?.value;
-  if (raw) {
-    const pass = await decryptCookie(raw);
-    const user = await prisma.employee.findUnique({
-      where: { passnumber: pass },
-    });
-    if (!user) {
-      throw new Error("Session invalid");
-    }
-    return user;
-  }
-  return null;
-}
+// export async function getSessionEmployee() {
+//   const raw = (await cookies()).get("auth_token")?.value;
+//   if (raw) {
+//     const pass = await decryptCookie(raw);
+//     const user = await prisma.employee.findUnique({
+//       where: { passnumber: pass },
+//     });
+//     if (!user) {
+//       throw new Error("Session invalid");
+//     }
+//     return user;
+//   }
+//   return null;
+// }

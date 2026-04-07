@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/components/context/AuthContext";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
@@ -45,7 +46,9 @@ export default function RootLayout({
       )}
     >
       <TooltipProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
+        <AuthProvider>
+          <body className="min-h-full flex flex-col">{children}</body>
+        </AuthProvider>
       </TooltipProvider>
     </html>
   );

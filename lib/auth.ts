@@ -10,10 +10,13 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
+    autoSignIn: false,
   },
   session: {
+    // expiresIn: 60 * 60 * 24 * 7, // 7 days
+    // updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
     cookieCache: {
-      enabled: true,
+      enabled: false,
       maxAge: 60, // 1 minute
     },
   },

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, LoginSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -16,7 +16,6 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { useAuth } from "@/components/context/AuthContext";
 
 export default function LoginPage() {
-  const router = useRouter();
   const { login, isRequestSubmitting, user, isUserPending } = useAuth();
   const form = useForm<Schema>({
     mode: "onChange",

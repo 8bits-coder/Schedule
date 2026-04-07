@@ -9,7 +9,7 @@ interface AuthContextValue {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isPending: boolean;
+  isUserPending: boolean;
   isRequestSubmitting: boolean;
 }
 
@@ -50,7 +50,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isPending, isRequestSubmitting }}
+      value={{
+        user,
+        login,
+        logout,
+        isUserPending: isPending,
+        isRequestSubmitting,
+      }}
     >
       {children}
     </AuthContext.Provider>

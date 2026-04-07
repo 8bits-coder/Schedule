@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, LoginSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -18,7 +17,7 @@ import { useAuth } from "@/components/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, isRequestSubmitting } = useAuth();
+  const { login, isRequestSubmitting, user, isUserPending } = useAuth();
   const form = useForm<Schema>({
     mode: "onChange",
     resolver: valibotResolver(LoginSchema),
@@ -31,6 +30,12 @@ export default function LoginPage() {
   const onSubmit = (data: Schema) => {
     login(data.email, data.password);
   };
+
+  if (isUserPending) return null;
+
+  if (user) {
+    return redirect("/dashboard");
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">

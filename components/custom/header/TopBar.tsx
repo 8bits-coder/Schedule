@@ -11,10 +11,17 @@ import {
   UmbrellaIcon,
   ShieldCheck,
   Settings,
+  Home,
 } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 
 const navItems = [
+  {
+    href: "/",
+    label: "Home",
+    icon: Home,
+    badge: 0,
+  },
   {
     href: "/schedule",
     label: "Schedule",

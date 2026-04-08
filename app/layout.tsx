@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/components/context/AuthContext";
 import TopBar from "@/components/custom/header/TopBar";
+import AppLayout from "@/components/custom/AppLayout";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
@@ -46,14 +46,11 @@ export default function RootLayout({
         geistMonoHeading.variable,
       )}
     >
-      <TooltipProvider>
-        <AuthProvider>
-          <body className="min-h-full flex flex-col">
-            <TopBar />
-            {children}
-          </body>
-        </AuthProvider>
-      </TooltipProvider>
+      <AuthProvider>
+        <body className="min-h-full flex flex-col">
+          <AppLayout>{children}</AppLayout>
+        </body>
+      </AuthProvider>
     </html>
   );
 }

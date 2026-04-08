@@ -12,6 +12,15 @@ export const auth = betterAuth({
     requireEmailVerification: false,
     autoSignIn: false,
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        validate: (value: string) => ["USER", "ADMIN"].includes(value),
+      },
+    },
+  },
   session: {
     // expiresIn: 60 * 60 * 24 * 7, // 7 days
     // updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)

@@ -9,9 +9,7 @@ import {
 } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-
-type SessionData = ReturnType<typeof authClient.useSession>["data"];
-type AuthUser = NonNullable<SessionData>["user"];
+import { AuthUser } from "@/types/session";
 
 interface AuthContextValue {
   user: AuthUser | null;

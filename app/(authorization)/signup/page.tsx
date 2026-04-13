@@ -9,18 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, SignUpSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { authClient } from "@/lib/auth-client";
-import { useAuth } from "@/components/context/AuthContext";
 
 export default function SignupPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { user, isUserPending } = useAuth();
 
   const form = useForm<Schema>({
     mode: "onChange",
@@ -31,12 +29,6 @@ export default function SignupPage() {
       password: "",
     },
   });
-
-  if (isUserPending) return null;
-
-  if (user) {
-    return redirect("/dashboard");
-  }
 
   const onSubmit = async (data: Schema) => {
     await authClient.signUp.email(

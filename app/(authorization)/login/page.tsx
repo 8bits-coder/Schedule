@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { redirect } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, LoginSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -16,8 +15,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { useAuth } from "@/components/context/AuthContext";
 
 export default function LoginPage() {
-  const { login, isRequestSubmitting, user, isUserPending, loginError } =
-    useAuth();
+  const { login, isRequestSubmitting, loginError } = useAuth();
   const form = useForm<Schema>({
     mode: "onChange",
     resolver: valibotResolver(LoginSchema),
@@ -30,12 +28,6 @@ export default function LoginPage() {
   const onSubmit = (data: Schema) => {
     login(data.email, data.password);
   };
-
-  if (isUserPending) return null;
-
-  if (user) {
-    return redirect("/dashboard");
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">

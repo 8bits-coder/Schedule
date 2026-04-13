@@ -2,7 +2,11 @@
 import { useAuth } from "@/components/context/AuthContext";
 import { redirect } from "next/navigation";
 
-export default function AuthPage({ children }: { children: React.ReactNode }) {
+export default function UnauthorizedPages({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, isUserPending } = useAuth();
 
   if (isUserPending) return null;
@@ -11,5 +15,9 @@ export default function AuthPage({ children }: { children: React.ReactNode }) {
     return redirect("/dashboard");
   }
 
-  return <>{children}</>;
+  return (
+    <div className="max-w-7xl w-full mx-auto p-6 flex-1 bg-stone-50">
+      {children}
+    </div>
+  );
 }

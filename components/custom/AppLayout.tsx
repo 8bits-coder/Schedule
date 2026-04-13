@@ -6,9 +6,9 @@ import TopBar from "./header/TopBar";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isUserPending } = useAuth();
 
-  const isSessionLoading = isUserPending; //(user === null && pathname !== "/login" && pathname !== "/admin/login");
+  // const isSessionLoading = isUserPending; //(user === null && pathname !== "/login" && pathname !== "/admin/login");
 
-  if (isSessionLoading) {
+  if (isUserPending) {
     // return <div>Loading...</div>;
     return null;
   }

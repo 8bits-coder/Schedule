@@ -1,8 +1,44 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export const Router = () => {
+type AppRouter = ReturnType<typeof useRouter>;
+
+let globalRouter: AppRouter | null = null;
+
+export function GlobalRouterProvider() {
   const router = useRouter();
-  return router;
-};
+
+  useEffect(() => {
+    globalRouter = router;
+
+    return () => {
+      globalRouter = null;
+    };
+  }, [router]);
+
+  return null;
+}
+
+export function getRouter() {
+  if (!globalRouter) {
+    throw new Error(
+      "Global router is not initialized. Render <GlobalRouterProvider /> first.",
+    );
+  }
+
+  return globalRouter;
+}
+
+export function push(href: string) {
+  getRouter().push(href);
+}
+
+export function replace(href: string) {
+  getRouter().replace(href);
+}
+
+export function back() {
+  getRouter().back();
+}

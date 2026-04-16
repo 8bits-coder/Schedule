@@ -1,6 +1,7 @@
 "use client";
+import { useEffect } from "react";
 import { useAuth } from "@/components/context/AuthContext";
-import { redirect } from "next/navigation";
+import { push } from "@/lib/router";
 
 export default function AuthorizedPages({
   children,
@@ -9,11 +10,13 @@ export default function AuthorizedPages({
 }) {
   const { user, isUserPending } = useAuth();
 
-  if (isUserPending) return null;
+  useEffect(() => {
+    if (!isUserPending && !user) {
+      push("/login");
+    }
+  }, [isUserPending, user]);
 
-  if (!isUserPending && !user) {
-    return redirect("/login");
-  }
+  if (isUserPending || !user) return null;
 
   return (
     <div className="max-w-7xl w-full mx-auto p-6 flex-1 bg-stone-50">

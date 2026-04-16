@@ -8,8 +8,8 @@ import {
   useEffect,
 } from "react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { AuthUser } from "@/types/session";
+import { push } from "@/lib/router";
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -25,7 +25,6 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data, isPending } = authClient.useSession();
   const user: AuthUser | null = data?.user ?? null;
-  const router = useRouter();
   const [isRequestSubmitting, setRequestSubmitting] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -52,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setRequestSubmitting(false);
         },
         onSuccess: () => {
-          router.push("/");
+          push("/");
         },
         onError: (error) => {
           setLoginError(
@@ -64,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await authClient.signOut({}, { onSuccess: () => router.refresh() });
+    await authClient.signOut({}, { onSuccess: () => push("/") });
   };
 
   return (

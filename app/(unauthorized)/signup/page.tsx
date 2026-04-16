@@ -9,15 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, SignUpSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { authClient } from "@/lib/auth-client";
+import { push } from "@/lib/router";
 
 export default function SignupPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<Schema>({
@@ -45,7 +44,7 @@ export default function SignupPage() {
           setLoading(false);
         },
         onSuccess: () => {
-          router.push("/login");
+          push("/login");
         },
         onError: (error) => {
           console.error(error);

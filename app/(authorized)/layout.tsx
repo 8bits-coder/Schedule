@@ -18,9 +18,5 @@ export default function AuthorizedPages({
 
   if (isUserPending || !user) return null;
 
-  return (
-    <div className="max-w-7xl w-full mx-auto p-6 flex-1 bg-stone-50">
-      {children}
-    </div>
-  );
+  return <div className="max-w-7xl w-full mx-auto p-6 flex-1">{children}</div>;
 }

@@ -13,7 +13,7 @@ import { push } from "@/lib/router";
 
 interface AuthContextValue {
   user: AuthUser | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => void;
   logout: () => void;
   isUserPending: boolean;
   isRequestSubmitting: boolean;
@@ -37,14 +37,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [loginError]);
 
-  const login = async (email: string, password: string) => {
-    await authClient.signIn.email(
+  const login = (email: string, password: string) => {
+    return authClient.signIn.email(
       {
         email,
         password,
       },
       {
         onRequest: () => {
+          setLoginError(null);
           setRequestSubmitting(true);
         },
         onResponse: () => {
@@ -62,8 +63,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const logout = async () => {
-    await authClient.signOut({}, { onSuccess: () => push("/") });
+  const logout = () => {
+    return authClient.signOut(
+      {},
+      {
+        onSuccess: () => push("/"),
+        onError: () => {
+          console.error("An error occurred while logging out.");
+        },
+      },
+    );
   };
 
   return (

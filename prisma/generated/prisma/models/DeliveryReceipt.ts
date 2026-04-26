@@ -37,9 +37,11 @@ export type DeliveryReceiptSumAggregateOutputType = {
 export type DeliveryReceiptMinAggregateOutputType = {
   id: string | null
   itemId: string | null
+  itemSerialNumber: string | null
   workLocationId: string | null
   quantity: number | null
   receivedPersonId: string | null
+  receivedPersonTitle: string | null
   deliveryPersonId: string | null
   deliveryDate: string | null
   createdAt: Date | null
@@ -49,9 +51,11 @@ export type DeliveryReceiptMinAggregateOutputType = {
 export type DeliveryReceiptMaxAggregateOutputType = {
   id: string | null
   itemId: string | null
+  itemSerialNumber: string | null
   workLocationId: string | null
   quantity: number | null
   receivedPersonId: string | null
+  receivedPersonTitle: string | null
   deliveryPersonId: string | null
   deliveryDate: string | null
   createdAt: Date | null
@@ -61,9 +65,11 @@ export type DeliveryReceiptMaxAggregateOutputType = {
 export type DeliveryReceiptCountAggregateOutputType = {
   id: number
   itemId: number
+  itemSerialNumber: number
   workLocationId: number
   quantity: number
   receivedPersonId: number
+  receivedPersonTitle: number
   deliveryPersonId: number
   deliveryDate: number
   createdAt: number
@@ -83,9 +89,11 @@ export type DeliveryReceiptSumAggregateInputType = {
 export type DeliveryReceiptMinAggregateInputType = {
   id?: true
   itemId?: true
+  itemSerialNumber?: true
   workLocationId?: true
   quantity?: true
   receivedPersonId?: true
+  receivedPersonTitle?: true
   deliveryPersonId?: true
   deliveryDate?: true
   createdAt?: true
@@ -95,9 +103,11 @@ export type DeliveryReceiptMinAggregateInputType = {
 export type DeliveryReceiptMaxAggregateInputType = {
   id?: true
   itemId?: true
+  itemSerialNumber?: true
   workLocationId?: true
   quantity?: true
   receivedPersonId?: true
+  receivedPersonTitle?: true
   deliveryPersonId?: true
   deliveryDate?: true
   createdAt?: true
@@ -107,9 +117,11 @@ export type DeliveryReceiptMaxAggregateInputType = {
 export type DeliveryReceiptCountAggregateInputType = {
   id?: true
   itemId?: true
+  itemSerialNumber?: true
   workLocationId?: true
   quantity?: true
   receivedPersonId?: true
+  receivedPersonTitle?: true
   deliveryPersonId?: true
   deliveryDate?: true
   createdAt?: true
@@ -206,9 +218,11 @@ export type DeliveryReceiptGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type DeliveryReceiptGroupByOutputType = {
   id: string
   itemId: string
+  itemSerialNumber: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt: Date
@@ -241,9 +255,11 @@ export type DeliveryReceiptWhereInput = {
   NOT?: Prisma.DeliveryReceiptWhereInput | Prisma.DeliveryReceiptWhereInput[]
   id?: Prisma.StringFilter<"DeliveryReceipt"> | string
   itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  itemSerialNumber?: Prisma.StringNullableFilter<"DeliveryReceipt"> | string | null
   workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
   receivedPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  receivedPersonTitle?: Prisma.StringNullableFilter<"DeliveryReceipt"> | string | null
   deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   deliveryDate?: Prisma.StringFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
@@ -257,9 +273,11 @@ export type DeliveryReceiptWhereInput = {
 export type DeliveryReceiptOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
+  itemSerialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   receivedPersonId?: Prisma.SortOrder
+  receivedPersonTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -276,9 +294,11 @@ export type DeliveryReceiptWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DeliveryReceiptWhereInput[]
   NOT?: Prisma.DeliveryReceiptWhereInput | Prisma.DeliveryReceiptWhereInput[]
   itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  itemSerialNumber?: Prisma.StringNullableFilter<"DeliveryReceipt"> | string | null
   workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
   receivedPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  receivedPersonTitle?: Prisma.StringNullableFilter<"DeliveryReceipt"> | string | null
   deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   deliveryDate?: Prisma.StringFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
@@ -292,9 +312,11 @@ export type DeliveryReceiptWhereUniqueInput = Prisma.AtLeast<{
 export type DeliveryReceiptOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
+  itemSerialNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   receivedPersonId?: Prisma.SortOrder
+  receivedPersonTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -312,9 +334,11 @@ export type DeliveryReceiptScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DeliveryReceiptScalarWhereWithAggregatesInput | Prisma.DeliveryReceiptScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   itemId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
+  itemSerialNumber?: Prisma.StringNullableWithAggregatesFilter<"DeliveryReceipt"> | string | null
   workLocationId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntWithAggregatesFilter<"DeliveryReceipt"> | number
   receivedPersonId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
+  receivedPersonTitle?: Prisma.StringNullableWithAggregatesFilter<"DeliveryReceipt"> | string | null
   deliveryPersonId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   deliveryDate?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DeliveryReceipt"> | Date | string
@@ -323,7 +347,9 @@ export type DeliveryReceiptScalarWhereWithAggregatesInput = {
 
 export type DeliveryReceiptCreateInput = {
   id: string
+  itemSerialNumber?: string | null
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -336,9 +362,11 @@ export type DeliveryReceiptCreateInput = {
 export type DeliveryReceiptUncheckedCreateInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -347,7 +375,9 @@ export type DeliveryReceiptUncheckedCreateInput = {
 
 export type DeliveryReceiptUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -360,9 +390,11 @@ export type DeliveryReceiptUpdateInput = {
 export type DeliveryReceiptUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -372,9 +404,11 @@ export type DeliveryReceiptUncheckedUpdateInput = {
 export type DeliveryReceiptCreateManyInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -383,7 +417,9 @@ export type DeliveryReceiptCreateManyInput = {
 
 export type DeliveryReceiptUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -392,9 +428,11 @@ export type DeliveryReceiptUpdateManyMutationInput = {
 export type DeliveryReceiptUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -414,9 +452,11 @@ export type DeliveryReceiptOrderByRelationAggregateInput = {
 export type DeliveryReceiptCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
+  itemSerialNumber?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   receivedPersonId?: Prisma.SortOrder
+  receivedPersonTitle?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -430,9 +470,11 @@ export type DeliveryReceiptAvgOrderByAggregateInput = {
 export type DeliveryReceiptMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
+  itemSerialNumber?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   receivedPersonId?: Prisma.SortOrder
+  receivedPersonTitle?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -442,9 +484,11 @@ export type DeliveryReceiptMaxOrderByAggregateInput = {
 export type DeliveryReceiptMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   itemId?: Prisma.SortOrder
+  itemSerialNumber?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   receivedPersonId?: Prisma.SortOrder
+  receivedPersonTitle?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
   deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -633,7 +677,9 @@ export type IntFieldUpdateOperationsInput = {
 
 export type DeliveryReceiptCreateWithoutReceivedPersonInput = {
   id: string
+  itemSerialNumber?: string | null
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -645,8 +691,10 @@ export type DeliveryReceiptCreateWithoutReceivedPersonInput = {
 export type DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -665,7 +713,9 @@ export type DeliveryReceiptCreateManyReceivedPersonInputEnvelope = {
 
 export type DeliveryReceiptCreateWithoutDeliveryPersonInput = {
   id: string
+  itemSerialNumber?: string | null
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -677,9 +727,11 @@ export type DeliveryReceiptCreateWithoutDeliveryPersonInput = {
 export type DeliveryReceiptUncheckedCreateWithoutDeliveryPersonInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -717,9 +769,11 @@ export type DeliveryReceiptScalarWhereInput = {
   NOT?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
   id?: Prisma.StringFilter<"DeliveryReceipt"> | string
   itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  itemSerialNumber?: Prisma.StringNullableFilter<"DeliveryReceipt"> | string | null
   workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
   receivedPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  receivedPersonTitle?: Prisma.StringNullableFilter<"DeliveryReceipt"> | string | null
   deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   deliveryDate?: Prisma.StringFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
@@ -744,7 +798,9 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutDeliveryPersonInput = {
 
 export type DeliveryReceiptCreateWithoutItemInput = {
   id: string
+  itemSerialNumber?: string | null
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -755,9 +811,11 @@ export type DeliveryReceiptCreateWithoutItemInput = {
 
 export type DeliveryReceiptUncheckedCreateWithoutItemInput = {
   id: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -792,7 +850,9 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutItemInput = {
 
 export type DeliveryReceiptCreateWithoutWorkLocationInput = {
   id: string
+  itemSerialNumber?: string | null
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -804,8 +864,10 @@ export type DeliveryReceiptCreateWithoutWorkLocationInput = {
 export type DeliveryReceiptUncheckedCreateWithoutWorkLocationInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -841,8 +903,10 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput = {
 export type DeliveryReceiptCreateManyReceivedPersonInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -852,9 +916,11 @@ export type DeliveryReceiptCreateManyReceivedPersonInput = {
 export type DeliveryReceiptCreateManyDeliveryPersonInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -862,7 +928,9 @@ export type DeliveryReceiptCreateManyDeliveryPersonInput = {
 
 export type DeliveryReceiptUpdateWithoutReceivedPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -874,8 +942,10 @@ export type DeliveryReceiptUpdateWithoutReceivedPersonInput = {
 export type DeliveryReceiptUncheckedUpdateWithoutReceivedPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -885,8 +955,10 @@ export type DeliveryReceiptUncheckedUpdateWithoutReceivedPersonInput = {
 export type DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -895,7 +967,9 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonInput = {
 
 export type DeliveryReceiptUpdateWithoutDeliveryPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -907,9 +981,11 @@ export type DeliveryReceiptUpdateWithoutDeliveryPersonInput = {
 export type DeliveryReceiptUncheckedUpdateWithoutDeliveryPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -918,9 +994,11 @@ export type DeliveryReceiptUncheckedUpdateWithoutDeliveryPersonInput = {
 export type DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -928,9 +1006,11 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonInput = {
 
 export type DeliveryReceiptCreateManyItemInput = {
   id: string
+  itemSerialNumber?: string | null
   workLocationId: string
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -939,7 +1019,9 @@ export type DeliveryReceiptCreateManyItemInput = {
 
 export type DeliveryReceiptUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -950,9 +1032,11 @@ export type DeliveryReceiptUpdateWithoutItemInput = {
 
 export type DeliveryReceiptUncheckedUpdateWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -961,9 +1045,11 @@ export type DeliveryReceiptUncheckedUpdateWithoutItemInput = {
 
 export type DeliveryReceiptUncheckedUpdateManyWithoutItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -973,8 +1059,10 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutItemInput = {
 export type DeliveryReceiptCreateManyWorkLocationInput = {
   id: string
   itemId: string
+  itemSerialNumber?: string | null
   quantity: number
   receivedPersonId: string
+  receivedPersonTitle?: string | null
   deliveryPersonId: string
   deliveryDate: string
   createdAt?: Date | string
@@ -983,7 +1071,9 @@ export type DeliveryReceiptCreateManyWorkLocationInput = {
 
 export type DeliveryReceiptUpdateWithoutWorkLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -995,8 +1085,10 @@ export type DeliveryReceiptUpdateWithoutWorkLocationInput = {
 export type DeliveryReceiptUncheckedUpdateWithoutWorkLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1006,8 +1098,10 @@ export type DeliveryReceiptUncheckedUpdateWithoutWorkLocationInput = {
 export type DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemSerialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  receivedPersonTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1019,9 +1113,11 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationInput = {
 export type DeliveryReceiptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   itemId?: boolean
+  itemSerialNumber?: boolean
   workLocationId?: boolean
   quantity?: boolean
   receivedPersonId?: boolean
+  receivedPersonTitle?: boolean
   deliveryPersonId?: boolean
   deliveryDate?: boolean
   createdAt?: boolean
@@ -1035,9 +1131,11 @@ export type DeliveryReceiptSelect<ExtArgs extends runtime.Types.Extensions.Inter
 export type DeliveryReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   itemId?: boolean
+  itemSerialNumber?: boolean
   workLocationId?: boolean
   quantity?: boolean
   receivedPersonId?: boolean
+  receivedPersonTitle?: boolean
   deliveryPersonId?: boolean
   deliveryDate?: boolean
   createdAt?: boolean
@@ -1051,9 +1149,11 @@ export type DeliveryReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 export type DeliveryReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   itemId?: boolean
+  itemSerialNumber?: boolean
   workLocationId?: boolean
   quantity?: boolean
   receivedPersonId?: boolean
+  receivedPersonTitle?: boolean
   deliveryPersonId?: boolean
   deliveryDate?: boolean
   createdAt?: boolean
@@ -1067,16 +1167,18 @@ export type DeliveryReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type DeliveryReceiptSelectScalar = {
   id?: boolean
   itemId?: boolean
+  itemSerialNumber?: boolean
   workLocationId?: boolean
   quantity?: boolean
   receivedPersonId?: boolean
+  receivedPersonTitle?: boolean
   deliveryPersonId?: boolean
   deliveryDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DeliveryReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "workLocationId" | "quantity" | "receivedPersonId" | "deliveryPersonId" | "deliveryDate" | "createdAt" | "updatedAt", ExtArgs["result"]["deliveryReceipt"]>
+export type DeliveryReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "itemSerialNumber" | "workLocationId" | "quantity" | "receivedPersonId" | "receivedPersonTitle" | "deliveryPersonId" | "deliveryDate" | "createdAt" | "updatedAt", ExtArgs["result"]["deliveryReceipt"]>
 export type DeliveryReceiptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
@@ -1107,9 +1209,11 @@ export type $DeliveryReceiptPayload<ExtArgs extends runtime.Types.Extensions.Int
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     itemId: string
+    itemSerialNumber: string | null
     workLocationId: string
     quantity: number
     receivedPersonId: string
+    receivedPersonTitle: string | null
     deliveryPersonId: string
     deliveryDate: string
     createdAt: Date
@@ -1543,9 +1647,11 @@ export interface Prisma__DeliveryReceiptClient<T, Null = never, ExtArgs extends 
 export interface DeliveryReceiptFieldRefs {
   readonly id: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly itemId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
+  readonly itemSerialNumber: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly workLocationId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly quantity: Prisma.FieldRef<"DeliveryReceipt", 'Int'>
   readonly receivedPersonId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
+  readonly receivedPersonTitle: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly deliveryPersonId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly deliveryDate: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly createdAt: Prisma.FieldRef<"DeliveryReceipt", 'DateTime'>

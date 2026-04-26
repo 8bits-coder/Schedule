@@ -1050,9 +1050,11 @@ export type WorkLocationScalarFieldEnum = (typeof WorkLocationScalarFieldEnum)[k
 export const DeliveryReceiptScalarFieldEnum = {
   id: 'id',
   itemId: 'itemId',
+  itemSerialNumber: 'itemSerialNumber',
   workLocationId: 'workLocationId',
   quantity: 'quantity',
   receivedPersonId: 'receivedPersonId',
+  receivedPersonTitle: 'receivedPersonTitle',
   deliveryPersonId: 'deliveryPersonId',
   deliveryDate: 'deliveryDate',
   createdAt: 'createdAt',

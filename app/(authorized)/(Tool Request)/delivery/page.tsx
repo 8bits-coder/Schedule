@@ -20,7 +20,6 @@ interface DeliveryFormData {
   workLocationId: string;
   quantity: number;
   receivedPersonId: string;
-  deliveryPersonId: string;
   deliveryDate: string;
 }
 
@@ -39,7 +38,6 @@ export default function DeliveryPage() {
     workLocationId: "",
     quantity: 0,
     receivedPersonId: "",
-    deliveryPersonId: "",
     deliveryDate: "",
   });
 
@@ -79,13 +77,12 @@ export default function DeliveryPage() {
           workLocationId: "",
           quantity: 0,
           receivedPersonId: "",
-          deliveryPersonId: "",
           deliveryDate: "",
         });
         toast.success("Delivery receipt added successfully!");
       }
     } catch (error) {
-      console.error("Error submitting delivery receipt:", error);
+      toast.error(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -101,6 +98,7 @@ export default function DeliveryPage() {
           onValueChange={(value) =>
             setFormData((prev) => ({ ...prev, itemId: value }))
           }
+          value={formData.itemId}
           required
         >
           <SelectTrigger className="w-full">
@@ -120,9 +118,10 @@ export default function DeliveryPage() {
 
         <Select
           name="workLocationId"
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, workLocationId: value }))
-          }
+          onValueChange={(value) => {
+            setFormData((prev) => ({ ...prev, workLocationId: value }));
+          }}
+          value={formData.workLocationId}
           required
         >
           <SelectTrigger className="w-full">
@@ -151,9 +150,10 @@ export default function DeliveryPage() {
 
         <Select
           name="receivedPersonId"
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, receivedPersonId: value }))
-          }
+          onValueChange={(value) => {
+            setFormData((prev) => ({ ...prev, receivedPersonId: value }));
+          }}
+          value={formData.receivedPersonId}
           required
         >
           <SelectTrigger className="w-full">
@@ -162,28 +162,6 @@ export default function DeliveryPage() {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Received Persons</SelectLabel>
-              {receivedPersonId?.map((user) => (
-                <SelectItem key={user.id} value={user.id}>
-                  {user.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Select
-          name="deliveryPersonId"
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, deliveryPersonId: value }))
-          }
-          required
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a Delivery Person" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Delivery Persons</SelectLabel>
               {receivedPersonId?.map((user) => (
                 <SelectItem key={user.id} value={user.id}>
                   {user.name}

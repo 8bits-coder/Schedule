@@ -1,7 +1,18 @@
 "use server";
+import { auth } from "@/lib/auth";
 import prisma from "../lib/prisma";
+import { headers } from "next/headers";
 
 export async function AddDeliveryReceipt(formData: FormData) {
+  const user = await auth.api
+    .getSession({
+      headers: await headers(),
+    })
+    .then((session) => session?.user);
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+
   return prisma.deliveryReceipt.create({
     data: {
       id: crypto.randomUUID(),
@@ -9,13 +20,19 @@ export async function AddDeliveryReceipt(formData: FormData) {
       workLocationId: formData.get("workLocationId") as string,
       quantity: parseInt(formData.get("quantity") as string),
       receivedPersonId: formData.get("receivedPersonId") as string,
-      deliveryPersonId: formData.get("deliveryPersonId") as string,
+      deliveryPersonId: user.id,
       deliveryDate: formData.get("deliveryDate") as string,
     },
   });
 }
 
 export async function GetDeliveryData() {
+  const user = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
   const [users, items, workLocations] = await Promise.all([
     prisma.user
       .findMany()

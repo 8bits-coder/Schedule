@@ -105,19 +105,21 @@ model WorkLocation {
 }
 
 model DeliveryReceipt {
-  id               String       @id
-  itemId           String
-  item             Item         @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  workLocationId   String
-  workLocation     WorkLocation @relation(fields: [workLocationId], references: [id], onDelete: Cascade)
-  quantity         Int
-  receivedPersonId String
-  receivedPerson   User         @relation("ReceivedPerson", fields: [receivedPersonId], references: [id], onDelete: Cascade)
-  deliveryPersonId String
-  deliveryPerson   User         @relation("DeliveryPerson", fields: [deliveryPersonId], references: [id], onDelete: Cascade)
-  deliveryDate     String
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
+  id                  String       @id
+  itemId              String
+  item                Item         @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemSerialNumber    String?
+  workLocationId      String
+  workLocation        WorkLocation @relation(fields: [workLocationId], references: [id], onDelete: Cascade)
+  quantity            Int
+  receivedPersonId    String
+  receivedPerson      User         @relation("ReceivedPerson", fields: [receivedPersonId], references: [id], onDelete: Cascade)
+  receivedPersonTitle String?      @default("RCI")
+  deliveryPersonId    String
+  deliveryPerson      User         @relation("DeliveryPerson", fields: [deliveryPersonId], references: [id], onDelete: Cascade)
+  deliveryDate        String
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
 
   @@map("deliveryReceipt")
 }

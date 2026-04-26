@@ -3,6 +3,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { AddDeliveryReceipt, GetDeliveryData } from "@/actions/deliveryActions";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface DeliveryFormData {
   itemId: string;
@@ -63,7 +74,15 @@ export default function DeliveryPage() {
       const response = await AddDeliveryReceipt(new FormData(e.currentTarget));
 
       if (response) {
-        router.push("/delivery?success=true");
+        setFormData({
+          itemId: "",
+          workLocationId: "",
+          quantity: 0,
+          receivedPersonId: "",
+          deliveryPersonId: "",
+          deliveryDate: "",
+        });
+        toast.success("Delivery receipt added successfully!");
       }
     } catch (error) {
       console.error("Error submitting delivery receipt:", error);
@@ -77,92 +96,114 @@ export default function DeliveryPage() {
       <h1 className="text-3xl font-bold mb-6">Delivery Receipt</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <select
+        <Select
           name="itemId"
-          value={formData.itemId}
-          onChange={handleChange}
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, itemId: value }))
+          }
           required
-          className="w-full px-4 py-2 border rounded"
         >
-          <option value="">Select an Item</option>
-          {itemId?.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select an Item" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Items</SelectLabel>
+              {itemId?.map((item) => (
+                <SelectItem key={item.id} value={item.id}>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <select
+        <Select
           name="workLocationId"
-          value={formData.workLocationId}
-          onChange={handleChange}
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, workLocationId: value }))
+          }
           required
-          className="w-full px-4 py-2 border rounded"
         >
-          <option value="">Select a Work Location</option>
-          {workLocationId?.map((loc) => (
-            <option key={loc.id} value={loc.id}>
-              {loc.name}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a Work Location" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Work Locations</SelectLabel>
+              {workLocationId?.map((loc) => (
+                <SelectItem key={loc.id} value={loc.id}>
+                  {loc.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <input
+        <Input
           type="text"
           name="quantity"
           placeholder="Quantity"
           value={formData.quantity}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border rounded"
         />
 
-        <select
+        <Select
           name="receivedPersonId"
-          value={formData.receivedPersonId}
-          onChange={handleChange}
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, receivedPersonId: value }))
+          }
           required
-          className="w-full px-4 py-2 border rounded"
         >
-          <option value="">Select a Received Person</option>
-          {receivedPersonId?.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a Received Person" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Received Persons</SelectLabel>
+              {receivedPersonId?.map((user) => (
+                <SelectItem key={user.id} value={user.id}>
+                  {user.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <select
+        <Select
           name="deliveryPersonId"
-          value={formData.deliveryPersonId}
-          onChange={handleChange}
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, deliveryPersonId: value }))
+          }
           required
-          className="w-full px-4 py-2 border rounded"
         >
-          <option value="">Select a Delivery Person</option>
-          {receivedPersonId?.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a Delivery Person" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Delivery Persons</SelectLabel>
+              {receivedPersonId?.map((user) => (
+                <SelectItem key={user.id} value={user.id}>
+                  {user.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <input
+        <Input
           type="date"
           name="deliveryDate"
           value={formData.deliveryDate}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border rounded"
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Submitting..." : "Submit Delivery"}
-        </button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
+        </Button>
       </form>
     </div>
   );

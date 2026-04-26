@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/context/AuthContext";
 import TopBar from "@/components/custom/header/TopBar";
 import AppLayout from "@/components/custom/AppLayout";
 import { GlobalRouterProvider } from "@/lib/router";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
       <AuthProvider>
         <body className="min-h-full flex flex-col">
           <AppLayout>{children}</AppLayout>
+          <Toaster position="top-right" richColors />
         </body>
         <GlobalRouterProvider />
       </AuthProvider>

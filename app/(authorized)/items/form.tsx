@@ -1,6 +1,8 @@
 "use client";
 import { AddItem } from "@/actions/itemActions";
 import { useState } from "react";
+import { toast } from "sonner";
+
 const ItemForm = () => {
   const [showForm, setShowForm] = useState(false);
 
@@ -9,17 +11,15 @@ const ItemForm = () => {
     const formData = new FormData(e.currentTarget);
     AddItem(formData)
       .then(() => {
-        alert("Item added successfully!");
+        toast.success("Item added successfully!");
         setShowForm(false);
       })
       .catch((error) => {
-        alert("Error adding item: " + error.message);
+        toast.error("Error adding item: " + error.message);
       });
   }
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Items</h1>
-
       <button
         onClick={() => setShowForm(!showForm)}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

@@ -161,7 +161,9 @@ export const DeliveryReceiptScalarFieldEnum = {
   itemId: 'itemId',
   workLocationId: 'workLocationId',
   quantity: 'quantity',
+  receivedPersonId: 'receivedPersonId',
   deliveryPersonId: 'deliveryPersonId',
+  deliveryDate: 'deliveryDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

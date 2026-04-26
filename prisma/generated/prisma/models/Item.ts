@@ -182,6 +182,7 @@ export type ItemWhereInput = {
   description?: Prisma.StringNullableFilter<"Item"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
+  deliveries?: Prisma.DeliveryReceiptListRelationFilter
 }
 
 export type ItemOrderByWithRelationInput = {
@@ -190,6 +191,7 @@ export type ItemOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
 }
 
 export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -201,6 +203,7 @@ export type ItemWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Item"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Item"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Item"> | Date | string
+  deliveries?: Prisma.DeliveryReceiptListRelationFilter
 }, "id">
 
 export type ItemOrderByWithAggregationInput = {
@@ -231,6 +234,7 @@ export type ItemCreateInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateInput = {
@@ -239,6 +243,7 @@ export type ItemUncheckedCreateInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemUpdateInput = {
@@ -247,6 +252,7 @@ export type ItemUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deliveries?: Prisma.DeliveryReceiptUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateInput = {
@@ -255,6 +261,7 @@ export type ItemUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateManyInput = {
@@ -305,6 +312,102 @@ export type ItemMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type ItemScalarRelationFilter = {
+  is?: Prisma.ItemWhereInput
+  isNot?: Prisma.ItemWhereInput
+}
+
+export type ItemCreateNestedOneWithoutDeliveriesInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDeliveriesInput, Prisma.ItemUncheckedCreateWithoutDeliveriesInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDeliveriesInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneRequiredWithoutDeliveriesNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDeliveriesInput, Prisma.ItemUncheckedCreateWithoutDeliveriesInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDeliveriesInput
+  upsert?: Prisma.ItemUpsertWithoutDeliveriesInput
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutDeliveriesInput, Prisma.ItemUpdateWithoutDeliveriesInput>, Prisma.ItemUncheckedUpdateWithoutDeliveriesInput>
+}
+
+export type ItemCreateWithoutDeliveriesInput = {
+  id: string
+  name: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ItemUncheckedCreateWithoutDeliveriesInput = {
+  id: string
+  name: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ItemCreateOrConnectWithoutDeliveriesInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutDeliveriesInput, Prisma.ItemUncheckedCreateWithoutDeliveriesInput>
+}
+
+export type ItemUpsertWithoutDeliveriesInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutDeliveriesInput, Prisma.ItemUncheckedUpdateWithoutDeliveriesInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutDeliveriesInput, Prisma.ItemUncheckedCreateWithoutDeliveriesInput>
+  where?: Prisma.ItemWhereInput
+}
+
+export type ItemUpdateToOneWithWhereWithoutDeliveriesInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutDeliveriesInput, Prisma.ItemUncheckedUpdateWithoutDeliveriesInput>
+}
+
+export type ItemUpdateWithoutDeliveriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ItemUncheckedUpdateWithoutDeliveriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type ItemCountOutputType
+ */
+
+export type ItemCountOutputType = {
+  deliveries: number
+}
+
+export type ItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deliveries?: boolean | ItemCountOutputTypeCountDeliveriesArgs
+}
+
+/**
+ * ItemCountOutputType without action
+ */
+export type ItemCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemCountOutputType
+   */
+  select?: Prisma.ItemCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ItemCountOutputType without action
+ */
+export type ItemCountOutputTypeCountDeliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeliveryReceiptWhereInput
+}
 
 
 export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -313,6 +416,8 @@ export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deliveries?: boolean | Prisma.Item$deliveriesArgs<ExtArgs>
+  _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
 export type ItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -340,10 +445,18 @@ export type ItemSelectScalar = {
 }
 
 export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
+export type ItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deliveries?: boolean | Prisma.Item$deliveriesArgs<ExtArgs>
+  _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type ItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Item"
-  objects: {}
+  objects: {
+    deliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -744,6 +857,7 @@ readonly fields: ItemFieldRefs;
  */
 export interface Prisma__ItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  deliveries<T extends Prisma.Item$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -795,6 +909,10 @@ export type ItemFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  /**
    * Filter, which Item to fetch.
    */
   where: Prisma.ItemWhereUniqueInput
@@ -813,6 +931,10 @@ export type ItemFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  /**
    * Filter, which Item to fetch.
    */
   where: Prisma.ItemWhereUniqueInput
@@ -830,6 +952,10 @@ export type ItemFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Item
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
   /**
    * Filter, which Item to fetch.
    */
@@ -879,6 +1005,10 @@ export type ItemFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  /**
    * Filter, which Item to fetch.
    */
   where?: Prisma.ItemWhereInput
@@ -926,6 +1056,10 @@ export type ItemFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Item
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
   /**
    * Filter, which Items to fetch.
    */
@@ -975,6 +1109,10 @@ export type ItemCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  /**
    * The data needed to create a Item.
    */
   data: Prisma.XOR<Prisma.ItemCreateInput, Prisma.ItemUncheckedCreateInput>
@@ -1022,6 +1160,10 @@ export type ItemUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Item
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
   /**
    * The data needed to update a Item.
    */
@@ -1089,6 +1231,10 @@ export type ItemUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  /**
    * The filter to search for the Item to update in case it exists.
    */
   where: Prisma.ItemWhereUniqueInput
@@ -1115,6 +1261,10 @@ export type ItemDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  /**
    * Filter which Item to delete.
    */
   where: Prisma.ItemWhereUniqueInput
@@ -1135,6 +1285,30 @@ export type ItemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * Item.deliveries
+ */
+export type Item$deliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeliveryReceipt
+   */
+  select?: Prisma.DeliveryReceiptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeliveryReceipt
+   */
+  omit?: Prisma.DeliveryReceiptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeliveryReceiptInclude<ExtArgs> | null
+  where?: Prisma.DeliveryReceiptWhereInput
+  orderBy?: Prisma.DeliveryReceiptOrderByWithRelationInput | Prisma.DeliveryReceiptOrderByWithRelationInput[]
+  cursor?: Prisma.DeliveryReceiptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeliveryReceiptScalarFieldEnum | Prisma.DeliveryReceiptScalarFieldEnum[]
+}
+
+/**
  * Item without action
  */
 export type ItemDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1146,4 +1320,8 @@ export type ItemDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Item
    */
   omit?: Prisma.ItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
 }

@@ -174,6 +174,7 @@ export type WorkLocationWhereInput = {
   name?: Prisma.StringFilter<"WorkLocation"> | string
   createdAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
+  deliveries?: Prisma.DeliveryReceiptListRelationFilter
 }
 
 export type WorkLocationOrderByWithRelationInput = {
@@ -181,6 +182,7 @@ export type WorkLocationOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
 }
 
 export type WorkLocationWhereUniqueInput = Prisma.AtLeast<{
@@ -191,6 +193,7 @@ export type WorkLocationWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"WorkLocation"> | string
   createdAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
+  deliveries?: Prisma.DeliveryReceiptListRelationFilter
 }, "id">
 
 export type WorkLocationOrderByWithAggregationInput = {
@@ -218,6 +221,7 @@ export type WorkLocationCreateInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutWorkLocationInput
 }
 
 export type WorkLocationUncheckedCreateInput = {
@@ -225,6 +229,7 @@ export type WorkLocationUncheckedCreateInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutWorkLocationInput
 }
 
 export type WorkLocationUpdateInput = {
@@ -232,6 +237,7 @@ export type WorkLocationUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deliveries?: Prisma.DeliveryReceiptUpdateManyWithoutWorkLocationNestedInput
 }
 
 export type WorkLocationUncheckedUpdateInput = {
@@ -239,6 +245,7 @@ export type WorkLocationUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationNestedInput
 }
 
 export type WorkLocationCreateManyInput = {
@@ -283,6 +290,98 @@ export type WorkLocationMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type WorkLocationScalarRelationFilter = {
+  is?: Prisma.WorkLocationWhereInput
+  isNot?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationCreateNestedOneWithoutDeliveriesInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedCreateWithoutDeliveriesInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutDeliveriesInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+}
+
+export type WorkLocationUpdateOneRequiredWithoutDeliveriesNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedCreateWithoutDeliveriesInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutDeliveriesInput
+  upsert?: Prisma.WorkLocationUpsertWithoutDeliveriesInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutDeliveriesInput, Prisma.WorkLocationUpdateWithoutDeliveriesInput>, Prisma.WorkLocationUncheckedUpdateWithoutDeliveriesInput>
+}
+
+export type WorkLocationCreateWithoutDeliveriesInput = {
+  id: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkLocationUncheckedCreateWithoutDeliveriesInput = {
+  id: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkLocationCreateOrConnectWithoutDeliveriesInput = {
+  where: Prisma.WorkLocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedCreateWithoutDeliveriesInput>
+}
+
+export type WorkLocationUpsertWithoutDeliveriesInput = {
+  update: Prisma.XOR<Prisma.WorkLocationUpdateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedUpdateWithoutDeliveriesInput>
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedCreateWithoutDeliveriesInput>
+  where?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationUpdateToOneWithWhereWithoutDeliveriesInput = {
+  where?: Prisma.WorkLocationWhereInput
+  data: Prisma.XOR<Prisma.WorkLocationUpdateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedUpdateWithoutDeliveriesInput>
+}
+
+export type WorkLocationUpdateWithoutDeliveriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkLocationUncheckedUpdateWithoutDeliveriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type WorkLocationCountOutputType
+ */
+
+export type WorkLocationCountOutputType = {
+  deliveries: number
+}
+
+export type WorkLocationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deliveries?: boolean | WorkLocationCountOutputTypeCountDeliveriesArgs
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
+export type WorkLocationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkLocationCountOutputType
+   */
+  select?: Prisma.WorkLocationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
+export type WorkLocationCountOutputTypeCountDeliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeliveryReceiptWhereInput
+}
 
 
 export type WorkLocationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -290,6 +389,8 @@ export type WorkLocationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   name?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deliveries?: boolean | Prisma.WorkLocation$deliveriesArgs<ExtArgs>
+  _count?: boolean | Prisma.WorkLocationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workLocation"]>
 
 export type WorkLocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -314,10 +415,18 @@ export type WorkLocationSelectScalar = {
 }
 
 export type WorkLocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["workLocation"]>
+export type WorkLocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deliveries?: boolean | Prisma.WorkLocation$deliveriesArgs<ExtArgs>
+  _count?: boolean | Prisma.WorkLocationCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type WorkLocationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type WorkLocationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $WorkLocationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "WorkLocation"
-  objects: {}
+  objects: {
+    deliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -717,6 +826,7 @@ readonly fields: WorkLocationFieldRefs;
  */
 export interface Prisma__WorkLocationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  deliveries<T extends Prisma.WorkLocation$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -767,6 +877,10 @@ export type WorkLocationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  /**
    * Filter, which WorkLocation to fetch.
    */
   where: Prisma.WorkLocationWhereUniqueInput
@@ -785,6 +899,10 @@ export type WorkLocationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  /**
    * Filter, which WorkLocation to fetch.
    */
   where: Prisma.WorkLocationWhereUniqueInput
@@ -802,6 +920,10 @@ export type WorkLocationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the WorkLocation
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
   /**
    * Filter, which WorkLocation to fetch.
    */
@@ -851,6 +973,10 @@ export type WorkLocationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  /**
    * Filter, which WorkLocation to fetch.
    */
   where?: Prisma.WorkLocationWhereInput
@@ -898,6 +1024,10 @@ export type WorkLocationFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the WorkLocation
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
   /**
    * Filter, which WorkLocations to fetch.
    */
@@ -947,6 +1077,10 @@ export type WorkLocationCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  /**
    * The data needed to create a WorkLocation.
    */
   data: Prisma.XOR<Prisma.WorkLocationCreateInput, Prisma.WorkLocationUncheckedCreateInput>
@@ -994,6 +1128,10 @@ export type WorkLocationUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the WorkLocation
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
   /**
    * The data needed to update a WorkLocation.
    */
@@ -1061,6 +1199,10 @@ export type WorkLocationUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  /**
    * The filter to search for the WorkLocation to update in case it exists.
    */
   where: Prisma.WorkLocationWhereUniqueInput
@@ -1087,6 +1229,10 @@ export type WorkLocationDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  /**
    * Filter which WorkLocation to delete.
    */
   where: Prisma.WorkLocationWhereUniqueInput
@@ -1107,6 +1253,30 @@ export type WorkLocationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * WorkLocation.deliveries
+ */
+export type WorkLocation$deliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeliveryReceipt
+   */
+  select?: Prisma.DeliveryReceiptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeliveryReceipt
+   */
+  omit?: Prisma.DeliveryReceiptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeliveryReceiptInclude<ExtArgs> | null
+  where?: Prisma.DeliveryReceiptWhereInput
+  orderBy?: Prisma.DeliveryReceiptOrderByWithRelationInput | Prisma.DeliveryReceiptOrderByWithRelationInput[]
+  cursor?: Prisma.DeliveryReceiptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeliveryReceiptScalarFieldEnum | Prisma.DeliveryReceiptScalarFieldEnum[]
+}
+
+/**
  * WorkLocation without action
  */
 export type WorkLocationDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1118,4 +1288,8 @@ export type WorkLocationDefaultArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the WorkLocation
    */
   omit?: Prisma.WorkLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
 }

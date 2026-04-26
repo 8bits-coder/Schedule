@@ -39,7 +39,9 @@ export type DeliveryReceiptMinAggregateOutputType = {
   itemId: string | null
   workLocationId: string | null
   quantity: number | null
+  receivedPersonId: string | null
   deliveryPersonId: string | null
+  deliveryDate: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -49,7 +51,9 @@ export type DeliveryReceiptMaxAggregateOutputType = {
   itemId: string | null
   workLocationId: string | null
   quantity: number | null
+  receivedPersonId: string | null
   deliveryPersonId: string | null
+  deliveryDate: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,7 +63,9 @@ export type DeliveryReceiptCountAggregateOutputType = {
   itemId: number
   workLocationId: number
   quantity: number
+  receivedPersonId: number
   deliveryPersonId: number
+  deliveryDate: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -79,7 +85,9 @@ export type DeliveryReceiptMinAggregateInputType = {
   itemId?: true
   workLocationId?: true
   quantity?: true
+  receivedPersonId?: true
   deliveryPersonId?: true
+  deliveryDate?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -89,7 +97,9 @@ export type DeliveryReceiptMaxAggregateInputType = {
   itemId?: true
   workLocationId?: true
   quantity?: true
+  receivedPersonId?: true
   deliveryPersonId?: true
+  deliveryDate?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -99,7 +109,9 @@ export type DeliveryReceiptCountAggregateInputType = {
   itemId?: true
   workLocationId?: true
   quantity?: true
+  receivedPersonId?: true
   deliveryPersonId?: true
+  deliveryDate?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -196,7 +208,9 @@ export type DeliveryReceiptGroupByOutputType = {
   itemId: string
   workLocationId: string
   quantity: number
+  receivedPersonId: string
   deliveryPersonId: string
+  deliveryDate: string
   createdAt: Date
   updatedAt: Date
   _count: DeliveryReceiptCountAggregateOutputType | null
@@ -229,9 +243,14 @@ export type DeliveryReceiptWhereInput = {
   itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
+  receivedPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  deliveryDate?: Prisma.StringFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
+  item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
+  workLocation?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
+  receivedPerson?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   deliveryPerson?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -240,9 +259,14 @@ export type DeliveryReceiptOrderByWithRelationInput = {
   itemId?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  receivedPersonId?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
+  deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  item?: Prisma.ItemOrderByWithRelationInput
+  workLocation?: Prisma.WorkLocationOrderByWithRelationInput
+  receivedPerson?: Prisma.UserOrderByWithRelationInput
   deliveryPerson?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -254,9 +278,14 @@ export type DeliveryReceiptWhereUniqueInput = Prisma.AtLeast<{
   itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
+  receivedPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
   deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  deliveryDate?: Prisma.StringFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
+  item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
+  workLocation?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
+  receivedPerson?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   deliveryPerson?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
@@ -265,7 +294,9 @@ export type DeliveryReceiptOrderByWithAggregationInput = {
   itemId?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  receivedPersonId?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
+  deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DeliveryReceiptCountOrderByAggregateInput
@@ -283,19 +314,23 @@ export type DeliveryReceiptScalarWhereWithAggregatesInput = {
   itemId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   workLocationId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   quantity?: Prisma.IntWithAggregatesFilter<"DeliveryReceipt"> | number
+  receivedPersonId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   deliveryPersonId?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
+  deliveryDate?: Prisma.StringWithAggregatesFilter<"DeliveryReceipt"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DeliveryReceipt"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DeliveryReceipt"> | Date | string
 }
 
 export type DeliveryReceiptCreateInput = {
   id: string
-  itemId: string
-  workLocationId: string
   quantity: number
+  deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deliveryPerson: Prisma.UserCreateNestedOneWithoutDeliveryReceiptsInput
+  item: Prisma.ItemCreateNestedOneWithoutDeliveriesInput
+  workLocation: Prisma.WorkLocationCreateNestedOneWithoutDeliveriesInput
+  receivedPerson: Prisma.UserCreateNestedOneWithoutReceivedDeliveriesInput
+  deliveryPerson: Prisma.UserCreateNestedOneWithoutDeliveredDeliveriesInput
 }
 
 export type DeliveryReceiptUncheckedCreateInput = {
@@ -303,19 +338,23 @@ export type DeliveryReceiptUncheckedCreateInput = {
   itemId: string
   workLocationId: string
   quantity: number
+  receivedPersonId: string
   deliveryPersonId: string
+  deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DeliveryReceiptUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deliveryPerson?: Prisma.UserUpdateOneRequiredWithoutDeliveryReceiptsNestedInput
+  item?: Prisma.ItemUpdateOneRequiredWithoutDeliveriesNestedInput
+  workLocation?: Prisma.WorkLocationUpdateOneRequiredWithoutDeliveriesNestedInput
+  receivedPerson?: Prisma.UserUpdateOneRequiredWithoutReceivedDeliveriesNestedInput
+  deliveryPerson?: Prisma.UserUpdateOneRequiredWithoutDeliveredDeliveriesNestedInput
 }
 
 export type DeliveryReceiptUncheckedUpdateInput = {
@@ -323,7 +362,9 @@ export type DeliveryReceiptUncheckedUpdateInput = {
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -333,16 +374,17 @@ export type DeliveryReceiptCreateManyInput = {
   itemId: string
   workLocationId: string
   quantity: number
+  receivedPersonId: string
   deliveryPersonId: string
+  deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DeliveryReceiptUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  itemId?: Prisma.StringFieldUpdateOperationsInput | string
-  workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -352,7 +394,9 @@ export type DeliveryReceiptUncheckedUpdateManyInput = {
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
   deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -372,7 +416,9 @@ export type DeliveryReceiptCountOrderByAggregateInput = {
   itemId?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  receivedPersonId?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
+  deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -386,7 +432,9 @@ export type DeliveryReceiptMaxOrderByAggregateInput = {
   itemId?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  receivedPersonId?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
+  deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,13 +444,22 @@ export type DeliveryReceiptMinOrderByAggregateInput = {
   itemId?: Prisma.SortOrder
   workLocationId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  receivedPersonId?: Prisma.SortOrder
   deliveryPersonId?: Prisma.SortOrder
+  deliveryDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DeliveryReceiptSumOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
+}
+
+export type DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput> | Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput | Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyReceivedPersonInputEnvelope
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
 }
 
 export type DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput = {
@@ -412,11 +469,32 @@ export type DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput = {
   connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
 }
 
+export type DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput> | Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput | Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyReceivedPersonInputEnvelope
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+}
+
 export type DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput = {
   create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutDeliveryPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutDeliveryPersonInput> | Prisma.DeliveryReceiptCreateWithoutDeliveryPersonInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutDeliveryPersonInput[]
   connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutDeliveryPersonInput | Prisma.DeliveryReceiptCreateOrConnectWithoutDeliveryPersonInput[]
   createMany?: Prisma.DeliveryReceiptCreateManyDeliveryPersonInputEnvelope
   connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+}
+
+export type DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput> | Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput | Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput[]
+  upsert?: Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutReceivedPersonInput | Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutReceivedPersonInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyReceivedPersonInputEnvelope
+  set?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  delete?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutReceivedPersonInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutReceivedPersonInput[]
+  updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutReceivedPersonInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutReceivedPersonInput[]
+  deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
 }
 
 export type DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput = {
@@ -430,6 +508,20 @@ export type DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput = {
   connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
   update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutDeliveryPersonInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutDeliveryPersonInput[]
   updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutDeliveryPersonInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutDeliveryPersonInput[]
+  deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+}
+
+export type DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput> | Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput | Prisma.DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput[]
+  upsert?: Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutReceivedPersonInput | Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutReceivedPersonInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyReceivedPersonInputEnvelope
+  set?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  delete?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutReceivedPersonInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutReceivedPersonInput[]
+  updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutReceivedPersonInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutReceivedPersonInput[]
   deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
 }
 
@@ -447,6 +539,90 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput =
   deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
 }
 
+export type DeliveryReceiptCreateNestedManyWithoutItemInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutItemInput, Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput> | Prisma.DeliveryReceiptCreateWithoutItemInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput | Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyItemInputEnvelope
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+}
+
+export type DeliveryReceiptUncheckedCreateNestedManyWithoutItemInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutItemInput, Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput> | Prisma.DeliveryReceiptCreateWithoutItemInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput | Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyItemInputEnvelope
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+}
+
+export type DeliveryReceiptUpdateManyWithoutItemNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutItemInput, Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput> | Prisma.DeliveryReceiptCreateWithoutItemInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput | Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput[]
+  upsert?: Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutItemInput | Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutItemInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyItemInputEnvelope
+  set?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  delete?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutItemInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutItemInput[]
+  updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutItemInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutItemInput[]
+  deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+}
+
+export type DeliveryReceiptUncheckedUpdateManyWithoutItemNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutItemInput, Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput> | Prisma.DeliveryReceiptCreateWithoutItemInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput | Prisma.DeliveryReceiptCreateOrConnectWithoutItemInput[]
+  upsert?: Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutItemInput | Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutItemInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyItemInputEnvelope
+  set?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  delete?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutItemInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutItemInput[]
+  updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutItemInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutItemInput[]
+  deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+}
+
+export type DeliveryReceiptCreateNestedManyWithoutWorkLocationInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput> | Prisma.DeliveryReceiptCreateWithoutWorkLocationInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput | Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyWorkLocationInputEnvelope
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+}
+
+export type DeliveryReceiptUncheckedCreateNestedManyWithoutWorkLocationInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput> | Prisma.DeliveryReceiptCreateWithoutWorkLocationInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput | Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyWorkLocationInputEnvelope
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+}
+
+export type DeliveryReceiptUpdateManyWithoutWorkLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput> | Prisma.DeliveryReceiptCreateWithoutWorkLocationInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput | Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput[]
+  upsert?: Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutWorkLocationInput | Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutWorkLocationInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyWorkLocationInputEnvelope
+  set?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  delete?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutWorkLocationInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutWorkLocationInput[]
+  updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput[]
+  deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+}
+
+export type DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput> | Prisma.DeliveryReceiptCreateWithoutWorkLocationInput[] | Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput[]
+  connectOrCreate?: Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput | Prisma.DeliveryReceiptCreateOrConnectWithoutWorkLocationInput[]
+  upsert?: Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutWorkLocationInput | Prisma.DeliveryReceiptUpsertWithWhereUniqueWithoutWorkLocationInput[]
+  createMany?: Prisma.DeliveryReceiptCreateManyWorkLocationInputEnvelope
+  set?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  disconnect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  delete?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  connect?: Prisma.DeliveryReceiptWhereUniqueInput | Prisma.DeliveryReceiptWhereUniqueInput[]
+  update?: Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutWorkLocationInput | Prisma.DeliveryReceiptUpdateWithWhereUniqueWithoutWorkLocationInput[]
+  updateMany?: Prisma.DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput | Prisma.DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput[]
+  deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -455,13 +631,47 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type DeliveryReceiptCreateWithoutDeliveryPersonInput = {
+export type DeliveryReceiptCreateWithoutReceivedPersonInput = {
+  id: string
+  quantity: number
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  item: Prisma.ItemCreateNestedOneWithoutDeliveriesInput
+  workLocation: Prisma.WorkLocationCreateNestedOneWithoutDeliveriesInput
+  deliveryPerson: Prisma.UserCreateNestedOneWithoutDeliveredDeliveriesInput
+}
+
+export type DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput = {
   id: string
   itemId: string
   workLocationId: string
   quantity: number
+  deliveryPersonId: string
+  deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
+}
+
+export type DeliveryReceiptCreateOrConnectWithoutReceivedPersonInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  create: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput>
+}
+
+export type DeliveryReceiptCreateManyReceivedPersonInputEnvelope = {
+  data: Prisma.DeliveryReceiptCreateManyReceivedPersonInput | Prisma.DeliveryReceiptCreateManyReceivedPersonInput[]
+  skipDuplicates?: boolean
+}
+
+export type DeliveryReceiptCreateWithoutDeliveryPersonInput = {
+  id: string
+  quantity: number
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  item: Prisma.ItemCreateNestedOneWithoutDeliveriesInput
+  workLocation: Prisma.WorkLocationCreateNestedOneWithoutDeliveriesInput
+  receivedPerson: Prisma.UserCreateNestedOneWithoutReceivedDeliveriesInput
 }
 
 export type DeliveryReceiptUncheckedCreateWithoutDeliveryPersonInput = {
@@ -469,6 +679,8 @@ export type DeliveryReceiptUncheckedCreateWithoutDeliveryPersonInput = {
   itemId: string
   workLocationId: string
   quantity: number
+  receivedPersonId: string
+  deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -481,6 +693,37 @@ export type DeliveryReceiptCreateOrConnectWithoutDeliveryPersonInput = {
 export type DeliveryReceiptCreateManyDeliveryPersonInputEnvelope = {
   data: Prisma.DeliveryReceiptCreateManyDeliveryPersonInput | Prisma.DeliveryReceiptCreateManyDeliveryPersonInput[]
   skipDuplicates?: boolean
+}
+
+export type DeliveryReceiptUpsertWithWhereUniqueWithoutReceivedPersonInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  update: Prisma.XOR<Prisma.DeliveryReceiptUpdateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedUpdateWithoutReceivedPersonInput>
+  create: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput>
+}
+
+export type DeliveryReceiptUpdateWithWhereUniqueWithoutReceivedPersonInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  data: Prisma.XOR<Prisma.DeliveryReceiptUpdateWithoutReceivedPersonInput, Prisma.DeliveryReceiptUncheckedUpdateWithoutReceivedPersonInput>
+}
+
+export type DeliveryReceiptUpdateManyWithWhereWithoutReceivedPersonInput = {
+  where: Prisma.DeliveryReceiptScalarWhereInput
+  data: Prisma.XOR<Prisma.DeliveryReceiptUpdateManyMutationInput, Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonInput>
+}
+
+export type DeliveryReceiptScalarWhereInput = {
+  AND?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+  OR?: Prisma.DeliveryReceiptScalarWhereInput[]
+  NOT?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
+  id?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
+  receivedPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  deliveryDate?: Prisma.StringFilter<"DeliveryReceipt"> | string
+  createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
 }
 
 export type DeliveryReceiptUpsertWithWhereUniqueWithoutDeliveryPersonInput = {
@@ -499,17 +742,111 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutDeliveryPersonInput = {
   data: Prisma.XOR<Prisma.DeliveryReceiptUpdateManyMutationInput, Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonInput>
 }
 
-export type DeliveryReceiptScalarWhereInput = {
-  AND?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
-  OR?: Prisma.DeliveryReceiptScalarWhereInput[]
-  NOT?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
-  id?: Prisma.StringFilter<"DeliveryReceipt"> | string
-  itemId?: Prisma.StringFilter<"DeliveryReceipt"> | string
-  workLocationId?: Prisma.StringFilter<"DeliveryReceipt"> | string
-  quantity?: Prisma.IntFilter<"DeliveryReceipt"> | number
-  deliveryPersonId?: Prisma.StringFilter<"DeliveryReceipt"> | string
-  createdAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"DeliveryReceipt"> | Date | string
+export type DeliveryReceiptCreateWithoutItemInput = {
+  id: string
+  quantity: number
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workLocation: Prisma.WorkLocationCreateNestedOneWithoutDeliveriesInput
+  receivedPerson: Prisma.UserCreateNestedOneWithoutReceivedDeliveriesInput
+  deliveryPerson: Prisma.UserCreateNestedOneWithoutDeliveredDeliveriesInput
+}
+
+export type DeliveryReceiptUncheckedCreateWithoutItemInput = {
+  id: string
+  workLocationId: string
+  quantity: number
+  receivedPersonId: string
+  deliveryPersonId: string
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DeliveryReceiptCreateOrConnectWithoutItemInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  create: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutItemInput, Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput>
+}
+
+export type DeliveryReceiptCreateManyItemInputEnvelope = {
+  data: Prisma.DeliveryReceiptCreateManyItemInput | Prisma.DeliveryReceiptCreateManyItemInput[]
+  skipDuplicates?: boolean
+}
+
+export type DeliveryReceiptUpsertWithWhereUniqueWithoutItemInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  update: Prisma.XOR<Prisma.DeliveryReceiptUpdateWithoutItemInput, Prisma.DeliveryReceiptUncheckedUpdateWithoutItemInput>
+  create: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutItemInput, Prisma.DeliveryReceiptUncheckedCreateWithoutItemInput>
+}
+
+export type DeliveryReceiptUpdateWithWhereUniqueWithoutItemInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  data: Prisma.XOR<Prisma.DeliveryReceiptUpdateWithoutItemInput, Prisma.DeliveryReceiptUncheckedUpdateWithoutItemInput>
+}
+
+export type DeliveryReceiptUpdateManyWithWhereWithoutItemInput = {
+  where: Prisma.DeliveryReceiptScalarWhereInput
+  data: Prisma.XOR<Prisma.DeliveryReceiptUpdateManyMutationInput, Prisma.DeliveryReceiptUncheckedUpdateManyWithoutItemInput>
+}
+
+export type DeliveryReceiptCreateWithoutWorkLocationInput = {
+  id: string
+  quantity: number
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  item: Prisma.ItemCreateNestedOneWithoutDeliveriesInput
+  receivedPerson: Prisma.UserCreateNestedOneWithoutReceivedDeliveriesInput
+  deliveryPerson: Prisma.UserCreateNestedOneWithoutDeliveredDeliveriesInput
+}
+
+export type DeliveryReceiptUncheckedCreateWithoutWorkLocationInput = {
+  id: string
+  itemId: string
+  quantity: number
+  receivedPersonId: string
+  deliveryPersonId: string
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DeliveryReceiptCreateOrConnectWithoutWorkLocationInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  create: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput>
+}
+
+export type DeliveryReceiptCreateManyWorkLocationInputEnvelope = {
+  data: Prisma.DeliveryReceiptCreateManyWorkLocationInput | Prisma.DeliveryReceiptCreateManyWorkLocationInput[]
+  skipDuplicates?: boolean
+}
+
+export type DeliveryReceiptUpsertWithWhereUniqueWithoutWorkLocationInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  update: Prisma.XOR<Prisma.DeliveryReceiptUpdateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedUpdateWithoutWorkLocationInput>
+  create: Prisma.XOR<Prisma.DeliveryReceiptCreateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedCreateWithoutWorkLocationInput>
+}
+
+export type DeliveryReceiptUpdateWithWhereUniqueWithoutWorkLocationInput = {
+  where: Prisma.DeliveryReceiptWhereUniqueInput
+  data: Prisma.XOR<Prisma.DeliveryReceiptUpdateWithoutWorkLocationInput, Prisma.DeliveryReceiptUncheckedUpdateWithoutWorkLocationInput>
+}
+
+export type DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput = {
+  where: Prisma.DeliveryReceiptScalarWhereInput
+  data: Prisma.XOR<Prisma.DeliveryReceiptUpdateManyMutationInput, Prisma.DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationInput>
+}
+
+export type DeliveryReceiptCreateManyReceivedPersonInput = {
+  id: string
+  itemId: string
+  workLocationId: string
+  quantity: number
+  deliveryPersonId: string
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type DeliveryReceiptCreateManyDeliveryPersonInput = {
@@ -517,17 +854,54 @@ export type DeliveryReceiptCreateManyDeliveryPersonInput = {
   itemId: string
   workLocationId: string
   quantity: number
+  receivedPersonId: string
+  deliveryDate: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type DeliveryReceiptUpdateWithoutDeliveryPersonInput = {
+export type DeliveryReceiptUpdateWithoutReceivedPersonInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  item?: Prisma.ItemUpdateOneRequiredWithoutDeliveriesNestedInput
+  workLocation?: Prisma.WorkLocationUpdateOneRequiredWithoutDeliveriesNestedInput
+  deliveryPerson?: Prisma.UserUpdateOneRequiredWithoutDeliveredDeliveriesNestedInput
+}
+
+export type DeliveryReceiptUncheckedUpdateWithoutReceivedPersonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryReceiptUpdateWithoutDeliveryPersonInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  item?: Prisma.ItemUpdateOneRequiredWithoutDeliveriesNestedInput
+  workLocation?: Prisma.WorkLocationUpdateOneRequiredWithoutDeliveriesNestedInput
+  receivedPerson?: Prisma.UserUpdateOneRequiredWithoutReceivedDeliveriesNestedInput
 }
 
 export type DeliveryReceiptUncheckedUpdateWithoutDeliveryPersonInput = {
@@ -535,6 +909,8 @@ export type DeliveryReceiptUncheckedUpdateWithoutDeliveryPersonInput = {
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -544,6 +920,96 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonInput = {
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
   workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryReceiptCreateManyItemInput = {
+  id: string
+  workLocationId: string
+  quantity: number
+  receivedPersonId: string
+  deliveryPersonId: string
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DeliveryReceiptUpdateWithoutItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workLocation?: Prisma.WorkLocationUpdateOneRequiredWithoutDeliveriesNestedInput
+  receivedPerson?: Prisma.UserUpdateOneRequiredWithoutReceivedDeliveriesNestedInput
+  deliveryPerson?: Prisma.UserUpdateOneRequiredWithoutDeliveredDeliveriesNestedInput
+}
+
+export type DeliveryReceiptUncheckedUpdateWithoutItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryReceiptUncheckedUpdateManyWithoutItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workLocationId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryReceiptCreateManyWorkLocationInput = {
+  id: string
+  itemId: string
+  quantity: number
+  receivedPersonId: string
+  deliveryPersonId: string
+  deliveryDate: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DeliveryReceiptUpdateWithoutWorkLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  item?: Prisma.ItemUpdateOneRequiredWithoutDeliveriesNestedInput
+  receivedPerson?: Prisma.UserUpdateOneRequiredWithoutReceivedDeliveriesNestedInput
+  deliveryPerson?: Prisma.UserUpdateOneRequiredWithoutDeliveredDeliveriesNestedInput
+}
+
+export type DeliveryReceiptUncheckedUpdateWithoutWorkLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  receivedPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryDate?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -555,9 +1021,14 @@ export type DeliveryReceiptSelect<ExtArgs extends runtime.Types.Extensions.Inter
   itemId?: boolean
   workLocationId?: boolean
   quantity?: boolean
+  receivedPersonId?: boolean
   deliveryPersonId?: boolean
+  deliveryDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
+  workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  receivedPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   deliveryPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deliveryReceipt"]>
 
@@ -566,9 +1037,14 @@ export type DeliveryReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   itemId?: boolean
   workLocationId?: boolean
   quantity?: boolean
+  receivedPersonId?: boolean
   deliveryPersonId?: boolean
+  deliveryDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
+  workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  receivedPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   deliveryPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deliveryReceipt"]>
 
@@ -577,9 +1053,14 @@ export type DeliveryReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   itemId?: boolean
   workLocationId?: boolean
   quantity?: boolean
+  receivedPersonId?: boolean
   deliveryPersonId?: boolean
+  deliveryDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
+  workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  receivedPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   deliveryPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deliveryReceipt"]>
 
@@ -588,25 +1069,39 @@ export type DeliveryReceiptSelectScalar = {
   itemId?: boolean
   workLocationId?: boolean
   quantity?: boolean
+  receivedPersonId?: boolean
   deliveryPersonId?: boolean
+  deliveryDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DeliveryReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "workLocationId" | "quantity" | "deliveryPersonId" | "createdAt" | "updatedAt", ExtArgs["result"]["deliveryReceipt"]>
+export type DeliveryReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "itemId" | "workLocationId" | "quantity" | "receivedPersonId" | "deliveryPersonId" | "deliveryDate" | "createdAt" | "updatedAt", ExtArgs["result"]["deliveryReceipt"]>
 export type DeliveryReceiptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
+  workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  receivedPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   deliveryPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DeliveryReceiptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
+  workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  receivedPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   deliveryPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DeliveryReceiptIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
+  workLocation?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  receivedPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   deliveryPerson?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $DeliveryReceiptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DeliveryReceipt"
   objects: {
+    item: Prisma.$ItemPayload<ExtArgs>
+    workLocation: Prisma.$WorkLocationPayload<ExtArgs>
+    receivedPerson: Prisma.$UserPayload<ExtArgs>
     deliveryPerson: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -614,7 +1109,9 @@ export type $DeliveryReceiptPayload<ExtArgs extends runtime.Types.Extensions.Int
     itemId: string
     workLocationId: string
     quantity: number
+    receivedPersonId: string
     deliveryPersonId: string
+    deliveryDate: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["deliveryReceipt"]>
@@ -1011,6 +1508,9 @@ readonly fields: DeliveryReceiptFieldRefs;
  */
 export interface Prisma__DeliveryReceiptClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  item<T extends Prisma.ItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ItemClient<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  workLocation<T extends Prisma.WorkLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkLocationClient<runtime.Types.Result.GetResult<Prisma.$WorkLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  receivedPerson<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   deliveryPerson<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1045,7 +1545,9 @@ export interface DeliveryReceiptFieldRefs {
   readonly itemId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly workLocationId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly quantity: Prisma.FieldRef<"DeliveryReceipt", 'Int'>
+  readonly receivedPersonId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly deliveryPersonId: Prisma.FieldRef<"DeliveryReceipt", 'String'>
+  readonly deliveryDate: Prisma.FieldRef<"DeliveryReceipt", 'String'>
   readonly createdAt: Prisma.FieldRef<"DeliveryReceipt", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"DeliveryReceipt", 'DateTime'>
 }

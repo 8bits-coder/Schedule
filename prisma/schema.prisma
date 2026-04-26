@@ -18,16 +18,18 @@ enum Role {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  role          Role      @default(USER)
-  sessions      Session[]
-  accounts      Account[]
+  id               String            @id
+  name             String
+  email            String
+  emailVerified    Boolean           @default(false)
+  image            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  role             Role              @default(USER)
+  sessions         Session[]
+  accounts         Account[]
+  receivedDeliveries   DeliveryReceipt[] @relation("ReceivedPerson")
+  deliveredDeliveries  DeliveryReceipt[] @relation("DeliveryPerson")
 
   @@unique([email])
   @@map("user")
@@ -79,4 +81,38 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Item {
+  id          String   @id
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("item")
+}
+
+model WorkLocation {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("workLocation")
+}
+
+model DeliveryReceipt {
+  id               String   @id
+  itemId           String
+  workLocationId   String
+  quantity         Int
+  receivedPersonId String
+  receivedPerson   User     @relation("ReceivedPerson", fields: [receivedPersonId], references: [id], onDelete: Cascade)
+  deliveryPersonId String
+  deliveryPerson   User     @relation("DeliveryPerson", fields: [deliveryPersonId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("deliveryReceipt")
 }

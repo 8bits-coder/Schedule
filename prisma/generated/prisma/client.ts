@@ -61,3 +61,18 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model Item
+ * 
+ */
+export type Item = Prisma.ItemModel
+/**
+ * Model WorkLocation
+ * 
+ */
+export type WorkLocation = Prisma.WorkLocationModel
+/**
+ * Model DeliveryReceipt
+ * 
+ */
+export type DeliveryReceipt = Prisma.DeliveryReceiptModel

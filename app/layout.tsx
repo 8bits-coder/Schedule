@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Figtree } from "next/font/google";
+import { Geist, Geist_Mono, Figtree, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/components/context/AuthContext";
-import TopBar from "@/components/custom/header/TopBar";
 import AppLayout from "@/components/custom/AppLayout";
 import { GlobalRouterProvider } from "@/lib/router";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-heading",
 });
 
-const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,13 +44,15 @@ export default function RootLayout({
         geistSans.variable,
         geistMono.variable,
         "font-sans",
-        figtree.variable,
+        inter.variable,
         geistMonoHeading.variable,
       )}
     >
       <AuthProvider>
         <body className="min-h-full flex flex-col">
-          <AppLayout>{children}</AppLayout>
+          <AppLayout>
+            <TooltipProvider>{children}</TooltipProvider>
+          </AppLayout>
           <Toaster position="top-right" richColors />
         </body>
         <GlobalRouterProvider />

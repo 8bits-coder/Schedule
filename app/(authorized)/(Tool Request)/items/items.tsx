@@ -18,7 +18,7 @@ const ShowAllItems = async () => {
           >
             <strong className="text-lg text-gray-900">{item.name}</strong>
             <p className="text-gray-600 mt-1">{item.description}</p>
-            <Button variant="outline" size="sm" className="mt-2" asChild>
+            <Button variant="outline" size="sm" className="mt-2">
               <Link href={`/items/edit/${item.id}`}>Edit Item</Link>
             </Button>
           </div>

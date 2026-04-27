@@ -21,7 +21,7 @@ const ShowAllLocations = async () => {
             className="p-4 bg-white rounded-lg shadow border-l-4 border-blue-500 space-x-2"
           >
             <strong className="text-lg text-gray-900">{location.name}</strong>
-            <Button variant="outline" size="sm" className="mt-2" asChild>
+            <Button variant="outline" size="sm" className="mt-2">
               <Link href={`/locations/edit/${location.id}`}>Edit Location</Link>
             </Button>
           </div>

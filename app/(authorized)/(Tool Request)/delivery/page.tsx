@@ -97,7 +97,7 @@ export default function DeliveryPage() {
         <Select
           name="itemId"
           onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, itemId: value }))
+            setFormData((prev) => ({ ...prev, itemId: value || "" }))
           }
           value={formData.itemId}
           required
@@ -129,7 +129,7 @@ export default function DeliveryPage() {
         <Select
           name="workLocationId"
           onValueChange={(value) => {
-            setFormData((prev) => ({ ...prev, workLocationId: value }));
+            setFormData((prev) => ({ ...prev, workLocationId: value || "" }));
           }}
           value={formData.workLocationId}
           required
@@ -161,7 +161,7 @@ export default function DeliveryPage() {
         <Select
           name="receivedPersonId"
           onValueChange={(value) => {
-            setFormData((prev) => ({ ...prev, receivedPersonId: value }));
+            setFormData((prev) => ({ ...prev, receivedPersonId: value || "" }));
           }}
           value={formData.receivedPersonId}
           required

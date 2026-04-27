@@ -108,13 +108,13 @@ model DeliveryReceipt {
   id                  String       @id
   itemId              String
   item                Item         @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  itemSerialNumber    String?
+  itemSerialNumber    String       @default("N/A")
   workLocationId      String
   workLocation        WorkLocation @relation(fields: [workLocationId], references: [id], onDelete: Cascade)
   quantity            Int
   receivedPersonId    String
   receivedPerson      User         @relation("ReceivedPerson", fields: [receivedPersonId], references: [id], onDelete: Cascade)
-  receivedPersonTitle String?      @default("RCI")
+  receivedPersonTitle String       @default("RCI")
   deliveryPersonId    String
   deliveryPerson      User         @relation("DeliveryPerson", fields: [deliveryPersonId], references: [id], onDelete: Cascade)
   deliveryDate        String

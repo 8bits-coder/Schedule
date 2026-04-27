@@ -17,9 +17,11 @@ export async function AddDeliveryReceipt(formData: FormData) {
     data: {
       id: crypto.randomUUID(),
       itemId: formData.get("itemId") as string,
+      itemSerialNumber: formData.get("itemSerialNumber") as string,
       workLocationId: formData.get("workLocationId") as string,
       quantity: parseInt(formData.get("quantity") as string),
       receivedPersonId: formData.get("receivedPersonId") as string,
+      receivedPersonTitle: formData.get("receivedPersonTitle") as string,
       deliveryPersonId: user.id,
       deliveryDate: formData.get("deliveryDate") as string,
     },

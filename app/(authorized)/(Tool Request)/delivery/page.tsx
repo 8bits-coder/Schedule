@@ -14,14 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-interface DeliveryFormData {
-  itemId: string;
-  workLocationId: string;
-  quantity: number;
-  receivedPersonId: string;
-  deliveryDate: string;
-}
+import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 
 export default function DeliveryPage() {
   const router = useRouter();
@@ -33,10 +26,15 @@ export default function DeliveryPage() {
   const [receivedPersonId, setReceivedPersonId] = useState<
     { id: string; name: string }[]
   >([]);
-  const [formData, setFormData] = useState<DeliveryFormData>({
+  const [formData, setFormData] = useState<
+    Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt">
+  >({
     itemId: "",
+    itemSerialNumber: "",
+    deliveryPersonId: "",
+    receivedPersonTitle: "",
     workLocationId: "",
-    quantity: 0,
+    quantity: 1,
     receivedPersonId: "",
     deliveryDate: "",
   });
@@ -74,8 +72,11 @@ export default function DeliveryPage() {
       if (response) {
         setFormData({
           itemId: "",
+          itemSerialNumber: "",
+          receivedPersonTitle: "",
+          deliveryPersonId: "",
           workLocationId: "",
-          quantity: 0,
+          quantity: 1,
           receivedPersonId: "",
           deliveryDate: "",
         });
@@ -115,6 +116,15 @@ export default function DeliveryPage() {
             </SelectGroup>
           </SelectContent>
         </Select>
+
+        <Input
+          type="text"
+          placeholder="Serial Number"
+          name="itemSerialNumber"
+          value={formData.itemSerialNumber}
+          onChange={handleChange}
+          required
+        />
 
         <Select
           name="workLocationId"
@@ -170,6 +180,15 @@ export default function DeliveryPage() {
             </SelectGroup>
           </SelectContent>
         </Select>
+
+        <Input
+          type="text"
+          name="receivedPersonTitle"
+          placeholder="Received Person Title"
+          value={formData.receivedPersonTitle}
+          onChange={handleChange}
+          required
+        />
 
         <Input
           type="date"

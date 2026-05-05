@@ -52,6 +52,7 @@ import {
   scheduleKey,
   toDateStr,
 } from "./dateHelpers";
+import { toast } from "sonner";
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -163,7 +164,13 @@ export default function WeekSchedule({
       [scheduleKey(editing.empId, editing.dateStr)]: form,
     }));
     setOpen(false);
-    await updateSchedule(editing.empId, editing.dateStr, form);
+    await updateSchedule(editing.empId, editing.dateStr, form)
+      .then(() => {
+        toast.success("Schedule updated successfully");
+      })
+      .catch((error) => {
+        toast.error("Error updating schedule:", error);
+      });
   };
 
   const deleteEntry = async (empId: string, dateStr: string) => {

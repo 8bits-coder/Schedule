@@ -8,7 +8,7 @@ export async function updateSchedule(
   dateStr: string,
   shiftEntry: ShiftEntry,
 ) {
-  await prisma.shift.upsert({
+  const data = await prisma.shift.upsert({
     where: {
       userId_shiftDate: {
         userId: empId,
@@ -32,6 +32,10 @@ export async function updateSchedule(
       notes: shiftEntry.notes,
     },
   });
+  if (!data) {
+    throw new Error("Failed to update schedule");
+  }
+  return true;
 }
 
 export async function deleteSchedule(empId: string, dateStr: string) {

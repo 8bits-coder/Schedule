@@ -28,22 +28,41 @@ enum WeekDay {
 }
 
 model User {
-  id                  String            @id
+  id                  String              @id
   name                String
   email               String
-  emailVerified       Boolean           @default(false)
+  emailVerified       Boolean             @default(false)
   image               String?
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  role                Role              @default(USER)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  role                Role                @default(USER)
   sessions            Session[]
   accounts            Account[]
-  receivedDeliveries  DeliveryReceipt[] @relation("ReceivedPerson")
-  deliveredDeliveries DeliveryReceipt[] @relation("DeliveryPerson")
+  receivedDeliveries  DeliveryReceipt[]   @relation("ReceivedPerson")
+  deliveredDeliveries DeliveryReceipt[]   @relation("DeliveryPerson")
   shifts              Shift[]
+  jobDetails          EmployeeJobDetails?
 
   @@unique([email])
   @@map("user")
+}
+
+model EmployeeJobDetails {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rdo1       WeekDay
+  rdo2       WeekDay
+  passNumber String
+  startTime  String
+  endTime    String
+  title      String
+  jobNumber  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+  @@map("employeeJobInfo")
 }
 
 model Session {
@@ -152,12 +171,12 @@ model Shift {
   notes        String
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  employeeId   String
-  employee     User         @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   shiftBadgeId String?
   shiftBadge   ShiftBadge?  @relation(fields: [shiftBadgeId], references: [id], onDelete: SetNull)
 
-  @@unique([employeeId, shiftDate])
+  @@unique([userId, shiftDate])
   @@map("shifts")
 }
 

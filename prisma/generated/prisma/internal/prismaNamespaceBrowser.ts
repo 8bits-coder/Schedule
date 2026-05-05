@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  EmployeeJobDetails: 'EmployeeJobDetails',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -90,6 +91,23 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const EmployeeJobDetailsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  rdo1: 'rdo1',
+  rdo2: 'rdo2',
+  passNumber: 'passNumber',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  title: 'title',
+  jobNumber: 'jobNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmployeeJobDetailsScalarFieldEnum = (typeof EmployeeJobDetailsScalarFieldEnum)[keyof typeof EmployeeJobDetailsScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -183,7 +201,7 @@ export const ShiftScalarFieldEnum = {
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  employeeId: 'employeeId',
+  userId: 'userId',
   shiftBadgeId: 'shiftBadgeId'
 } as const
 

@@ -34,7 +34,7 @@ export type ShiftMinAggregateOutputType = {
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  employeeId: string | null
+  userId: string | null
   shiftBadgeId: string | null
 }
 
@@ -48,7 +48,7 @@ export type ShiftMaxAggregateOutputType = {
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  employeeId: string | null
+  userId: string | null
   shiftBadgeId: string | null
 }
 
@@ -62,7 +62,7 @@ export type ShiftCountAggregateOutputType = {
   notes: number
   createdAt: number
   updatedAt: number
-  employeeId: number
+  userId: number
   shiftBadgeId: number
   _all: number
 }
@@ -78,7 +78,7 @@ export type ShiftMinAggregateInputType = {
   notes?: true
   createdAt?: true
   updatedAt?: true
-  employeeId?: true
+  userId?: true
   shiftBadgeId?: true
 }
 
@@ -92,7 +92,7 @@ export type ShiftMaxAggregateInputType = {
   notes?: true
   createdAt?: true
   updatedAt?: true
-  employeeId?: true
+  userId?: true
   shiftBadgeId?: true
 }
 
@@ -106,7 +106,7 @@ export type ShiftCountAggregateInputType = {
   notes?: true
   createdAt?: true
   updatedAt?: true
-  employeeId?: true
+  userId?: true
   shiftBadgeId?: true
   _all?: true
 }
@@ -193,7 +193,7 @@ export type ShiftGroupByOutputType = {
   notes: string
   createdAt: Date
   updatedAt: Date
-  employeeId: string
+  userId: string
   shiftBadgeId: string | null
   _count: ShiftCountAggregateOutputType | null
   _min: ShiftMinAggregateOutputType | null
@@ -228,10 +228,10 @@ export type ShiftWhereInput = {
   notes?: Prisma.StringFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
-  employeeId?: Prisma.StringFilter<"Shift"> | string
+  userId?: Prisma.StringFilter<"Shift"> | string
   shiftBadgeId?: Prisma.StringNullableFilter<"Shift"> | string | null
   location?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
-  employee?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shiftBadge?: Prisma.XOR<Prisma.ShiftBadgeNullableScalarRelationFilter, Prisma.ShiftBadgeWhereInput> | null
 }
 
@@ -245,16 +245,16 @@ export type ShiftOrderByWithRelationInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   shiftBadgeId?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.WorkLocationOrderByWithRelationInput
-  employee?: Prisma.UserOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
   shiftBadge?: Prisma.ShiftBadgeOrderByWithRelationInput
 }
 
 export type ShiftWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  employeeId_shiftDate?: Prisma.ShiftEmployeeIdShiftDateCompoundUniqueInput
+  userId_shiftDate?: Prisma.ShiftUserIdShiftDateCompoundUniqueInput
   AND?: Prisma.ShiftWhereInput | Prisma.ShiftWhereInput[]
   OR?: Prisma.ShiftWhereInput[]
   NOT?: Prisma.ShiftWhereInput | Prisma.ShiftWhereInput[]
@@ -266,12 +266,12 @@ export type ShiftWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
-  employeeId?: Prisma.StringFilter<"Shift"> | string
+  userId?: Prisma.StringFilter<"Shift"> | string
   shiftBadgeId?: Prisma.StringNullableFilter<"Shift"> | string | null
   location?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
-  employee?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shiftBadge?: Prisma.XOR<Prisma.ShiftBadgeNullableScalarRelationFilter, Prisma.ShiftBadgeWhereInput> | null
-}, "id" | "employeeId_shiftDate">
+}, "id" | "userId_shiftDate">
 
 export type ShiftOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -283,7 +283,7 @@ export type ShiftOrderByWithAggregationInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   shiftBadgeId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ShiftCountOrderByAggregateInput
   _max?: Prisma.ShiftMaxOrderByAggregateInput
@@ -303,7 +303,7 @@ export type ShiftScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringWithAggregatesFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Shift"> | Date | string
-  employeeId?: Prisma.StringWithAggregatesFilter<"Shift"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Shift"> | string
   shiftBadgeId?: Prisma.StringNullableWithAggregatesFilter<"Shift"> | string | null
 }
 
@@ -317,7 +317,7 @@ export type ShiftCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
-  employee: Prisma.UserCreateNestedOneWithoutShiftsInput
+  user: Prisma.UserCreateNestedOneWithoutShiftsInput
   shiftBadge?: Prisma.ShiftBadgeCreateNestedOneWithoutShiftInput
 }
 
@@ -331,7 +331,7 @@ export type ShiftUncheckedCreateInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeId: string
+  userId: string
   shiftBadgeId?: string | null
 }
 
@@ -345,7 +345,7 @@ export type ShiftUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
-  employee?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
   shiftBadge?: Prisma.ShiftBadgeUpdateOneWithoutShiftNestedInput
 }
 
@@ -359,7 +359,7 @@ export type ShiftUncheckedUpdateInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   shiftBadgeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -373,7 +373,7 @@ export type ShiftCreateManyInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeId: string
+  userId: string
   shiftBadgeId?: string | null
 }
 
@@ -398,7 +398,7 @@ export type ShiftUncheckedUpdateManyInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   shiftBadgeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -412,8 +412,8 @@ export type ShiftOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ShiftEmployeeIdShiftDateCompoundUniqueInput = {
-  employeeId: string
+export type ShiftUserIdShiftDateCompoundUniqueInput = {
+  userId: string
   shiftDate: Date | string
 }
 
@@ -427,7 +427,7 @@ export type ShiftCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   shiftBadgeId?: Prisma.SortOrder
 }
 
@@ -441,7 +441,7 @@ export type ShiftMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   shiftBadgeId?: Prisma.SortOrder
 }
 
@@ -455,49 +455,49 @@ export type ShiftMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   shiftBadgeId?: Prisma.SortOrder
 }
 
-export type ShiftCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.ShiftCreateWithoutEmployeeInput, Prisma.ShiftUncheckedCreateWithoutEmployeeInput> | Prisma.ShiftCreateWithoutEmployeeInput[] | Prisma.ShiftUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutEmployeeInput | Prisma.ShiftCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.ShiftCreateManyEmployeeInputEnvelope
+export type ShiftCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ShiftCreateWithoutUserInput, Prisma.ShiftUncheckedCreateWithoutUserInput> | Prisma.ShiftCreateWithoutUserInput[] | Prisma.ShiftUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutUserInput | Prisma.ShiftCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ShiftCreateManyUserInputEnvelope
   connect?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
 }
 
-export type ShiftUncheckedCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.ShiftCreateWithoutEmployeeInput, Prisma.ShiftUncheckedCreateWithoutEmployeeInput> | Prisma.ShiftCreateWithoutEmployeeInput[] | Prisma.ShiftUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutEmployeeInput | Prisma.ShiftCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.ShiftCreateManyEmployeeInputEnvelope
+export type ShiftUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ShiftCreateWithoutUserInput, Prisma.ShiftUncheckedCreateWithoutUserInput> | Prisma.ShiftCreateWithoutUserInput[] | Prisma.ShiftUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutUserInput | Prisma.ShiftCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ShiftCreateManyUserInputEnvelope
   connect?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
 }
 
-export type ShiftUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.ShiftCreateWithoutEmployeeInput, Prisma.ShiftUncheckedCreateWithoutEmployeeInput> | Prisma.ShiftCreateWithoutEmployeeInput[] | Prisma.ShiftUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutEmployeeInput | Prisma.ShiftCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.ShiftUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.ShiftUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.ShiftCreateManyEmployeeInputEnvelope
+export type ShiftUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ShiftCreateWithoutUserInput, Prisma.ShiftUncheckedCreateWithoutUserInput> | Prisma.ShiftCreateWithoutUserInput[] | Prisma.ShiftUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutUserInput | Prisma.ShiftCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ShiftUpsertWithWhereUniqueWithoutUserInput | Prisma.ShiftUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ShiftCreateManyUserInputEnvelope
   set?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
   disconnect?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
   delete?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
   connect?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
-  update?: Prisma.ShiftUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.ShiftUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.ShiftUpdateManyWithWhereWithoutEmployeeInput | Prisma.ShiftUpdateManyWithWhereWithoutEmployeeInput[]
+  update?: Prisma.ShiftUpdateWithWhereUniqueWithoutUserInput | Prisma.ShiftUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ShiftUpdateManyWithWhereWithoutUserInput | Prisma.ShiftUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.ShiftScalarWhereInput | Prisma.ShiftScalarWhereInput[]
 }
 
-export type ShiftUncheckedUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.ShiftCreateWithoutEmployeeInput, Prisma.ShiftUncheckedCreateWithoutEmployeeInput> | Prisma.ShiftCreateWithoutEmployeeInput[] | Prisma.ShiftUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutEmployeeInput | Prisma.ShiftCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.ShiftUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.ShiftUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.ShiftCreateManyEmployeeInputEnvelope
+export type ShiftUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ShiftCreateWithoutUserInput, Prisma.ShiftUncheckedCreateWithoutUserInput> | Prisma.ShiftCreateWithoutUserInput[] | Prisma.ShiftUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShiftCreateOrConnectWithoutUserInput | Prisma.ShiftCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ShiftUpsertWithWhereUniqueWithoutUserInput | Prisma.ShiftUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ShiftCreateManyUserInputEnvelope
   set?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
   disconnect?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
   delete?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
   connect?: Prisma.ShiftWhereUniqueInput | Prisma.ShiftWhereUniqueInput[]
-  update?: Prisma.ShiftUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.ShiftUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.ShiftUpdateManyWithWhereWithoutEmployeeInput | Prisma.ShiftUpdateManyWithWhereWithoutEmployeeInput[]
+  update?: Prisma.ShiftUpdateWithWhereUniqueWithoutUserInput | Prisma.ShiftUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ShiftUpdateManyWithWhereWithoutUserInput | Prisma.ShiftUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.ShiftScalarWhereInput | Prisma.ShiftScalarWhereInput[]
 }
 
@@ -589,7 +589,7 @@ export type ShiftUncheckedUpdateManyWithoutShiftBadgeNestedInput = {
   deleteMany?: Prisma.ShiftScalarWhereInput | Prisma.ShiftScalarWhereInput[]
 }
 
-export type ShiftCreateWithoutEmployeeInput = {
+export type ShiftCreateWithoutUserInput = {
   id?: string
   shiftDate: Date | string
   shiftType: $Enums.ShiftType
@@ -602,7 +602,7 @@ export type ShiftCreateWithoutEmployeeInput = {
   shiftBadge?: Prisma.ShiftBadgeCreateNestedOneWithoutShiftInput
 }
 
-export type ShiftUncheckedCreateWithoutEmployeeInput = {
+export type ShiftUncheckedCreateWithoutUserInput = {
   id?: string
   shiftDate: Date | string
   shiftType: $Enums.ShiftType
@@ -615,30 +615,30 @@ export type ShiftUncheckedCreateWithoutEmployeeInput = {
   shiftBadgeId?: string | null
 }
 
-export type ShiftCreateOrConnectWithoutEmployeeInput = {
+export type ShiftCreateOrConnectWithoutUserInput = {
   where: Prisma.ShiftWhereUniqueInput
-  create: Prisma.XOR<Prisma.ShiftCreateWithoutEmployeeInput, Prisma.ShiftUncheckedCreateWithoutEmployeeInput>
+  create: Prisma.XOR<Prisma.ShiftCreateWithoutUserInput, Prisma.ShiftUncheckedCreateWithoutUserInput>
 }
 
-export type ShiftCreateManyEmployeeInputEnvelope = {
-  data: Prisma.ShiftCreateManyEmployeeInput | Prisma.ShiftCreateManyEmployeeInput[]
+export type ShiftCreateManyUserInputEnvelope = {
+  data: Prisma.ShiftCreateManyUserInput | Prisma.ShiftCreateManyUserInput[]
   skipDuplicates?: boolean
 }
 
-export type ShiftUpsertWithWhereUniqueWithoutEmployeeInput = {
+export type ShiftUpsertWithWhereUniqueWithoutUserInput = {
   where: Prisma.ShiftWhereUniqueInput
-  update: Prisma.XOR<Prisma.ShiftUpdateWithoutEmployeeInput, Prisma.ShiftUncheckedUpdateWithoutEmployeeInput>
-  create: Prisma.XOR<Prisma.ShiftCreateWithoutEmployeeInput, Prisma.ShiftUncheckedCreateWithoutEmployeeInput>
+  update: Prisma.XOR<Prisma.ShiftUpdateWithoutUserInput, Prisma.ShiftUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ShiftCreateWithoutUserInput, Prisma.ShiftUncheckedCreateWithoutUserInput>
 }
 
-export type ShiftUpdateWithWhereUniqueWithoutEmployeeInput = {
+export type ShiftUpdateWithWhereUniqueWithoutUserInput = {
   where: Prisma.ShiftWhereUniqueInput
-  data: Prisma.XOR<Prisma.ShiftUpdateWithoutEmployeeInput, Prisma.ShiftUncheckedUpdateWithoutEmployeeInput>
+  data: Prisma.XOR<Prisma.ShiftUpdateWithoutUserInput, Prisma.ShiftUncheckedUpdateWithoutUserInput>
 }
 
-export type ShiftUpdateManyWithWhereWithoutEmployeeInput = {
+export type ShiftUpdateManyWithWhereWithoutUserInput = {
   where: Prisma.ShiftScalarWhereInput
-  data: Prisma.XOR<Prisma.ShiftUpdateManyMutationInput, Prisma.ShiftUncheckedUpdateManyWithoutEmployeeInput>
+  data: Prisma.XOR<Prisma.ShiftUpdateManyMutationInput, Prisma.ShiftUncheckedUpdateManyWithoutUserInput>
 }
 
 export type ShiftScalarWhereInput = {
@@ -654,7 +654,7 @@ export type ShiftScalarWhereInput = {
   notes?: Prisma.StringFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
-  employeeId?: Prisma.StringFilter<"Shift"> | string
+  userId?: Prisma.StringFilter<"Shift"> | string
   shiftBadgeId?: Prisma.StringNullableFilter<"Shift"> | string | null
 }
 
@@ -667,7 +667,7 @@ export type ShiftCreateWithoutLocationInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employee: Prisma.UserCreateNestedOneWithoutShiftsInput
+  user: Prisma.UserCreateNestedOneWithoutShiftsInput
   shiftBadge?: Prisma.ShiftBadgeCreateNestedOneWithoutShiftInput
 }
 
@@ -680,7 +680,7 @@ export type ShiftUncheckedCreateWithoutLocationInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeId: string
+  userId: string
   shiftBadgeId?: string | null
 }
 
@@ -720,7 +720,7 @@ export type ShiftCreateWithoutShiftBadgeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
-  employee: Prisma.UserCreateNestedOneWithoutShiftsInput
+  user: Prisma.UserCreateNestedOneWithoutShiftsInput
 }
 
 export type ShiftUncheckedCreateWithoutShiftBadgeInput = {
@@ -733,7 +733,7 @@ export type ShiftUncheckedCreateWithoutShiftBadgeInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeId: string
+  userId: string
 }
 
 export type ShiftCreateOrConnectWithoutShiftBadgeInput = {
@@ -762,7 +762,7 @@ export type ShiftUpdateManyWithWhereWithoutShiftBadgeInput = {
   data: Prisma.XOR<Prisma.ShiftUpdateManyMutationInput, Prisma.ShiftUncheckedUpdateManyWithoutShiftBadgeInput>
 }
 
-export type ShiftCreateManyEmployeeInput = {
+export type ShiftCreateManyUserInput = {
   id?: string
   shiftDate: Date | string
   shiftType: $Enums.ShiftType
@@ -775,7 +775,7 @@ export type ShiftCreateManyEmployeeInput = {
   shiftBadgeId?: string | null
 }
 
-export type ShiftUpdateWithoutEmployeeInput = {
+export type ShiftUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   shiftDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
@@ -788,7 +788,7 @@ export type ShiftUpdateWithoutEmployeeInput = {
   shiftBadge?: Prisma.ShiftBadgeUpdateOneWithoutShiftNestedInput
 }
 
-export type ShiftUncheckedUpdateWithoutEmployeeInput = {
+export type ShiftUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   shiftDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
@@ -801,7 +801,7 @@ export type ShiftUncheckedUpdateWithoutEmployeeInput = {
   shiftBadgeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ShiftUncheckedUpdateManyWithoutEmployeeInput = {
+export type ShiftUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   shiftDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
@@ -823,7 +823,7 @@ export type ShiftCreateManyLocationInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeId: string
+  userId: string
   shiftBadgeId?: string | null
 }
 
@@ -836,7 +836,7 @@ export type ShiftUpdateWithoutLocationInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
   shiftBadge?: Prisma.ShiftBadgeUpdateOneWithoutShiftNestedInput
 }
 
@@ -849,7 +849,7 @@ export type ShiftUncheckedUpdateWithoutLocationInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   shiftBadgeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -862,7 +862,7 @@ export type ShiftUncheckedUpdateManyWithoutLocationInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   shiftBadgeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -876,7 +876,7 @@ export type ShiftCreateManyShiftBadgeInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeId: string
+  userId: string
 }
 
 export type ShiftUpdateWithoutShiftBadgeInput = {
@@ -889,7 +889,7 @@ export type ShiftUpdateWithoutShiftBadgeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
-  employee?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
 }
 
 export type ShiftUncheckedUpdateWithoutShiftBadgeInput = {
@@ -902,7 +902,7 @@ export type ShiftUncheckedUpdateWithoutShiftBadgeInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ShiftUncheckedUpdateManyWithoutShiftBadgeInput = {
@@ -915,7 +915,7 @@ export type ShiftUncheckedUpdateManyWithoutShiftBadgeInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -930,10 +930,10 @@ export type ShiftSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeId?: boolean
+  userId?: boolean
   shiftBadgeId?: boolean
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }, ExtArgs["result"]["shift"]>
 
@@ -947,10 +947,10 @@ export type ShiftSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeId?: boolean
+  userId?: boolean
   shiftBadgeId?: boolean
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }, ExtArgs["result"]["shift"]>
 
@@ -964,10 +964,10 @@ export type ShiftSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeId?: boolean
+  userId?: boolean
   shiftBadgeId?: boolean
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }, ExtArgs["result"]["shift"]>
 
@@ -981,24 +981,24 @@ export type ShiftSelectScalar = {
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeId?: boolean
+  userId?: boolean
   shiftBadgeId?: boolean
 }
 
-export type ShiftOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "shiftDate" | "shiftType" | "startTime" | "endTime" | "locationId" | "notes" | "createdAt" | "updatedAt" | "employeeId" | "shiftBadgeId", ExtArgs["result"]["shift"]>
+export type ShiftOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "shiftDate" | "shiftType" | "startTime" | "endTime" | "locationId" | "notes" | "createdAt" | "updatedAt" | "userId" | "shiftBadgeId", ExtArgs["result"]["shift"]>
 export type ShiftInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }
 export type ShiftIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }
 export type ShiftIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }
 
@@ -1006,7 +1006,7 @@ export type $ShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Shift"
   objects: {
     location: Prisma.$WorkLocationPayload<ExtArgs>
-    employee: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
     shiftBadge: Prisma.$ShiftBadgePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1019,7 +1019,7 @@ export type $ShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     notes: string
     createdAt: Date
     updatedAt: Date
-    employeeId: string
+    userId: string
     shiftBadgeId: string | null
   }, ExtArgs["result"]["shift"]>
   composites: {}
@@ -1416,7 +1416,7 @@ readonly fields: ShiftFieldRefs;
 export interface Prisma__ShiftClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   location<T extends Prisma.WorkLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkLocationClient<runtime.Types.Result.GetResult<Prisma.$WorkLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  employee<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   shiftBadge<T extends Prisma.Shift$shiftBadgeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Shift$shiftBadgeArgs<ExtArgs>>): Prisma.Prisma__ShiftBadgeClient<runtime.Types.Result.GetResult<Prisma.$ShiftBadgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1456,7 +1456,7 @@ export interface ShiftFieldRefs {
   readonly notes: Prisma.FieldRef<"Shift", 'String'>
   readonly createdAt: Prisma.FieldRef<"Shift", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Shift", 'DateTime'>
-  readonly employeeId: Prisma.FieldRef<"Shift", 'String'>
+  readonly userId: Prisma.FieldRef<"Shift", 'String'>
   readonly shiftBadgeId: Prisma.FieldRef<"Shift", 'String'>
 }
     

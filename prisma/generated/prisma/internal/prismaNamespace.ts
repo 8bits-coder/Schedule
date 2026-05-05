@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  EmployeeJobDetails: 'EmployeeJobDetails',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "item" | "workLocation" | "deliveryReceipt" | "shift" | "shiftBadge"
+    modelProps: "user" | "employeeJobDetails" | "session" | "account" | "verification" | "item" | "workLocation" | "deliveryReceipt" | "shift" | "shiftBadge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -483,6 +484,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    EmployeeJobDetails: {
+      payload: Prisma.$EmployeeJobDetailsPayload<ExtArgs>
+      fields: Prisma.EmployeeJobDetailsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmployeeJobDetailsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmployeeJobDetailsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>
+        }
+        findFirst: {
+          args: Prisma.EmployeeJobDetailsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmployeeJobDetailsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>
+        }
+        findMany: {
+          args: Prisma.EmployeeJobDetailsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>[]
+        }
+        create: {
+          args: Prisma.EmployeeJobDetailsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>
+        }
+        createMany: {
+          args: Prisma.EmployeeJobDetailsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmployeeJobDetailsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>[]
+        }
+        delete: {
+          args: Prisma.EmployeeJobDetailsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>
+        }
+        update: {
+          args: Prisma.EmployeeJobDetailsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>
+        }
+        deleteMany: {
+          args: Prisma.EmployeeJobDetailsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmployeeJobDetailsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmployeeJobDetailsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>[]
+        }
+        upsert: {
+          args: Prisma.EmployeeJobDetailsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeJobDetailsPayload>
+        }
+        aggregate: {
+          args: Prisma.EmployeeJobDetailsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployeeJobDetails>
+        }
+        groupBy: {
+          args: Prisma.EmployeeJobDetailsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeJobDetailsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmployeeJobDetailsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeJobDetailsCountAggregateOutputType> | number
         }
       }
     }
@@ -1131,6 +1206,23 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const EmployeeJobDetailsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  rdo1: 'rdo1',
+  rdo2: 'rdo2',
+  passNumber: 'passNumber',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  title: 'title',
+  jobNumber: 'jobNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmployeeJobDetailsScalarFieldEnum = (typeof EmployeeJobDetailsScalarFieldEnum)[keyof typeof EmployeeJobDetailsScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -1222,7 +1314,7 @@ export const ShiftScalarFieldEnum = {
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  employeeId: 'employeeId',
+  userId: 'userId',
   shiftBadgeId: 'shiftBadgeId'
 } as const
 
@@ -1314,6 +1406,20 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WeekDay'
+ */
+export type EnumWeekDayFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WeekDay'>
+    
+
+
+/**
+ * Reference to a field of type 'WeekDay[]'
+ */
+export type ListEnumWeekDayFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WeekDay[]'>
     
 
 
@@ -1469,6 +1575,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  employeeJobDetails?: Prisma.EmployeeJobDetailsOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

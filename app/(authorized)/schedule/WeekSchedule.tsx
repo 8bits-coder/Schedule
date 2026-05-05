@@ -156,7 +156,7 @@ export default function WeekSchedule({
     endTime: "",
     locationName: "",
     locationId: "",
-    employeeId: "",
+    userId: "",
     shiftBadgeId: "",
     shiftDate: new Date(),
     notes: "",
@@ -179,10 +179,7 @@ export default function WeekSchedule({
     setSchedule(
       shifts.reduce((acc, schedule) => {
         acc[
-          scheduleKey(
-            schedule.employeeId,
-            toDateStr(new Date(schedule.shiftDate)),
-          )
+          scheduleKey(schedule.userId, toDateStr(new Date(schedule.shiftDate)))
         ] = {
           shiftType: schedule.shiftType,
           startTime: schedule.startTime,
@@ -190,8 +187,8 @@ export default function WeekSchedule({
           locationName: schedule.location ? schedule.location.name : "",
           locationId: schedule.location ? schedule.location.id : "",
           notes: schedule.notes,
-          employeeId: schedule.employeeId,
-          shiftBadgeId: schedule.id,
+          userId: schedule.userId,
+          shiftBadgeId: schedule.shiftBadgeId,
           shiftDate: schedule.shiftDate,
         };
         return acc;
@@ -225,7 +222,7 @@ export default function WeekSchedule({
         notes: "",
         locationName: "",
         locationId: "",
-        employeeId: empId,
+        userId: empId,
         shiftBadgeId: "",
         shiftDate: date,
       },
@@ -433,13 +430,14 @@ export default function WeekSchedule({
                           {emp.name}
                         </div>
                         <div className="text-[10px] text-stone-400">
-                          #{emp.passnumber}
+                          Pass: {emp.jobDetails?.passNumber ?? "N/A"}
                         </div>
                         <div className="text-[10px] text-blue-400">
-                          {emp.startTime} - {emp.endTime}
+                          {emp.jobDetails?.startTime ?? "00:00"} -{" "}
+                          {emp.jobDetails?.endTime ?? "00:00"}
                         </div>
                         <div className="text-[10px] text-stone-400">
-                          Job# {emp.job}
+                          Job# {emp.jobDetails?.jobNumber ?? "N/A"}
                         </div>
                       </div>
                     </div>

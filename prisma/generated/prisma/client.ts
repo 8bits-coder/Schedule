@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model EmployeeJobDetails
+ * 
+ */
+export type EmployeeJobDetails = Prisma.EmployeeJobDetailsModel
+/**
  * Model Session
  * 
  */

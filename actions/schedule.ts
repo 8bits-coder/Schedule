@@ -10,13 +10,13 @@ export async function updateSchedule(
 ) {
   await prisma.shift.upsert({
     where: {
-      employeeId_shiftDate: {
-        employeeId: empId,
+      userId_shiftDate: {
+        userId: empId,
         shiftDate: new Date(dateStr),
       },
     },
     create: {
-      employeeId: empId,
+      userId: empId,
       shiftDate: new Date(dateStr),
       shiftType: shiftEntry.shiftType as ShiftType,
       startTime: shiftEntry.startTime,
@@ -37,8 +37,8 @@ export async function updateSchedule(
 export async function deleteSchedule(empId: string, dateStr: string) {
   await prisma.shift.delete({
     where: {
-      employeeId_shiftDate: {
-        employeeId: empId,
+      userId_shiftDate: {
+        userId: empId,
         shiftDate: new Date(dateStr),
       },
     },
@@ -48,6 +48,9 @@ export async function deleteSchedule(empId: string, dateStr: string) {
 export async function getSchedule() {
   const [employees, shifts, locations] = await Promise.all([
     prisma.user.findMany({
+      include: {
+        jobDetails: true,
+      },
       omit: { createdAt: true, updatedAt: true },
     }),
     prisma.shift.findMany({

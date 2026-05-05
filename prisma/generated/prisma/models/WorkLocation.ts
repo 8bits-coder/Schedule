@@ -258,6 +258,11 @@ export type WorkLocationScalarRelationFilter = {
   isNot?: Prisma.WorkLocationWhereInput
 }
 
+export type WorkLocationNullableScalarRelationFilter = {
+  is?: Prisma.WorkLocationWhereInput | null
+  isNot?: Prisma.WorkLocationWhereInput | null
+}
+
 export type WorkLocationCreateNestedOneWithoutDeliveriesInput = {
   create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutDeliveriesInput, Prisma.WorkLocationUncheckedCreateWithoutDeliveriesInput>
   connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutDeliveriesInput
@@ -278,10 +283,12 @@ export type WorkLocationCreateNestedOneWithoutShiftsInput = {
   connect?: Prisma.WorkLocationWhereUniqueInput
 }
 
-export type WorkLocationUpdateOneRequiredWithoutShiftsNestedInput = {
+export type WorkLocationUpdateOneWithoutShiftsNestedInput = {
   create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftsInput, Prisma.WorkLocationUncheckedCreateWithoutShiftsInput>
   connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutShiftsInput
   upsert?: Prisma.WorkLocationUpsertWithoutShiftsInput
+  disconnect?: Prisma.WorkLocationWhereInput | boolean
+  delete?: Prisma.WorkLocationWhereInput | boolean
   connect?: Prisma.WorkLocationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutShiftsInput, Prisma.WorkLocationUpdateWithoutShiftsInput>, Prisma.WorkLocationUncheckedUpdateWithoutShiftsInput>
 }

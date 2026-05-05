@@ -158,25 +158,27 @@ enum ShiftType {
   Afternoon
   Night
   RDO
+  Vacation
 }
 
 model Shift {
-  id           String       @id @default(uuid())
+  id           String        @id @default(uuid())
   shiftDate    DateTime
   shiftType    ShiftType
   startTime    String
   endTime      String
-  locationId   String
-  location     WorkLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId   String?
+  location     WorkLocation? @relation(fields: [locationId], references: [id], onDelete: Cascade)
   notes        String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   userId       String
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   shiftBadgeId String?
-  shiftBadge   ShiftBadge?  @relation(fields: [shiftBadgeId], references: [id], onDelete: SetNull)
+  shiftBadge   ShiftBadge?   @relation(fields: [shiftBadgeId], references: [id], onDelete: SetNull)
 
   @@unique([userId, shiftDate])
+  @@index([locationId])
   @@map("shifts")
 }
 

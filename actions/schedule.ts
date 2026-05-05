@@ -21,14 +21,14 @@ export async function updateSchedule(
       shiftType: shiftEntry.shiftType as ShiftType,
       startTime: shiftEntry.startTime,
       endTime: shiftEntry.endTime,
-      locationId: shiftEntry.locationId,
+      locationId: shiftEntry.locationId || null,
       notes: shiftEntry.notes,
     },
     update: {
       shiftType: shiftEntry.shiftType as ShiftType,
       startTime: shiftEntry.startTime,
       endTime: shiftEntry.endTime,
-      locationId: shiftEntry.locationId,
+      locationId: shiftEntry.locationId || null,
       notes: shiftEntry.notes,
     },
   });

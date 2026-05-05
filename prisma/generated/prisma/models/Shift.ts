@@ -189,7 +189,7 @@ export type ShiftGroupByOutputType = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId: string | null
   notes: string
   createdAt: Date
   updatedAt: Date
@@ -224,13 +224,13 @@ export type ShiftWhereInput = {
   shiftType?: Prisma.EnumShiftTypeFilter<"Shift"> | $Enums.ShiftType
   startTime?: Prisma.StringFilter<"Shift"> | string
   endTime?: Prisma.StringFilter<"Shift"> | string
-  locationId?: Prisma.StringFilter<"Shift"> | string
+  locationId?: Prisma.StringNullableFilter<"Shift"> | string | null
   notes?: Prisma.StringFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   userId?: Prisma.StringFilter<"Shift"> | string
   shiftBadgeId?: Prisma.StringNullableFilter<"Shift"> | string | null
-  location?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
+  location?: Prisma.XOR<Prisma.WorkLocationNullableScalarRelationFilter, Prisma.WorkLocationWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shiftBadge?: Prisma.XOR<Prisma.ShiftBadgeNullableScalarRelationFilter, Prisma.ShiftBadgeWhereInput> | null
 }
@@ -241,7 +241,7 @@ export type ShiftOrderByWithRelationInput = {
   shiftType?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  locationId?: Prisma.SortOrder
+  locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -262,13 +262,13 @@ export type ShiftWhereUniqueInput = Prisma.AtLeast<{
   shiftType?: Prisma.EnumShiftTypeFilter<"Shift"> | $Enums.ShiftType
   startTime?: Prisma.StringFilter<"Shift"> | string
   endTime?: Prisma.StringFilter<"Shift"> | string
-  locationId?: Prisma.StringFilter<"Shift"> | string
+  locationId?: Prisma.StringNullableFilter<"Shift"> | string | null
   notes?: Prisma.StringFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   userId?: Prisma.StringFilter<"Shift"> | string
   shiftBadgeId?: Prisma.StringNullableFilter<"Shift"> | string | null
-  location?: Prisma.XOR<Prisma.WorkLocationScalarRelationFilter, Prisma.WorkLocationWhereInput>
+  location?: Prisma.XOR<Prisma.WorkLocationNullableScalarRelationFilter, Prisma.WorkLocationWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shiftBadge?: Prisma.XOR<Prisma.ShiftBadgeNullableScalarRelationFilter, Prisma.ShiftBadgeWhereInput> | null
 }, "id" | "userId_shiftDate">
@@ -279,7 +279,7 @@ export type ShiftOrderByWithAggregationInput = {
   shiftType?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  locationId?: Prisma.SortOrder
+  locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -299,7 +299,7 @@ export type ShiftScalarWhereWithAggregatesInput = {
   shiftType?: Prisma.EnumShiftTypeWithAggregatesFilter<"Shift"> | $Enums.ShiftType
   startTime?: Prisma.StringWithAggregatesFilter<"Shift"> | string
   endTime?: Prisma.StringWithAggregatesFilter<"Shift"> | string
-  locationId?: Prisma.StringWithAggregatesFilter<"Shift"> | string
+  locationId?: Prisma.StringNullableWithAggregatesFilter<"Shift"> | string | null
   notes?: Prisma.StringWithAggregatesFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Shift"> | Date | string
@@ -316,7 +316,7 @@ export type ShiftCreateInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
+  location?: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   user: Prisma.UserCreateNestedOneWithoutShiftsInput
   shiftBadge?: Prisma.ShiftBadgeCreateNestedOneWithoutShiftInput
 }
@@ -327,7 +327,7 @@ export type ShiftUncheckedCreateInput = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId?: string | null
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -344,7 +344,7 @@ export type ShiftUpdateInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
+  location?: Prisma.WorkLocationUpdateOneWithoutShiftsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
   shiftBadge?: Prisma.ShiftBadgeUpdateOneWithoutShiftNestedInput
 }
@@ -355,7 +355,7 @@ export type ShiftUncheckedUpdateInput = {
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
   endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -369,7 +369,7 @@ export type ShiftCreateManyInput = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId?: string | null
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -394,7 +394,7 @@ export type ShiftUncheckedUpdateManyInput = {
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
   endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -598,7 +598,7 @@ export type ShiftCreateWithoutUserInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
+  location?: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   shiftBadge?: Prisma.ShiftBadgeCreateNestedOneWithoutShiftInput
 }
 
@@ -608,7 +608,7 @@ export type ShiftUncheckedCreateWithoutUserInput = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId?: string | null
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -650,7 +650,7 @@ export type ShiftScalarWhereInput = {
   shiftType?: Prisma.EnumShiftTypeFilter<"Shift"> | $Enums.ShiftType
   startTime?: Prisma.StringFilter<"Shift"> | string
   endTime?: Prisma.StringFilter<"Shift"> | string
-  locationId?: Prisma.StringFilter<"Shift"> | string
+  locationId?: Prisma.StringNullableFilter<"Shift"> | string | null
   notes?: Prisma.StringFilter<"Shift"> | string
   createdAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Shift"> | Date | string
@@ -719,7 +719,7 @@ export type ShiftCreateWithoutShiftBadgeInput = {
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  location: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
+  location?: Prisma.WorkLocationCreateNestedOneWithoutShiftsInput
   user: Prisma.UserCreateNestedOneWithoutShiftsInput
 }
 
@@ -729,7 +729,7 @@ export type ShiftUncheckedCreateWithoutShiftBadgeInput = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId?: string | null
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -768,7 +768,7 @@ export type ShiftCreateManyUserInput = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId?: string | null
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -784,7 +784,7 @@ export type ShiftUpdateWithoutUserInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
+  location?: Prisma.WorkLocationUpdateOneWithoutShiftsNestedInput
   shiftBadge?: Prisma.ShiftBadgeUpdateOneWithoutShiftNestedInput
 }
 
@@ -794,7 +794,7 @@ export type ShiftUncheckedUpdateWithoutUserInput = {
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
   endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -807,7 +807,7 @@ export type ShiftUncheckedUpdateManyWithoutUserInput = {
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
   endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -872,7 +872,7 @@ export type ShiftCreateManyShiftBadgeInput = {
   shiftType: $Enums.ShiftType
   startTime: string
   endTime: string
-  locationId: string
+  locationId?: string | null
   notes: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -888,7 +888,7 @@ export type ShiftUpdateWithoutShiftBadgeInput = {
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  location?: Prisma.WorkLocationUpdateOneRequiredWithoutShiftsNestedInput
+  location?: Prisma.WorkLocationUpdateOneWithoutShiftsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutShiftsNestedInput
 }
 
@@ -898,7 +898,7 @@ export type ShiftUncheckedUpdateWithoutShiftBadgeInput = {
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
   endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -911,7 +911,7 @@ export type ShiftUncheckedUpdateManyWithoutShiftBadgeInput = {
   shiftType?: Prisma.EnumShiftTypeFieldUpdateOperationsInput | $Enums.ShiftType
   startTime?: Prisma.StringFieldUpdateOperationsInput | string
   endTime?: Prisma.StringFieldUpdateOperationsInput | string
-  locationId?: Prisma.StringFieldUpdateOperationsInput | string
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -932,7 +932,7 @@ export type ShiftSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   userId?: boolean
   shiftBadgeId?: boolean
-  location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.Shift$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }, ExtArgs["result"]["shift"]>
@@ -949,7 +949,7 @@ export type ShiftSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   updatedAt?: boolean
   userId?: boolean
   shiftBadgeId?: boolean
-  location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.Shift$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }, ExtArgs["result"]["shift"]>
@@ -966,7 +966,7 @@ export type ShiftSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   updatedAt?: boolean
   userId?: boolean
   shiftBadgeId?: boolean
-  location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.Shift$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }, ExtArgs["result"]["shift"]>
@@ -987,17 +987,17 @@ export type ShiftSelectScalar = {
 
 export type ShiftOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "shiftDate" | "shiftType" | "startTime" | "endTime" | "locationId" | "notes" | "createdAt" | "updatedAt" | "userId" | "shiftBadgeId", ExtArgs["result"]["shift"]>
 export type ShiftInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.Shift$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }
 export type ShiftIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.Shift$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }
 export type ShiftIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  location?: boolean | Prisma.WorkLocationDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.Shift$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   shiftBadge?: boolean | Prisma.Shift$shiftBadgeArgs<ExtArgs>
 }
@@ -1005,7 +1005,7 @@ export type ShiftIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $ShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Shift"
   objects: {
-    location: Prisma.$WorkLocationPayload<ExtArgs>
+    location: Prisma.$WorkLocationPayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs>
     shiftBadge: Prisma.$ShiftBadgePayload<ExtArgs> | null
   }
@@ -1015,7 +1015,7 @@ export type $ShiftPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     shiftType: $Enums.ShiftType
     startTime: string
     endTime: string
-    locationId: string
+    locationId: string | null
     notes: string
     createdAt: Date
     updatedAt: Date
@@ -1415,7 +1415,7 @@ readonly fields: ShiftFieldRefs;
  */
 export interface Prisma__ShiftClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  location<T extends Prisma.WorkLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkLocationClient<runtime.Types.Result.GetResult<Prisma.$WorkLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  location<T extends Prisma.Shift$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Shift$locationArgs<ExtArgs>>): Prisma.Prisma__WorkLocationClient<runtime.Types.Result.GetResult<Prisma.$WorkLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   shiftBadge<T extends Prisma.Shift$shiftBadgeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Shift$shiftBadgeArgs<ExtArgs>>): Prisma.Prisma__ShiftBadgeClient<runtime.Types.Result.GetResult<Prisma.$ShiftBadgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1856,6 +1856,25 @@ export type ShiftDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Shifts to delete.
    */
   limit?: number
+}
+
+/**
+ * Shift.location
+ */
+export type Shift$locationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkLocation
+   */
+  select?: Prisma.WorkLocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkLocation
+   */
+  omit?: Prisma.WorkLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkLocationInclude<ExtArgs> | null
+  where?: Prisma.WorkLocationWhereInput
 }
 
 /**

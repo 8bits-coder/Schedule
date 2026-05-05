@@ -34,7 +34,8 @@ export const ShiftType = {
   Morning: 'Morning',
   Afternoon: 'Afternoon',
   Night: 'Night',
-  RDO: 'RDO'
+  RDO: 'RDO',
+  Vacation: 'Vacation'
 } as const
 
 export type ShiftType = (typeof ShiftType)[keyof typeof ShiftType]

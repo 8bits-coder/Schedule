@@ -36,12 +36,12 @@ export const shiftTypes = [
     badgeText: "text-slate-700",
   },
   {
-    id: "off",
-    name: "Off",
-    cellBg: "bg-gray-50",
-    cellBorder: "border-gray-200",
-    badgeBg: "bg-gray-100",
-    badgeText: "text-gray-700",
+    id: "rdo",
+    name: "RDO",
+    cellBg: "bg-orange-50",
+    cellBorder: "border-orange-200",
+    badgeBg: "bg-orange-100",
+    badgeText: "text-orange-700",
   },
   {
     id: "vacation",

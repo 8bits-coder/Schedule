@@ -169,7 +169,9 @@ export default function WeekSchedule({
         toast.success("Schedule updated successfully");
       })
       .catch((error) => {
-        toast.error("Error updating schedule:", error);
+        if (error instanceof Error) {
+          toast.error(error.message);
+        }
       });
   };
 

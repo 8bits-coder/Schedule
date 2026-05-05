@@ -42,89 +42,17 @@ import {
   WorkLocation,
 } from "@/actions/schedule";
 import { ShiftEntry, shiftType } from "@/types/shift";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const DAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
-const shiftTypes = [
-  {
-    id: "morning",
-    name: "Morning",
-    cellBg: "bg-blue-50",
-    cellBorder: "border-blue-200",
-    badgeBg: "bg-blue-100",
-    badgeText: "text-blue-700",
-  },
-  {
-    id: "evening",
-    name: "Evening",
-    cellBg: "bg-purple-50",
-    cellBorder: "border-purple-200",
-    badgeBg: "bg-purple-100",
-    badgeText: "text-purple-700",
-  },
-  {
-    id: "night",
-    name: "Night",
-    cellBg: "bg-slate-50",
-    cellBorder: "border-slate-200",
-    badgeBg: "bg-slate-100",
-    badgeText: "text-slate-700",
-  },
-];
-
-// ─── Date helpers ─────────────────────────────────────────────────────────────
-
-function getWeekStart(date: Date): Date {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() - d.getDay());
-  return d;
-}
-
-function getISOWeekNumber(date: Date): number {
-  const d = new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
-  );
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-}
-
-function addDays(date: Date, days: number): Date {
-  const d = new Date(date);
-  d.setDate(d.getDate() + days);
-  return d;
-}
-
-function formatDate(date: Date): string {
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
-
-function isToday(date: Date): boolean {
-  const now = new Date();
-  return (
-    date.getDate() === now.getDate() &&
-    date.getMonth() === now.getMonth() &&
-    date.getFullYear() === now.getFullYear()
-  );
-}
-
-type ScheduleData = Record<string, ShiftEntry>;
-
-const scheduleKey = (empId: string, dateStr: string) => `${empId}::${dateStr}`;
-// const toDateStr = (date: Date) => "";
-const toDateStr = (date: Date) => date.toISOString().slice(0, 10);
+import { DAYS, shiftTypes } from "./constants";
+import {
+  addDays,
+  formatDate,
+  getISOWeekNumber,
+  getWeekStart,
+  isToday,
+  ScheduleData,
+  scheduleKey,
+  toDateStr,
+} from "./dateHelpers";
 
 // ─── Component ────────────────────────────────────────────────────────────────
 

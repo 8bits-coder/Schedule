@@ -10,6 +10,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { AuthUser } from "@/types/session";
 import { push } from "@/lib/router";
+import { Role } from "@/prisma/generated/prisma/enums";
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -18,6 +19,7 @@ interface AuthContextValue {
   isUserPending: boolean;
   isRequestSubmitting: boolean;
   loginError: string | null;
+  isManager: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -25,6 +27,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data, isPending } = authClient.useSession();
   const user: AuthUser | null = data?.user ?? null;
+  const isManager = user?.role === Role.ADMIN;
   const [isRequestSubmitting, setRequestSubmitting] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -84,6 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isUserPending: isPending,
         isRequestSubmitting,
         loginError,
+        isManager,
       }}
     >
       {children}

@@ -33,7 +33,6 @@ import {
   Lock,
 } from "lucide-react";
 import { useAuth } from "@/components/context/AuthContext";
-import { Role } from "@/prisma/generated/prisma/enums";
 import {
   deleteSchedule,
   Employee,
@@ -65,8 +64,7 @@ export default function WeekSchedule({
   shifts: Shift[];
   locations: WorkLocation[];
 }) {
-  const { user } = useAuth();
-  const isManager = user?.role === Role.ADMIN;
+  const { isManager } = useAuth();
 
   const [weekStart, setWeekStart] = useState<Date>(() =>
     getWeekStart(new Date()),

@@ -346,7 +346,7 @@ export type DeliveryReceiptScalarWhereWithAggregatesInput = {
 }
 
 export type DeliveryReceiptCreateInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   quantity: number
   receivedPersonTitle?: string
@@ -360,7 +360,7 @@ export type DeliveryReceiptCreateInput = {
 }
 
 export type DeliveryReceiptUncheckedCreateInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   workLocationId: string
@@ -402,7 +402,7 @@ export type DeliveryReceiptUncheckedUpdateInput = {
 }
 
 export type DeliveryReceiptCreateManyInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   workLocationId: string
@@ -676,7 +676,7 @@ export type IntFieldUpdateOperationsInput = {
 }
 
 export type DeliveryReceiptCreateWithoutReceivedPersonInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   quantity: number
   receivedPersonTitle?: string
@@ -689,7 +689,7 @@ export type DeliveryReceiptCreateWithoutReceivedPersonInput = {
 }
 
 export type DeliveryReceiptUncheckedCreateWithoutReceivedPersonInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   workLocationId: string
@@ -712,7 +712,7 @@ export type DeliveryReceiptCreateManyReceivedPersonInputEnvelope = {
 }
 
 export type DeliveryReceiptCreateWithoutDeliveryPersonInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   quantity: number
   receivedPersonTitle?: string
@@ -725,7 +725,7 @@ export type DeliveryReceiptCreateWithoutDeliveryPersonInput = {
 }
 
 export type DeliveryReceiptUncheckedCreateWithoutDeliveryPersonInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   workLocationId: string
@@ -797,7 +797,7 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutDeliveryPersonInput = {
 }
 
 export type DeliveryReceiptCreateWithoutItemInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   quantity: number
   receivedPersonTitle?: string
@@ -810,7 +810,7 @@ export type DeliveryReceiptCreateWithoutItemInput = {
 }
 
 export type DeliveryReceiptUncheckedCreateWithoutItemInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   workLocationId: string
   quantity: number
@@ -849,7 +849,7 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutItemInput = {
 }
 
 export type DeliveryReceiptCreateWithoutWorkLocationInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   quantity: number
   receivedPersonTitle?: string
@@ -862,7 +862,7 @@ export type DeliveryReceiptCreateWithoutWorkLocationInput = {
 }
 
 export type DeliveryReceiptUncheckedCreateWithoutWorkLocationInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   quantity: number
@@ -901,7 +901,7 @@ export type DeliveryReceiptUpdateManyWithWhereWithoutWorkLocationInput = {
 }
 
 export type DeliveryReceiptCreateManyReceivedPersonInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   workLocationId: string
@@ -914,7 +914,7 @@ export type DeliveryReceiptCreateManyReceivedPersonInput = {
 }
 
 export type DeliveryReceiptCreateManyDeliveryPersonInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   workLocationId: string
@@ -1005,7 +1005,7 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonInput = {
 }
 
 export type DeliveryReceiptCreateManyItemInput = {
-  id: string
+  id?: string
   itemSerialNumber?: string
   workLocationId: string
   quantity: number
@@ -1057,7 +1057,7 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutItemInput = {
 }
 
 export type DeliveryReceiptCreateManyWorkLocationInput = {
-  id: string
+  id?: string
   itemId: string
   itemSerialNumber?: string
   quantity: number

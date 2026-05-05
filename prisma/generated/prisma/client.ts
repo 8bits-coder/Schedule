@@ -76,3 +76,13 @@ export type WorkLocation = Prisma.WorkLocationModel
  * 
  */
 export type DeliveryReceipt = Prisma.DeliveryReceiptModel
+/**
+ * Model Shift
+ * 
+ */
+export type Shift = Prisma.ShiftModel
+/**
+ * Model ShiftBadge
+ * 
+ */
+export type ShiftBadge = Prisma.ShiftBadgeModel

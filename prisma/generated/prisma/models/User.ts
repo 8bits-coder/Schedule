@@ -210,6 +210,7 @@ export type UserWhereInput = {
   accounts?: Prisma.AccountListRelationFilter
   receivedDeliveries?: Prisma.DeliveryReceiptListRelationFilter
   deliveredDeliveries?: Prisma.DeliveryReceiptListRelationFilter
+  shifts?: Prisma.ShiftListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -225,6 +226,7 @@ export type UserOrderByWithRelationInput = {
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   receivedDeliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
   deliveredDeliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
+  shifts?: Prisma.ShiftOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +245,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   accounts?: Prisma.AccountListRelationFilter
   receivedDeliveries?: Prisma.DeliveryReceiptListRelationFilter
   deliveredDeliveries?: Prisma.DeliveryReceiptListRelationFilter
+  shifts?: Prisma.ShiftListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -286,6 +289,7 @@ export type UserCreateInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -301,6 +305,7 @@ export type UserUncheckedCreateInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserUpdateInput = {
@@ -316,6 +321,7 @@ export type UserUpdateInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -331,6 +337,7 @@ export type UserUncheckedUpdateInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -480,6 +487,20 @@ export type UserUpdateOneRequiredWithoutDeliveredDeliveriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDeliveredDeliveriesInput, Prisma.UserUpdateWithoutDeliveredDeliveriesInput>, Prisma.UserUncheckedUpdateWithoutDeliveredDeliveriesInput>
 }
 
+export type UserCreateNestedOneWithoutShiftsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShiftsInput, Prisma.UserUncheckedCreateWithoutShiftsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShiftsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutShiftsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShiftsInput, Prisma.UserUncheckedCreateWithoutShiftsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShiftsInput
+  upsert?: Prisma.UserUpsertWithoutShiftsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutShiftsInput, Prisma.UserUpdateWithoutShiftsInput>, Prisma.UserUncheckedUpdateWithoutShiftsInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -492,6 +513,7 @@ export type UserCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -506,6 +528,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -536,6 +559,7 @@ export type UserUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -550,6 +574,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -564,6 +589,7 @@ export type UserCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -578,6 +604,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -608,6 +635,7 @@ export type UserUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -622,6 +650,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserCreateWithoutReceivedDeliveriesInput = {
@@ -636,6 +665,7 @@ export type UserCreateWithoutReceivedDeliveriesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserUncheckedCreateWithoutReceivedDeliveriesInput = {
@@ -650,6 +680,7 @@ export type UserUncheckedCreateWithoutReceivedDeliveriesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserCreateOrConnectWithoutReceivedDeliveriesInput = {
@@ -669,6 +700,7 @@ export type UserCreateWithoutDeliveredDeliveriesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserUncheckedCreateWithoutDeliveredDeliveriesInput = {
@@ -683,6 +715,7 @@ export type UserUncheckedCreateWithoutDeliveredDeliveriesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type UserCreateOrConnectWithoutDeliveredDeliveriesInput = {
@@ -713,6 +746,7 @@ export type UserUpdateWithoutReceivedDeliveriesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedDeliveriesInput = {
@@ -727,6 +761,7 @@ export type UserUncheckedUpdateWithoutReceivedDeliveriesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserUpsertWithoutDeliveredDeliveriesInput = {
@@ -752,6 +787,7 @@ export type UserUpdateWithoutDeliveredDeliveriesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutEmployeeNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeliveredDeliveriesInput = {
@@ -766,6 +802,83 @@ export type UserUncheckedUpdateWithoutDeliveredDeliveriesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type UserCreateWithoutShiftsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+}
+
+export type UserUncheckedCreateWithoutShiftsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+}
+
+export type UserCreateOrConnectWithoutShiftsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutShiftsInput, Prisma.UserUncheckedCreateWithoutShiftsInput>
+}
+
+export type UserUpsertWithoutShiftsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutShiftsInput, Prisma.UserUncheckedUpdateWithoutShiftsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutShiftsInput, Prisma.UserUncheckedCreateWithoutShiftsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutShiftsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutShiftsInput, Prisma.UserUncheckedUpdateWithoutShiftsInput>
+}
+
+export type UserUpdateWithoutShiftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+}
+
+export type UserUncheckedUpdateWithoutShiftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
 }
 
 
@@ -778,6 +891,7 @@ export type UserCountOutputType = {
   accounts: number
   receivedDeliveries: number
   deliveredDeliveries: number
+  shifts: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -785,6 +899,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   receivedDeliveries?: boolean | UserCountOutputTypeCountReceivedDeliveriesArgs
   deliveredDeliveries?: boolean | UserCountOutputTypeCountDeliveredDeliveriesArgs
+  shifts?: boolean | UserCountOutputTypeCountShiftsArgs
 }
 
 /**
@@ -825,6 +940,13 @@ export type UserCountOutputTypeCountDeliveredDeliveriesArgs<ExtArgs extends runt
   where?: Prisma.DeliveryReceiptWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountShiftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShiftWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -839,6 +961,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   receivedDeliveries?: boolean | Prisma.User$receivedDeliveriesArgs<ExtArgs>
   deliveredDeliveries?: boolean | Prisma.User$deliveredDeliveriesArgs<ExtArgs>
+  shifts?: boolean | Prisma.User$shiftsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -881,6 +1004,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   receivedDeliveries?: boolean | Prisma.User$receivedDeliveriesArgs<ExtArgs>
   deliveredDeliveries?: boolean | Prisma.User$deliveredDeliveriesArgs<ExtArgs>
+  shifts?: boolean | Prisma.User$shiftsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -893,6 +1017,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     receivedDeliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
     deliveredDeliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
+    shifts: Prisma.$ShiftPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1301,6 +1426,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   receivedDeliveries<T extends Prisma.User$receivedDeliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedDeliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deliveredDeliveries<T extends Prisma.User$deliveredDeliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deliveredDeliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shifts<T extends Prisma.User$shiftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shiftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1824,6 +1950,30 @@ export type User$deliveredDeliveriesArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.DeliveryReceiptScalarFieldEnum | Prisma.DeliveryReceiptScalarFieldEnum[]
+}
+
+/**
+ * User.shifts
+ */
+export type User$shiftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Shift
+   */
+  select?: Prisma.ShiftSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Shift
+   */
+  omit?: Prisma.ShiftOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShiftInclude<ExtArgs> | null
+  where?: Prisma.ShiftWhereInput
+  orderBy?: Prisma.ShiftOrderByWithRelationInput | Prisma.ShiftOrderByWithRelationInput[]
+  cursor?: Prisma.ShiftWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShiftScalarFieldEnum | Prisma.ShiftScalarFieldEnum[]
 }
 
 /**

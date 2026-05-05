@@ -27,22 +27,16 @@ export type AggregateWorkLocation = {
 export type WorkLocationMinAggregateOutputType = {
   id: string | null
   name: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type WorkLocationMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type WorkLocationCountAggregateOutputType = {
   id: number
   name: number
-  createdAt: number
-  updatedAt: number
   _all: number
 }
 
@@ -50,22 +44,16 @@ export type WorkLocationCountAggregateOutputType = {
 export type WorkLocationMinAggregateInputType = {
   id?: true
   name?: true
-  createdAt?: true
-  updatedAt?: true
 }
 
 export type WorkLocationMaxAggregateInputType = {
   id?: true
   name?: true
-  createdAt?: true
-  updatedAt?: true
 }
 
 export type WorkLocationCountAggregateInputType = {
   id?: true
   name?: true
-  createdAt?: true
-  updatedAt?: true
   _all?: true
 }
 
@@ -144,8 +132,6 @@ export type WorkLocationGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type WorkLocationGroupByOutputType = {
   id: string
   name: string
-  createdAt: Date
-  updatedAt: Date
   _count: WorkLocationCountAggregateOutputType | null
   _min: WorkLocationMinAggregateOutputType | null
   _max: WorkLocationMaxAggregateOutputType | null
@@ -172,16 +158,14 @@ export type WorkLocationWhereInput = {
   NOT?: Prisma.WorkLocationWhereInput | Prisma.WorkLocationWhereInput[]
   id?: Prisma.StringFilter<"WorkLocation"> | string
   name?: Prisma.StringFilter<"WorkLocation"> | string
-  createdAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
+  shifts?: Prisma.ShiftListRelationFilter
   deliveries?: Prisma.DeliveryReceiptListRelationFilter
 }
 
 export type WorkLocationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  shifts?: Prisma.ShiftOrderByRelationAggregateInput
   deliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
 }
 
@@ -191,16 +175,13 @@ export type WorkLocationWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.WorkLocationWhereInput[]
   NOT?: Prisma.WorkLocationWhereInput | Prisma.WorkLocationWhereInput[]
   name?: Prisma.StringFilter<"WorkLocation"> | string
-  createdAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"WorkLocation"> | Date | string
+  shifts?: Prisma.ShiftListRelationFilter
   deliveries?: Prisma.DeliveryReceiptListRelationFilter
 }, "id">
 
 export type WorkLocationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   _count?: Prisma.WorkLocationCountOrderByAggregateInput
   _max?: Prisma.WorkLocationMaxOrderByAggregateInput
   _min?: Prisma.WorkLocationMinOrderByAggregateInput
@@ -212,82 +193,64 @@ export type WorkLocationScalarWhereWithAggregatesInput = {
   NOT?: Prisma.WorkLocationScalarWhereWithAggregatesInput | Prisma.WorkLocationScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"WorkLocation"> | string
   name?: Prisma.StringWithAggregatesFilter<"WorkLocation"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkLocation"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WorkLocation"> | Date | string
 }
 
 export type WorkLocationCreateInput = {
-  id: string
+  id?: string
   name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  shifts?: Prisma.ShiftCreateNestedManyWithoutLocationInput
   deliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutWorkLocationInput
 }
 
 export type WorkLocationUncheckedCreateInput = {
-  id: string
+  id?: string
   name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutLocationInput
   deliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutWorkLocationInput
 }
 
 export type WorkLocationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shifts?: Prisma.ShiftUpdateManyWithoutLocationNestedInput
   deliveries?: Prisma.DeliveryReceiptUpdateManyWithoutWorkLocationNestedInput
 }
 
 export type WorkLocationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutLocationNestedInput
   deliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationNestedInput
 }
 
 export type WorkLocationCreateManyInput = {
-  id: string
+  id?: string
   name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type WorkLocationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WorkLocationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WorkLocationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type WorkLocationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type WorkLocationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type WorkLocationScalarRelationFilter = {
@@ -309,18 +272,30 @@ export type WorkLocationUpdateOneRequiredWithoutDeliveriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutDeliveriesInput, Prisma.WorkLocationUpdateWithoutDeliveriesInput>, Prisma.WorkLocationUncheckedUpdateWithoutDeliveriesInput>
 }
 
+export type WorkLocationCreateNestedOneWithoutShiftsInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftsInput, Prisma.WorkLocationUncheckedCreateWithoutShiftsInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutShiftsInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+}
+
+export type WorkLocationUpdateOneRequiredWithoutShiftsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftsInput, Prisma.WorkLocationUncheckedCreateWithoutShiftsInput>
+  connectOrCreate?: Prisma.WorkLocationCreateOrConnectWithoutShiftsInput
+  upsert?: Prisma.WorkLocationUpsertWithoutShiftsInput
+  connect?: Prisma.WorkLocationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkLocationUpdateToOneWithWhereWithoutShiftsInput, Prisma.WorkLocationUpdateWithoutShiftsInput>, Prisma.WorkLocationUncheckedUpdateWithoutShiftsInput>
+}
+
 export type WorkLocationCreateWithoutDeliveriesInput = {
-  id: string
+  id?: string
   name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  shifts?: Prisma.ShiftCreateNestedManyWithoutLocationInput
 }
 
 export type WorkLocationUncheckedCreateWithoutDeliveriesInput = {
-  id: string
+  id?: string
   name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutLocationInput
 }
 
 export type WorkLocationCreateOrConnectWithoutDeliveriesInput = {
@@ -342,15 +317,53 @@ export type WorkLocationUpdateToOneWithWhereWithoutDeliveriesInput = {
 export type WorkLocationUpdateWithoutDeliveriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shifts?: Prisma.ShiftUpdateManyWithoutLocationNestedInput
 }
 
 export type WorkLocationUncheckedUpdateWithoutDeliveriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutLocationNestedInput
+}
+
+export type WorkLocationCreateWithoutShiftsInput = {
+  id?: string
+  name: string
+  deliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutWorkLocationInput
+}
+
+export type WorkLocationUncheckedCreateWithoutShiftsInput = {
+  id?: string
+  name: string
+  deliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutWorkLocationInput
+}
+
+export type WorkLocationCreateOrConnectWithoutShiftsInput = {
+  where: Prisma.WorkLocationWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftsInput, Prisma.WorkLocationUncheckedCreateWithoutShiftsInput>
+}
+
+export type WorkLocationUpsertWithoutShiftsInput = {
+  update: Prisma.XOR<Prisma.WorkLocationUpdateWithoutShiftsInput, Prisma.WorkLocationUncheckedUpdateWithoutShiftsInput>
+  create: Prisma.XOR<Prisma.WorkLocationCreateWithoutShiftsInput, Prisma.WorkLocationUncheckedCreateWithoutShiftsInput>
+  where?: Prisma.WorkLocationWhereInput
+}
+
+export type WorkLocationUpdateToOneWithWhereWithoutShiftsInput = {
+  where?: Prisma.WorkLocationWhereInput
+  data: Prisma.XOR<Prisma.WorkLocationUpdateWithoutShiftsInput, Prisma.WorkLocationUncheckedUpdateWithoutShiftsInput>
+}
+
+export type WorkLocationUpdateWithoutShiftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveries?: Prisma.DeliveryReceiptUpdateManyWithoutWorkLocationNestedInput
+}
+
+export type WorkLocationUncheckedUpdateWithoutShiftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationNestedInput
 }
 
 
@@ -359,10 +372,12 @@ export type WorkLocationUncheckedUpdateWithoutDeliveriesInput = {
  */
 
 export type WorkLocationCountOutputType = {
+  shifts: number
   deliveries: number
 }
 
 export type WorkLocationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  shifts?: boolean | WorkLocationCountOutputTypeCountShiftsArgs
   deliveries?: boolean | WorkLocationCountOutputTypeCountDeliveriesArgs
 }
 
@@ -379,6 +394,13 @@ export type WorkLocationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
 /**
  * WorkLocationCountOutputType without action
  */
+export type WorkLocationCountOutputTypeCountShiftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShiftWhereInput
+}
+
+/**
+ * WorkLocationCountOutputType without action
+ */
 export type WorkLocationCountOutputTypeCountDeliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DeliveryReceiptWhereInput
 }
@@ -387,8 +409,7 @@ export type WorkLocationCountOutputTypeCountDeliveriesArgs<ExtArgs extends runti
 export type WorkLocationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  shifts?: boolean | Prisma.WorkLocation$shiftsArgs<ExtArgs>
   deliveries?: boolean | Prisma.WorkLocation$deliveriesArgs<ExtArgs>
   _count?: boolean | Prisma.WorkLocationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workLocation"]>
@@ -396,26 +417,21 @@ export type WorkLocationSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type WorkLocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
 }, ExtArgs["result"]["workLocation"]>
 
 export type WorkLocationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
 }, ExtArgs["result"]["workLocation"]>
 
 export type WorkLocationSelectScalar = {
   id?: boolean
   name?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
 }
 
-export type WorkLocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["workLocation"]>
+export type WorkLocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name", ExtArgs["result"]["workLocation"]>
 export type WorkLocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  shifts?: boolean | Prisma.WorkLocation$shiftsArgs<ExtArgs>
   deliveries?: boolean | Prisma.WorkLocation$deliveriesArgs<ExtArgs>
   _count?: boolean | Prisma.WorkLocationCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -425,13 +441,12 @@ export type WorkLocationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type $WorkLocationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "WorkLocation"
   objects: {
+    shifts: Prisma.$ShiftPayload<ExtArgs>[]
     deliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    createdAt: Date
-    updatedAt: Date
   }, ExtArgs["result"]["workLocation"]>
   composites: {}
 }
@@ -826,6 +841,7 @@ readonly fields: WorkLocationFieldRefs;
  */
 export interface Prisma__WorkLocationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  shifts<T extends Prisma.WorkLocation$shiftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$shiftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deliveries<T extends Prisma.WorkLocation$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkLocation$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -858,8 +874,6 @@ export interface Prisma__WorkLocationClient<T, Null = never, ExtArgs extends run
 export interface WorkLocationFieldRefs {
   readonly id: Prisma.FieldRef<"WorkLocation", 'String'>
   readonly name: Prisma.FieldRef<"WorkLocation", 'String'>
-  readonly createdAt: Prisma.FieldRef<"WorkLocation", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"WorkLocation", 'DateTime'>
 }
     
 
@@ -1250,6 +1264,30 @@ export type WorkLocationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many WorkLocations to delete.
    */
   limit?: number
+}
+
+/**
+ * WorkLocation.shifts
+ */
+export type WorkLocation$shiftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Shift
+   */
+  select?: Prisma.ShiftSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Shift
+   */
+  omit?: Prisma.ShiftOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShiftInclude<ExtArgs> | null
+  where?: Prisma.ShiftWhereInput
+  orderBy?: Prisma.ShiftOrderByWithRelationInput | Prisma.ShiftOrderByWithRelationInput[]
+  cursor?: Prisma.ShiftWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShiftScalarFieldEnum | Prisma.ShiftScalarFieldEnum[]
 }
 
 /**

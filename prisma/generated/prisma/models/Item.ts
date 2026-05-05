@@ -229,7 +229,7 @@ export type ItemScalarWhereWithAggregatesInput = {
 }
 
 export type ItemCreateInput = {
-  id: string
+  id?: string
   name: string
   description?: string | null
   createdAt?: Date | string
@@ -238,7 +238,7 @@ export type ItemCreateInput = {
 }
 
 export type ItemUncheckedCreateInput = {
-  id: string
+  id?: string
   name: string
   description?: string | null
   createdAt?: Date | string
@@ -265,7 +265,7 @@ export type ItemUncheckedUpdateInput = {
 }
 
 export type ItemCreateManyInput = {
-  id: string
+  id?: string
   name: string
   description?: string | null
   createdAt?: Date | string
@@ -332,7 +332,7 @@ export type ItemUpdateOneRequiredWithoutDeliveriesNestedInput = {
 }
 
 export type ItemCreateWithoutDeliveriesInput = {
-  id: string
+  id?: string
   name: string
   description?: string | null
   createdAt?: Date | string
@@ -340,7 +340,7 @@ export type ItemCreateWithoutDeliveriesInput = {
 }
 
 export type ItemUncheckedCreateWithoutDeliveriesInput = {
-  id: string
+  id?: string
   name: string
   description?: string | null
   createdAt?: Date | string

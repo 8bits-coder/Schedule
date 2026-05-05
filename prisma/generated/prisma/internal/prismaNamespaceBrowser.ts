@@ -57,7 +57,9 @@ export const ModelName = {
   Verification: 'Verification',
   Item: 'Item',
   WorkLocation: 'WorkLocation',
-  DeliveryReceipt: 'DeliveryReceipt'
+  DeliveryReceipt: 'DeliveryReceipt',
+  Shift: 'Shift',
+  ShiftBadge: 'ShiftBadge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -148,9 +150,7 @@ export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof Item
 
 export const WorkLocationScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  name: 'name'
 } as const
 
 export type WorkLocationScalarFieldEnum = (typeof WorkLocationScalarFieldEnum)[keyof typeof WorkLocationScalarFieldEnum]
@@ -171,6 +171,32 @@ export const DeliveryReceiptScalarFieldEnum = {
 } as const
 
 export type DeliveryReceiptScalarFieldEnum = (typeof DeliveryReceiptScalarFieldEnum)[keyof typeof DeliveryReceiptScalarFieldEnum]
+
+
+export const ShiftScalarFieldEnum = {
+  id: 'id',
+  shiftDate: 'shiftDate',
+  shiftType: 'shiftType',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  locationId: 'locationId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  employeeId: 'employeeId',
+  shiftBadgeId: 'shiftBadgeId'
+} as const
+
+export type ShiftScalarFieldEnum = (typeof ShiftScalarFieldEnum)[keyof typeof ShiftScalarFieldEnum]
+
+
+export const ShiftBadgeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  badgeColor: 'badgeColor'
+} as const
+
+export type ShiftBadgeScalarFieldEnum = (typeof ShiftBadgeScalarFieldEnum)[keyof typeof ShiftBadgeScalarFieldEnum]
 
 
 export const SortOrder = {

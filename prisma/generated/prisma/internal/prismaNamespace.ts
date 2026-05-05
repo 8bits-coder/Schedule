@@ -390,7 +390,9 @@ export const ModelName = {
   Verification: 'Verification',
   Item: 'Item',
   WorkLocation: 'WorkLocation',
-  DeliveryReceipt: 'DeliveryReceipt'
+  DeliveryReceipt: 'DeliveryReceipt',
+  Shift: 'Shift',
+  ShiftBadge: 'ShiftBadge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -406,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "item" | "workLocation" | "deliveryReceipt"
+    modelProps: "user" | "session" | "account" | "verification" | "item" | "workLocation" | "deliveryReceipt" | "shift" | "shiftBadge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -928,6 +930,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Shift: {
+      payload: Prisma.$ShiftPayload<ExtArgs>
+      fields: Prisma.ShiftFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShiftFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShiftFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>
+        }
+        findFirst: {
+          args: Prisma.ShiftFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShiftFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>
+        }
+        findMany: {
+          args: Prisma.ShiftFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>[]
+        }
+        create: {
+          args: Prisma.ShiftCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>
+        }
+        createMany: {
+          args: Prisma.ShiftCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShiftCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>[]
+        }
+        delete: {
+          args: Prisma.ShiftDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>
+        }
+        update: {
+          args: Prisma.ShiftUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>
+        }
+        deleteMany: {
+          args: Prisma.ShiftDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShiftUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShiftUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>[]
+        }
+        upsert: {
+          args: Prisma.ShiftUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftPayload>
+        }
+        aggregate: {
+          args: Prisma.ShiftAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShift>
+        }
+        groupBy: {
+          args: Prisma.ShiftGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShiftGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShiftCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShiftCountAggregateOutputType> | number
+        }
+      }
+    }
+    ShiftBadge: {
+      payload: Prisma.$ShiftBadgePayload<ExtArgs>
+      fields: Prisma.ShiftBadgeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShiftBadgeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShiftBadgeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>
+        }
+        findFirst: {
+          args: Prisma.ShiftBadgeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShiftBadgeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>
+        }
+        findMany: {
+          args: Prisma.ShiftBadgeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>[]
+        }
+        create: {
+          args: Prisma.ShiftBadgeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>
+        }
+        createMany: {
+          args: Prisma.ShiftBadgeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShiftBadgeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>[]
+        }
+        delete: {
+          args: Prisma.ShiftBadgeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>
+        }
+        update: {
+          args: Prisma.ShiftBadgeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>
+        }
+        deleteMany: {
+          args: Prisma.ShiftBadgeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShiftBadgeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShiftBadgeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>[]
+        }
+        upsert: {
+          args: Prisma.ShiftBadgeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShiftBadgePayload>
+        }
+        aggregate: {
+          args: Prisma.ShiftBadgeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShiftBadge>
+        }
+        groupBy: {
+          args: Prisma.ShiftBadgeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShiftBadgeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShiftBadgeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShiftBadgeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1039,9 +1189,7 @@ export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof Item
 
 export const WorkLocationScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  name: 'name'
 } as const
 
 export type WorkLocationScalarFieldEnum = (typeof WorkLocationScalarFieldEnum)[keyof typeof WorkLocationScalarFieldEnum]
@@ -1062,6 +1210,32 @@ export const DeliveryReceiptScalarFieldEnum = {
 } as const
 
 export type DeliveryReceiptScalarFieldEnum = (typeof DeliveryReceiptScalarFieldEnum)[keyof typeof DeliveryReceiptScalarFieldEnum]
+
+
+export const ShiftScalarFieldEnum = {
+  id: 'id',
+  shiftDate: 'shiftDate',
+  shiftType: 'shiftType',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  locationId: 'locationId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  employeeId: 'employeeId',
+  shiftBadgeId: 'shiftBadgeId'
+} as const
+
+export type ShiftScalarFieldEnum = (typeof ShiftScalarFieldEnum)[keyof typeof ShiftScalarFieldEnum]
+
+
+export const ShiftBadgeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  badgeColor: 'badgeColor'
+} as const
+
+export type ShiftBadgeScalarFieldEnum = (typeof ShiftBadgeScalarFieldEnum)[keyof typeof ShiftBadgeScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1154,6 +1328,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ShiftType'
+ */
+export type EnumShiftTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShiftType'>
+    
+
+
+/**
+ * Reference to a field of type 'ShiftType[]'
+ */
+export type ListEnumShiftTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShiftType[]'>
     
 
 
@@ -1287,6 +1475,8 @@ export type GlobalOmitConfig = {
   item?: Prisma.ItemOmit
   workLocation?: Prisma.WorkLocationOmit
   deliveryReceipt?: Prisma.DeliveryReceiptOmit
+  shift?: Prisma.ShiftOmit
+  shiftBadge?: Prisma.ShiftBadgeOmit
 }
 
 /* Types for Logging */

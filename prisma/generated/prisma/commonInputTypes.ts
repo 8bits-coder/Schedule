@@ -192,6 +192,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type EnumShiftTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShiftType | Prisma.EnumShiftTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShiftTypeFilter<$PrismaModel> | $Enums.ShiftType
+}
+
+export type EnumShiftTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShiftType | Prisma.EnumShiftTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShiftTypeWithAggregatesFilter<$PrismaModel> | $Enums.ShiftType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumShiftTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumShiftTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -381,6 +398,23 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumShiftTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShiftType | Prisma.EnumShiftTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShiftTypeFilter<$PrismaModel> | $Enums.ShiftType
+}
+
+export type NestedEnumShiftTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ShiftType | Prisma.EnumShiftTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ShiftType[] | Prisma.ListEnumShiftTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumShiftTypeWithAggregatesFilter<$PrismaModel> | $Enums.ShiftType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumShiftTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumShiftTypeFilter<$PrismaModel>
 }
 
 

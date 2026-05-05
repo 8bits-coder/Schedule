@@ -17,6 +17,16 @@ enum Role {
   ADMIN
 }
 
+enum WeekDay {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
 model User {
   id                  String            @id
   name                String
@@ -30,6 +40,7 @@ model User {
   accounts            Account[]
   receivedDeliveries  DeliveryReceipt[] @relation("ReceivedPerson")
   deliveredDeliveries DeliveryReceipt[] @relation("DeliveryPerson")
+  shifts              Shift[]
 
   @@unique([email])
   @@map("user")
@@ -84,7 +95,7 @@ model Verification {
 }
 
 model Item {
-  id          String            @id
+  id          String            @id @default(uuid())
   name        String
   description String?
   createdAt   DateTime          @default(now())
@@ -95,17 +106,16 @@ model Item {
 }
 
 model WorkLocation {
-  id         String            @id
+  id         String            @id @default(uuid())
   name       String
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @updatedAt
+  shifts     Shift[]
   deliveries DeliveryReceipt[]
 
   @@map("workLocation")
 }
 
 model DeliveryReceipt {
-  id                  String       @id
+  id                  String       @id @default(uuid())
   itemId              String
   item                Item         @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemSerialNumber    String       @default("N/A")
@@ -122,4 +132,40 @@ model DeliveryReceipt {
   updatedAt           DateTime     @updatedAt
 
   @@map("deliveryReceipt")
+}
+
+enum ShiftType {
+  Morning
+  Afternoon
+  Night
+  RDO
+}
+
+model Shift {
+  id           String       @id @default(uuid())
+  shiftDate    DateTime
+  shiftType    ShiftType
+  startTime    String
+  endTime      String
+  locationId   String
+  location     WorkLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  notes        String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  employeeId   String
+  employee     User         @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  shiftBadgeId String?
+  shiftBadge   ShiftBadge?  @relation(fields: [shiftBadgeId], references: [id], onDelete: SetNull)
+
+  @@unique([employeeId, shiftDate])
+  @@map("shifts")
+}
+
+model ShiftBadge {
+  id         String  @id @default(uuid())
+  name       String
+  badgeColor String
+  shift      Shift[]
+
+  @@map("shiftBadge")
 }

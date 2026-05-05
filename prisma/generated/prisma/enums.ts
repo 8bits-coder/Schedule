@@ -15,3 +15,26 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const WeekDay = {
+  Monday: 'Monday',
+  Tuesday: 'Tuesday',
+  Wednesday: 'Wednesday',
+  Thursday: 'Thursday',
+  Friday: 'Friday',
+  Saturday: 'Saturday',
+  Sunday: 'Sunday'
+} as const
+
+export type WeekDay = (typeof WeekDay)[keyof typeof WeekDay]
+
+
+export const ShiftType = {
+  Morning: 'Morning',
+  Afternoon: 'Afternoon',
+  Night: 'Night',
+  RDO: 'RDO'
+} as const
+
+export type ShiftType = (typeof ShiftType)[keyof typeof ShiftType]

@@ -425,11 +425,12 @@ export default function WeekSchedule({
                                 COPIED
                               </div>
                             )}
-
                             <span
                               className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold mb-1 ${colors!.badge}`}
                             >
-                              {entry.shiftType}
+                              {entry.locationName
+                                ? `${entry.locationName}`
+                                : entry.shiftType}
                             </span>
                             {entry.startTime && (
                               <div className="flex items-center gap-0.5 text-stone-500 text-[11px]">
@@ -440,12 +441,9 @@ export default function WeekSchedule({
                                 </span>
                               </div>
                             )}
-                            {entry.locationId && (
-                              <div className="text-[10px] text-stone-400 mt-0.5 truncate max-w-[110px]">
-                                {entry.locationName}
-                              </div>
-                            )}
-
+                            <div className="text-[10px] text-stone-400 mt-0.5 truncate max-w-[110px]">
+                              {entry.notes || "N/A"}
+                            </div>
                             {/* Manager-only hover toolbar */}
                             {isManager && hovered && (
                               <div className="absolute top-1 right-1 flex gap-0.5 z-10">

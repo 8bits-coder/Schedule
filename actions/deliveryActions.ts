@@ -44,3 +44,36 @@ export async function GetDeliveryData() {
   ]);
   return { users, items, workLocations };
 }
+
+export async function GetDeliveryReceipts() {
+  const user = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!user?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+  return prisma.deliveryReceipt.findMany({
+    where: {
+      deliveryPersonId: user.user.id,
+    },
+    include: {
+      item: {
+        select: {
+          name: true,
+        },
+      },
+      receivedPerson: {
+        select: {
+          name: true,
+        },
+      },
+      workLocation: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+}
+
+export type DeliveryReceiptType = Awaited<ReturnType<typeof GetDeliveryReceipts>>[number];

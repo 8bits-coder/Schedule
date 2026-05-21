@@ -3,15 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { AddDeliveryReceipt, GetDeliveryData } from "@/actions/deliveryActions";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
@@ -19,32 +11,29 @@ import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 export default function DeliveryPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [itemId, setItemId] = useState<{ id: string; name: string }[]>([]);
-  const [workLocationId, setWorkLocationId] = useState<
-    { id: string; name: string }[]
-  >([]);
-  const [receivedPersonId, setReceivedPersonId] = useState<
-    { id: string; name: string }[]
-  >([]);
-  const [formData, setFormData] = useState<
-    Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt">
-  >({
+  const [items, setItems] = useState<{ id: string; name: string }[]>([]);
+  const [workLocations, setWorkLocations] = useState<{ id: string; name: string }[]>([]);
+  const [receivedPerson, setReceivedPerson] = useState<{ id: string; name: string }[]>([]);
+  const [formData, setFormData] = useState<Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any }>({
     itemId: "",
+    itemName: "",
     itemSerialNumber: "",
     deliveryPersonId: "",
     receivedPersonTitle: "",
     workLocationId: "",
+    workLocationName: "",
     quantity: 1,
     receivedPersonId: "",
+    receivedPersonName: "",
     deliveryDate: "",
   });
 
   const fetchItem = async () => {
     try {
       const { users, items, workLocations } = await GetDeliveryData();
-      setItemId(items);
-      setWorkLocationId(workLocations);
-      setReceivedPersonId(users);
+      setItems(items);
+      setWorkLocations(workLocations);
+      setReceivedPerson(users);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");
     }
@@ -53,11 +42,7 @@ export default function DeliveryPage() {
     fetchItem();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -67,17 +52,20 @@ export default function DeliveryPage() {
     setLoading(true);
 
     try {
-      const response = await AddDeliveryReceipt(new FormData(e.currentTarget));
+      const response = await AddDeliveryReceipt(formData);
 
       if (response) {
         setFormData({
           itemId: "",
+          itemName: "",
           itemSerialNumber: "",
           receivedPersonTitle: "",
           deliveryPersonId: "",
           workLocationId: "",
           quantity: 1,
           receivedPersonId: "",
+          receivedPersonName: "",
+          workLocationName: "",
           deliveryDate: "",
         });
         toast.success("Delivery receipt added successfully!");
@@ -96,19 +84,16 @@ export default function DeliveryPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <Select
           name="itemId"
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, itemId: value || "" }))
-          }
-          value={formData.itemId}
-          required
-        >
+          onValueChange={(value) => setFormData((prev) => ({ ...prev, itemId: value || "", itemName: items.find((item) => item.id === value)?.name || "" }))}
+          value={formData.itemName}
+          required>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select an Item" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Items</SelectLabel>
-              {itemId?.map((item) => (
+              {items?.map((item) => (
                 <SelectItem key={item.id} value={item.id}>
                   {item.name}
                 </SelectItem>
@@ -117,30 +102,22 @@ export default function DeliveryPage() {
           </SelectContent>
         </Select>
 
-        <Input
-          type="text"
-          placeholder="Serial Number"
-          name="itemSerialNumber"
-          value={formData.itemSerialNumber}
-          onChange={handleChange}
-          required
-        />
+        <Input type="text" placeholder="Serial Number" name="itemSerialNumber" value={formData.itemSerialNumber} onChange={handleChange} required />
 
         <Select
           name="workLocationId"
           onValueChange={(value) => {
-            setFormData((prev) => ({ ...prev, workLocationId: value || "" }));
+            setFormData((prev) => ({ ...prev, workLocationId: value || "", workLocationName: workLocations.find((loc) => loc.id === value)?.name || "" }));
           }}
-          value={formData.workLocationId}
-          required
-        >
+          value={formData.workLocationName}
+          required>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a Work Location" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Work Locations</SelectLabel>
-              {workLocationId?.map((loc) => (
+              {workLocations?.map((loc) => (
                 <SelectItem key={loc.id} value={loc.id}>
                   {loc.name}
                 </SelectItem>
@@ -149,30 +126,26 @@ export default function DeliveryPage() {
           </SelectContent>
         </Select>
 
-        <Input
-          type="text"
-          name="quantity"
-          placeholder="Quantity"
-          value={formData.quantity}
-          onChange={handleChange}
-          required
-        />
+        <Input type="text" name="quantity" placeholder="Quantity" value={formData.quantity} onChange={handleChange} required />
 
         <Select
           name="receivedPersonId"
           onValueChange={(value) => {
-            setFormData((prev) => ({ ...prev, receivedPersonId: value || "" }));
+            setFormData((prev) => ({
+              ...prev,
+              receivedPersonId: value || "",
+              receivedPersonName: receivedPerson.find((user) => user.id === value)?.name || "",
+            }));
           }}
-          value={formData.receivedPersonId}
-          required
-        >
+          value={formData.receivedPersonName}
+          required>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a Received Person" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Received Persons</SelectLabel>
-              {receivedPersonId?.map((user) => (
+              {receivedPerson?.map((user) => (
                 <SelectItem key={user.id} value={user.id}>
                   {user.name}
                 </SelectItem>
@@ -190,13 +163,7 @@ export default function DeliveryPage() {
           required
         />
 
-        <Input
-          type="date"
-          name="deliveryDate"
-          value={formData.deliveryDate}
-          onChange={handleChange}
-          required
-        />
+        <Input type="date" name="deliveryDate" value={formData.deliveryDate} onChange={handleChange} required />
 
         <Button type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}

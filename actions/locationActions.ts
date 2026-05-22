@@ -31,6 +31,8 @@ export async function GetAllLocations(): Promise<WorkLocation[]> {
   return locations;
 }
 
+export type LocationResponse = Awaited<ReturnType<typeof GetAllLocations>>;
+
 export async function GetLocationById(id: string): Promise<WorkLocation> {
   const location = await prisma.workLocation.findUnique({
     where: { id },
@@ -42,10 +44,9 @@ export async function GetLocationById(id: string): Promise<WorkLocation> {
   }
 }
 
-export async function UpdateLocation(
-  id: string,
-  name: string,
-): Promise<WorkLocation> {
+export type LocationById = Awaited<ReturnType<typeof GetLocationById>>;
+
+export async function UpdateLocation(id: string, name: string): Promise<WorkLocation> {
   const updatedLocation = await prisma.workLocation.update({
     where: { id },
     data: { name },

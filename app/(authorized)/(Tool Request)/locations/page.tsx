@@ -1,7 +1,7 @@
 "use server";
 
 import LocationForm from "./form";
-import ShowAllLocations from "./items";
+import ShowAllLocations from "./locations";
 
 export default async function LocationPage() {
   return (

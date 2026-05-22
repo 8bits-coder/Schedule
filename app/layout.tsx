@@ -36,20 +36,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn(
-        "h-full",
-        "antialiased",
-        geistSans.variable,
-        geistMono.variable,
-        "font-sans",
-        inter.variable,
-        geistMonoHeading.variable,
-      )}
-    >
+    <html lang="en" className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, geistMonoHeading.variable)}>
       <AuthProvider>
-        <body className="min-h-full flex flex-col">
+        <body className="flex flex-col">
           <AppLayout>
             <TooltipProvider>{children}</TooltipProvider>
           </AppLayout>

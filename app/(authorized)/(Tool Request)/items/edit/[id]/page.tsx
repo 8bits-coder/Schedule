@@ -1,25 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { DeleteItem, GetItemById, UpdateItem } from "@/actions/itemActions";
+import { DeleteItem, GetItemById, ItemByIdResponse, UpdateItem } from "@/actions/itemActions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-
-interface Item {
-  id: string;
-  description: string | null;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 export default function EditItemPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
-  const [formData, setFormData] = useState<Item>({
+  const [formData, setFormData] = useState<ItemByIdResponse>({
     id,
     name: "",
     description: null,
@@ -43,9 +35,7 @@ export default function EditItemPage() {
     fetchItem();
   }, [id]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -59,11 +49,7 @@ export default function EditItemPage() {
     setError("");
 
     try {
-      const response = await UpdateItem(
-        formData.id,
-        formData.name,
-        formData.description || "",
-      );
+      const response = await UpdateItem(formData.id, formData.name, formData.description || "");
 
       if (!response) throw new Error("Failed to update item");
       toast.success("Item updated successfully!");
@@ -78,12 +64,7 @@ export default function EditItemPage() {
   return (
     <div className="max-w-md mx-auto p-6">
       <div className="flex gap-x-2 items-center">
-        <Button
-          variant="outline"
-          size="sm"
-          className="mb-4"
-          onClick={() => router.push("/items")}
-        >
+        <Button variant="outline" size="sm" className="mb-4" onClick={() => router.push("/items")}>
           <ArrowLeft className="" />
         </Button>
         <h1 className="text-2xl font-bold mb-4">Edit Item</h1>
@@ -94,32 +75,15 @@ export default function EditItemPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded-md"
-          />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full px-3 py-2 border rounded-md" />
         </div>
 
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
-          <textarea
-            name="description"
-            value={formData.description || ""}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md"
-            rows={4}
-          />
+          <textarea name="description" value={formData.description || ""} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" rows={4} />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50">
           {loading ? "Saving..." : "Save Changes"}
         </button>
         <button
@@ -133,17 +97,14 @@ export default function EditItemPage() {
                 toast.success("Item deleted successfully!");
                 router.push("/items");
               } catch (err) {
-                setError(
-                  err instanceof Error ? err.message : "An error occurred",
-                );
+                setError(err instanceof Error ? err.message : "An error occurred");
               } finally {
                 setLoading(false);
               }
             }
           }}
           disabled={loading}
-          className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 disabled:opacity-50"
-        >
+          className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 disabled:opacity-50">
           Delete Item
         </button>
       </form>

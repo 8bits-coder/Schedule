@@ -31,6 +31,8 @@ export async function GetAllItems() {
   return items;
 }
 
+export type ItemResponse = Awaited<ReturnType<typeof GetAllItems>>;
+
 export async function GetItemById(id: string) {
   const item = await prisma.item.findUnique({
     where: { id },
@@ -42,11 +44,9 @@ export async function GetItemById(id: string) {
   }
 }
 
-export async function UpdateItem(
-  id: string,
-  name: string,
-  description: string,
-) {
+export type ItemByIdResponse = Awaited<ReturnType<typeof GetItemById>>;
+
+export async function UpdateItem(id: string, name: string, description: string) {
   const updatedItem = await prisma.item.update({
     where: { id },
     data: { name, description },

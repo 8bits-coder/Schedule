@@ -2,13 +2,13 @@
 import { useEffect } from "react";
 import { useAuth } from "@/components/context/AuthContext";
 import { push } from "@/lib/router";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftCircle } from "lucide-react";
 
-export default function AuthorizedPages({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthorizedPages({ children }: { children: React.ReactNode }) {
   const { user, isUserPending } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!isUserPending && !user) {
@@ -18,5 +18,16 @@ export default function AuthorizedPages({
 
   if (isUserPending || !user) return null;
 
-  return <div className="max-w-7xl w-full mx-auto p-6 flex-1">{children}</div>;
+  return (
+    <div className="h-full p-2 overflow-hidden pb-12">
+      {window.location.href !== "/" && (
+        <div className="">
+          <Button onClick={() => router.back()} variant={"link"} size={"icon"} className="group">
+            <ArrowLeftCircle className="size-8 group-hover:stroke-violet-800 transition-colors duration-300" />
+          </Button>
+        </div>
+      )}
+      {children}
+    </div>
+  );
 }

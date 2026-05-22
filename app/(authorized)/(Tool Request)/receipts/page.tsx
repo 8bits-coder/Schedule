@@ -1,6 +1,7 @@
 "use client";
 
 import { DeliveryReceiptType, GetDeliveryReceipts } from "@/actions/deliveryActions";
+import { Spinner } from "@/components/ui/spinner";
 import { useState, useEffect } from "react";
 
 export default function ReceiptsPage() {
@@ -11,7 +12,7 @@ export default function ReceiptsPage() {
     // TODO: Replace with actual API call
     async function fetchReceipts() {
       // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      //   await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const receipts = await GetDeliveryReceipts(); // Replace with actual API call
       setReceipts(receipts);
@@ -21,7 +22,11 @@ export default function ReceiptsPage() {
   }, []);
 
   if (loading) {
-    return <div className="p-8">Loading receipts...</div>;
+    return (
+      <div className=" h-full flex items-center justify-center">
+        <Spinner className="size-8" />
+      </div>
+    );
   }
 
   return (
@@ -45,7 +50,7 @@ export default function ReceiptsPage() {
               <tr key={receipt.id} className="hover:bg-gray-50">
                 <td className="border border-gray-300 px-4 py-2">{receipt.deliveryDate}</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {receipt.receivedPersonTitle} {receipt.receivedPerson?.name}
+                  {receipt.receivedPerson?.name} - ({receipt.receivedPersonTitle})
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center">{receipt.workLocation?.name}</td>
                 <td className="border border-gray-300 px-4 py-2">{receipt.item?.name}</td>

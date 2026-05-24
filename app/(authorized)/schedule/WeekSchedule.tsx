@@ -156,10 +156,10 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
   const employee = editing ? employees.find((e) => e.id === editing.empId) : null;
 
   return (
-    <div className="bg-[#f8f7f4]">
+    <div>
       {/* ── Header ── */}
-      <div className="border-b border-stone-200 bg-white px-6 py-4 shadow-sm">
-        <div className="mx-auto max-w-[1600px] flex flex-wrap items-center justify-between gap-4">
+      <div className="border-b border-stone-200 bg-white py-4 shadow-sm">
+        <div className="container mx-auto flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-stone-900">Weekly Schedule</h1>
             <p className="text-sm text-stone-500 mt-0.5 flex items-center gap-1.5">
@@ -226,7 +226,7 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
       </div>
 
       {/* ── Table ── */}
-      <div className="mx-auto max-w-[1600px] px-4 py-6 overflow-x-auto">
+      <div className="container mx-auto py-6 overflow-x-auto">
         <div className="rounded-xl border border-stone-200 bg-white shadow-sm overflow-hidden">
           <table className="w-full border-collapse text-sm">
             <thead>
@@ -304,10 +304,10 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                       : null;
 
                     return (
-                      <td key={dateStr} className={`px-2 py-2 align-top h-lh ${weekend ? "bg-rose-50/20" : ""}`}>
+                      <td key={dateStr} className={`p-2 align-center h-full ${weekend ? "bg-rose-50/20" : ""}`}>
                         {entry ? (
                           <div
-                            className={`relative h-full rounded-lg border px-2.5 py-1.5 text-xs cursor-default select-none transition-all duration-150
+                            className={`relative h-16 rounded-lg border px-2.5 py-1.5 text-xs cursor-default select-none transition-all duration-150
                               ${colors!.cell}
                               ${hovered ? "shadow-md ring-1 ring-indigo-200" : ""}
                               ${isSource ? "ring-2 ring-indigo-400 ring-offset-1" : ""}
@@ -370,7 +370,7 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                           clipboard ? (
                             <button
                               onClick={() => pasteEntry(emp.id, dateStr)}
-                              className="w-full h-full rounded-lg border-2 border-dashed border-indigo-300 flex items-center justify-center gap-1 text-indigo-400 hover:bg-indigo-50 hover:border-indigo-500 hover:text-indigo-600 transition-all text-[10px] font-medium"
+                              className="w-full h-16 rounded-lg border-2 border-dashed border-indigo-300 flex items-center justify-center gap-1 text-indigo-400 hover:bg-indigo-50 hover:border-indigo-500 hover:text-indigo-600 transition-all text-[10px] font-medium"
                               title="Paste shift here">
                               <ClipboardPaste className="size-3.5" />
                               <span>Paste</span>
@@ -378,13 +378,13 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                           ) : (
                             <button
                               onClick={() => openDialog(emp.id, date, DAYS[dayIdx])}
-                              className="w-full h-full rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-300 hover:border-indigo-300 hover:text-indigo-400 hover:bg-indigo-50/40 transition-all">
+                              className="w-full h-16 rounded-lg border border-dashed border-stone-200 flex items-center justify-center text-stone-300 hover:border-indigo-300 hover:text-indigo-400 hover:bg-indigo-50/40 transition-all">
                               <Plus className="size-3.5" />
                             </button>
                           )
                         ) : (
                           // Read-only empty cell
-                          <div className="w-full h-10 rounded-lg bg-stone-50/50" />
+                          <div className="w-full h-16 rounded-lg bg-stone-50/50" />
                         )}
                       </td>
                     );

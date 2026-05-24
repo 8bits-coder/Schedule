@@ -48,8 +48,8 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-background">
-      <Card className="w-full max-w-md">
+    <div className="min-w-4/5 grid justify-items-center place-content-center">
+      <Card className="w-full min-w-md">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
           <CardDescription>Create a new account</CardDescription>

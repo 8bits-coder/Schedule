@@ -37,9 +37,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("h-full antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, geistMonoHeading.variable)}>
       <AuthProvider>
-        <body className="h-full flex flex-col bg-red-300">
+        <body className="h-full flex flex-col bg-gray-100">
           <TopBar />
-          <main className="flex-1 min-w-4/5 mx-auto">{children}</main>
+          <main className="flex-1 grid">{children}</main>
           <footer className="text-center text-xs bg-white text-stone-400 py-4">&copy; {new Date().getFullYear()} ShiftManager. All rights reserved.</footer>
           <Toaster position="top-right" richColors />
         </body>

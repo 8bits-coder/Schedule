@@ -331,7 +331,7 @@ export default function TimeOffPage() {
   const readinessBarClass = readiness >= 100 ? "bg-emerald-500" : readiness >= 70 ? "bg-cyan-500" : "bg-amber-400";
 
   return (
-    <div className="text-slate-900">
+    <div className="container mx-auto py-4 text-slate-900">
       <div className="mb-8 rounded-3xl border border-slate-200 bg-indigo-50 p-8 shadow-sm shadow-slate-200/60">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>

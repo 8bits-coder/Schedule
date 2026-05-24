@@ -1,18 +1,23 @@
 "use client";
-import { useEffect } from "react";
 import { useAuth } from "@/components/context/AuthContext";
-import { push } from "@/lib/router";
 import { cn } from "@/lib/utils";
 import { RiLoader5Fill } from "react-icons/ri";
+import { redirect } from "next/navigation";
 
 export default function AuthorizedPages({ children }: { children: React.ReactNode }) {
   const { user, isUserPending } = useAuth();
 
-  useEffect(() => {
-    if (!isUserPending && !user) {
-      push("/login");
-    }
-  }, [isUserPending, user]);
+  if (isUserPending) {
+    return (
+      <div className={cn("h-full place-content-center")}>
+        <RiLoader5Fill className="size-12 animate-spin" />
+      </div>
+    );
+  }
 
-  return <div className={cn({ "place-content-center": isUserPending })}>{isUserPending ? <RiLoader5Fill className="size-12 animate-spin" /> : children}</div>;
+  if (!user) {
+    redirect("/login");
+  }
+
+  return children;
 }

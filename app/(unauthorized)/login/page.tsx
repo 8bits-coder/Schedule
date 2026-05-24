@@ -24,8 +24,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-background">
-      <Card className={`w-full max-w-md ${loginError ? "animate-shake" : ""}`}>
+    <div className="min-w-4/5 grid justify-items-center place-content-center">
+      <Card className={`w-full min-w-md ${loginError ? "animate-shake" : ""}`}>
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>

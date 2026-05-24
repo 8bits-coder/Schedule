@@ -4,7 +4,7 @@ import { useAuth } from "@/components/context/AuthContext";
 export default function Home() {
   const { user } = useAuth();
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto py-4 space-y-8">
       <div className="animate-fade-in">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome, {user?.name || "Manager"}</h1>
         <p className="text-lg text-gray-600">Manage your team shifts efficiently</p>

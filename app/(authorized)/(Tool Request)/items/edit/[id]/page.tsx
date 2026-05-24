@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { DeleteItem, GetItemById, ItemByIdResponse, UpdateItem } from "@/actions/itemActions";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 export default function EditItemPage() {
   const router = useRouter();
@@ -12,26 +10,25 @@ export default function EditItemPage() {
   const id = params.id as string;
 
   const [formData, setFormData] = useState<ItemByIdResponse>({
-    id,
+    id: "",
     name: "",
     description: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState("");
 
-  const fetchItem = async () => {
-    try {
-      const response = await GetItemById(id);
-      setFormData(response);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    }
-  };
-
   useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = await GetItemById(id);
+        setFormData(response);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      }
+    };
     fetchItem();
   }, [id]);
 
@@ -64,9 +61,6 @@ export default function EditItemPage() {
   return (
     <div className="max-w-md mx-auto p-6">
       <div className="flex gap-x-2 items-center">
-        <Button variant="outline" size="sm" className="mb-4" onClick={() => router.push("/items")}>
-          <ArrowLeft className="" />
-        </Button>
         <h1 className="text-2xl font-bold mb-4">Edit Item</h1>
       </div>
 

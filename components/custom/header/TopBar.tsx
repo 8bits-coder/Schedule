@@ -97,8 +97,8 @@ export default function TopBar() {
 
         <div className="flex items-center gap-2">
           {isManager && (
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold mr-3">
-              <ShieldCheck className="size-5" />
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold text-sm">
+              {/* <ShieldCheck className="size-4" /> */}
               Manager
             </div>
           )}

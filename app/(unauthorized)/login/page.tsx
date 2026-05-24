@@ -1,13 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, LoginSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -30,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
+    <div className="flex items-center justify-center bg-background">
       <Card className={`w-full max-w-md ${loginError ? "animate-shake" : ""}`}>
         <CardHeader>
           <CardTitle>Login</CardTitle>
@@ -45,16 +39,8 @@ export default function LoginPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-email">Email</FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-email"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="john@example.com"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    <Input {...field} id="form-rhf-demo-email" aria-invalid={fieldState.invalid} placeholder="john@example.com" autoComplete="off" />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -65,43 +51,19 @@ export default function LoginPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-password">
-                      Password
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-password"
-                      type="password"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="••••••••"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    <FieldLabel htmlFor="form-rhf-demo-password">Password</FieldLabel>
+                    <Input {...field} id="form-rhf-demo-password" type="password" aria-invalid={fieldState.invalid} placeholder="••••••••" autoComplete="off" />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
             </div>
-            {loginError && (
-              <div className="bg-red-100 p-3 rounded-lg text-red-500 mb-4">
-                {loginError}
-              </div>
-            )}
+            {loginError && <div className="bg-red-100 p-3 rounded-lg text-red-500 mb-4">{loginError}</div>}
             <div className="space-y-2">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isRequestSubmitting}
-              >
+              <Button type="submit" className="w-full" disabled={isRequestSubmitting}>
                 {isRequestSubmitting ? "Signing in..." : "Sign In"}
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => form.reset()}
-              >
+              <Button type="button" variant="outline" className="w-full" onClick={() => form.reset()}>
                 Reset
               </Button>
             </div>

@@ -3,10 +3,9 @@ import { Geist, Geist_Mono, Figtree, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/components/context/AuthContext";
-import AppLayout from "@/components/custom/AppLayout";
 import { GlobalRouterProvider } from "@/lib/router";
 import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import TopBar from "@/components/custom/header/TopBar";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
@@ -36,12 +35,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, geistMonoHeading.variable)}>
+    <html lang="en" className={cn("h-full antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, geistMonoHeading.variable)}>
       <AuthProvider>
-        <body className="flex flex-col">
-          <AppLayout>
-            <TooltipProvider>{children}</TooltipProvider>
-          </AppLayout>
+        <body className="h-full flex flex-col bg-red-300">
+          <TopBar />
+          <main className="flex-1 min-w-4/5 mx-auto">{children}</main>
+          <footer className="text-center text-xs bg-white text-stone-400 py-4">&copy; {new Date().getFullYear()} ShiftManager. All rights reserved.</footer>
           <Toaster position="top-right" richColors />
         </body>
         <GlobalRouterProvider />

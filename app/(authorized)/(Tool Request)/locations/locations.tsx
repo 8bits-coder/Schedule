@@ -1,9 +1,10 @@
-import { GetAllLocations, LocationResponse } from "@/actions/locationActions";
+import { GetAllLocations } from "@/actions/locationActions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllLocations = async () => {
-  const locations: LocationResponse = await GetAllLocations();
+  const locations = await GetAllLocations();
+
   if (!locations) {
     return <div>No locations found.</div>;
   }

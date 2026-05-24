@@ -2,13 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Controller, useForm } from "react-hook-form";
 import { Schema, SignUpSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
@@ -54,7 +48,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
+    <div className="flex items-center justify-center bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
@@ -68,19 +62,9 @@ export default function SignupPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-name">
-                      Full Name
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-name"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="John Doe"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    <FieldLabel htmlFor="form-rhf-demo-name">Full Name</FieldLabel>
+                    <Input {...field} id="form-rhf-demo-name" aria-invalid={fieldState.invalid} placeholder="John Doe" autoComplete="off" />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -92,16 +76,8 @@ export default function SignupPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-email">Email</FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-email"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="john@example.com"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    <Input {...field} id="form-rhf-demo-email" aria-invalid={fieldState.invalid} placeholder="john@example.com" autoComplete="off" />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -112,20 +88,9 @@ export default function SignupPage() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-password">
-                      Password
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-password"
-                      type="password"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="••••••••"
-                      autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    <FieldLabel htmlFor="form-rhf-demo-password">Password</FieldLabel>
+                    <Input {...field} id="form-rhf-demo-password" type="password" aria-invalid={fieldState.invalid} placeholder="••••••••" autoComplete="off" />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -134,12 +99,7 @@ export default function SignupPage() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Signing up..." : "Sign Up"}
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => form.reset()}
-              >
+              <Button type="button" variant="outline" className="w-full" onClick={() => form.reset()}>
                 Reset
               </Button>
             </div>

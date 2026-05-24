@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllItems = async () => {
-  const items: ItemResponse = await GetAllItems();
+  const items = await GetAllItems();
+
   if (!items) {
     return <div>No items found.</div>;
   }

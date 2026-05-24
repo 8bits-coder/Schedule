@@ -31,8 +31,6 @@ export async function GetAllItems() {
   return items;
 }
 
-export type ItemResponse = Awaited<ReturnType<typeof GetAllItems>>;
-
 export async function GetItemById(id: string) {
   const item = await prisma.item.findUnique({
     where: { id },
@@ -43,8 +41,6 @@ export async function GetItemById(id: string) {
     return item;
   }
 }
-
-export type ItemByIdResponse = Awaited<ReturnType<typeof GetItemById>>;
 
 export async function UpdateItem(id: string, name: string, description: string) {
   const updatedItem = await prisma.item.update({
@@ -68,3 +64,9 @@ export async function DeleteItem(id: string) {
   revalidatePath("/items");
   return deletedItem;
 }
+
+export type ItemResponse = Awaited<ReturnType<typeof GetAllItems>>;
+export type ItemByIdResponse = Awaited<ReturnType<typeof GetItemById>>;
+export type AddItemResponse = Awaited<ReturnType<typeof AddItem>>;
+export type UpdateItemResponse = Awaited<ReturnType<typeof UpdateItem>>;
+export type DeleteItemResponse = Awaited<ReturnType<typeof DeleteItem>>;

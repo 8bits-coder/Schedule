@@ -31,8 +31,6 @@ export async function GetAllLocations(): Promise<WorkLocation[]> {
   return locations;
 }
 
-export type LocationResponse = Awaited<ReturnType<typeof GetAllLocations>>;
-
 export async function GetLocationById(id: string): Promise<WorkLocation> {
   const location = await prisma.workLocation.findUnique({
     where: { id },
@@ -43,8 +41,6 @@ export async function GetLocationById(id: string): Promise<WorkLocation> {
     return location;
   }
 }
-
-export type LocationById = Awaited<ReturnType<typeof GetLocationById>>;
 
 export async function UpdateLocation(id: string, name: string): Promise<WorkLocation> {
   const updatedLocation = await prisma.workLocation.update({
@@ -68,3 +64,9 @@ export async function DeleteLocation(id: string): Promise<WorkLocation> {
   revalidatePath("/items");
   return deletedLocation;
 }
+
+export type LocationResponse = Awaited<ReturnType<typeof GetAllLocations>>;
+export type LocationById = Awaited<ReturnType<typeof GetLocationById>>;
+export type AddLocationResponse = Awaited<ReturnType<typeof AddLocation>>;
+export type UpdateLocationResponse = Awaited<ReturnType<typeof UpdateLocation>>;
+export type DeleteLocationResponse = Awaited<ReturnType<typeof DeleteLocation>>;

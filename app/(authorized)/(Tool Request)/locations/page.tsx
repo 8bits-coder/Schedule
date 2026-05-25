@@ -5,9 +5,8 @@ import ShowAllLocations from "./locations";
 
 export default async function LocationPage() {
   return (
-    <div className="p-8">
+    <div className="container mx-auto py-8 not-sm:px-2 space-y-8">
       <LocationForm />
-      <h1 className="text-3xl font-bold mb-6">Location List</h1>
       <ShowAllLocations />
     </div>
   );

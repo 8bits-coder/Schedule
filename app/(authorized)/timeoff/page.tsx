@@ -1,7 +1,8 @@
 "use client";
-import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useState, type SubmitEvent, type ReactNode } from "react";
+import { value } from "valibot";
 
-type TimeOffType = "vacation" | "sick" | "personal" | "parental" | "bereavement" | "unpaid";
+type TimeOffType = "vacation" | "sick" | "personal" | "holiday" | "overtime_offset" | "unpaid";
 
 type Portion = "full" | "morning" | "afternoon";
 
@@ -44,28 +45,23 @@ const leaveTypes: Array<{
     description: "Short personal matters or urgent life events.",
   },
   {
-    value: "parental",
-    label: "Parental leave",
+    value: "holiday",
+    label: "Holiday",
     description: "Extended family or bonding leave.",
   },
   {
-    value: "bereavement",
-    label: "Bereavement",
-    description: "Time away for loss and related arrangements.",
-  },
-  {
-    value: "unpaid",
-    label: "Unpaid leave",
+    value: "overtime_offset",
+    label: "OTO",
     description: "Leave outside standard paid balances.",
   },
 ];
 
 const balances: Record<TimeOffType, number> = {
-  vacation: 14.5,
+  vacation: 20,
   sick: 8,
-  personal: 3,
-  parental: 60,
-  bereavement: 5,
+  personal: 1,
+  holiday: 60,
+  overtime_offset: 5.5,
   unpaid: 30,
 };
 
@@ -73,8 +69,8 @@ const policyNotes: Record<TimeOffType, string> = {
   vacation: "Vacation requests are typically approved based on team capacity and notice period.",
   sick: "Sick leave may be submitted retroactively if needed. Coverage details still help the team.",
   personal: "Personal days are best submitted early when coverage is required.",
-  parental: "Parental leave often requires an HR workflow and extended handoff planning.",
-  bereavement: "Bereavement leave can be updated later if exact dates change.",
+  holiday: "Holiday leave often requires an HR workflow and extended handoff planning.",
+  overtime_offset: "Overtime leave can be updated later if exact dates change.",
   unpaid: "Unpaid leave may require additional approval from HR or finance.",
 };
 
@@ -331,10 +327,10 @@ export default function TimeOffPage() {
   const readinessBarClass = readiness >= 100 ? "bg-emerald-500" : readiness >= 70 ? "bg-cyan-500" : "bg-amber-400";
 
   return (
-    <div className="container mx-auto py-4 text-slate-900">
-      <div className="mb-8 rounded-3xl border border-slate-200 bg-indigo-50 p-8 shadow-sm shadow-slate-200/60">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div>
+    <div className="container mx-auto not-sm:px-2 py-4 text-slate-900">
+      <div className="mb-8 rounded-3xl border border-slate-200 bg-indigo-50 shadow-sm shadow-slate-200/60">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between px-8">
+          <div className="py-10">
             <span className="inline-flex rounded-full border border-indigo-200 bg-indigo-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-indigo-800">
               Time Off Center
             </span>
@@ -342,21 +338,27 @@ export default function TimeOffPage() {
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Plan leave, coordinate coverage, and preview approval details before submitting.</p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="relative grid gap-3 sm:grid-cols-5 border rounded-xl pt-8 p-4 bg-indigo-100 drop-shadow-lg">
+            <span className="absolute -top-4 left-3 bg-white rounded-full px-3 py-1 text-sm border text-indigo-800 drop-shadow-lg">Total balance</span>
             <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Selected balance</p>
-              <p className="mt-2 text-2xl font-semibold text-slate-900">{formatDays(balances[form.type])} days</p>
-              <p className="mt-1 text-xs text-slate-500">{leaveTypes.find((item) => item.value === form.type)?.label}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{leaveTypes.find((item) => item.value === "vacation")?.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-900">{formatDays(balances["vacation"])} days</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Estimated duration</p>
-              <p className="mt-2 text-2xl font-semibold text-slate-900">{duration > 0 ? `${formatDays(duration)}d` : "—"}</p>
-              <p className="mt-1 text-xs text-slate-500">{isSingleDay && effectivePortion !== "full" ? "Half-day request" : "Business days only"}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{leaveTypes.find((item) => item.value === "overtime_offset")?.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-900">{formatDays(balances["overtime_offset"])} hours</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Return to work</p>
-              <p className="mt-2 text-2xl font-semibold text-slate-900">{form.endDate ? formatDisplayDateFromDate(returnDate).split(",")[0] : "—"}</p>
-              <p className="mt-1 text-xs text-slate-500">{form.endDate ? formatDisplayDateFromDate(returnDate) : "Select an end date"}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{leaveTypes.find((item) => item.value === "sick")?.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-900">{formatDays(balances["sick"])} days</p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{leaveTypes.find((item) => item.value === "personal")?.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-900">{formatDays(balances["personal"])} days</p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm shadow-slate-200/40">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{leaveTypes.find((item) => item.value === "holiday")?.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-900">{formatDays(balances["holiday"])} days</p>
             </div>
           </div>
         </div>

@@ -34,6 +34,11 @@ export async function GetAllItems() {
 export async function GetItemById(id: string) {
   const item = await prisma.item.findUnique({
     where: { id },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+    },
   });
   if (!item) {
     throw new Error("Item not found");
@@ -46,6 +51,11 @@ export async function UpdateItem(id: string, name: string, description: string) 
   const updatedItem = await prisma.item.update({
     where: { id },
     data: { name, description },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+    },
   });
   if (!updatedItem) {
     throw new Error("Failed to update item");
@@ -57,6 +67,11 @@ export async function UpdateItem(id: string, name: string, description: string) 
 export async function DeleteItem(id: string) {
   const deletedItem = await prisma.item.delete({
     where: { id },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+    },
   });
   if (!deletedItem) {
     throw new Error("Failed to delete item");

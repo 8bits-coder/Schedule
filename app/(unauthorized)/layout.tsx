@@ -9,7 +9,7 @@ export default function UnauthorizedPages({ children }: { children: React.ReactN
 
   if (isUserPending) {
     return (
-      <div className={cn("h-full place-content-center")}>
+      <div className={cn("h-full place-content-center grid justify-items-center")}>
         <RiLoader5Fill className="size-12 animate-spin" />
       </div>
     );

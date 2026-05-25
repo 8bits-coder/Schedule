@@ -52,7 +52,7 @@ const navItems = (pendingCount = 0) => [
 ];
 
 export default function TopBar() {
-  const { user, logout } = useAuth();
+  const { user, logout, isUserPending } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
 
@@ -64,9 +64,11 @@ export default function TopBar() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  if (isUserPending) return;
+
   return (
     <header className="bg-white border-b border-stone-200 shadow-sm sticky top-0 z-50">
-      <nav className="container mx-auto flex items-center justify-between py-4">
+      <nav className="container mx-auto not-sm:px-2 flex items-center justify-between py-4">
         {/* Brand */}
         <div className="flex items-center gap-2 mr-8">
           <div className="size-10 rounded-lg bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-sm shadow-indigo-200">

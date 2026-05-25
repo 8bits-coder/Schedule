@@ -5,9 +5,8 @@ import ShowAllItems from "./items";
 
 export default async function ItemsPage() {
   return (
-    <div className="p-8">
+    <div className="container mx-auto py-8 not-sm:px-2 space-y-8">
       <ItemForm />
-      <h1 className="text-3xl font-bold mb-6">Items List</h1>
       <ShowAllItems />
     </div>
   );

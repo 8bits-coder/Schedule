@@ -11,12 +11,13 @@ const ShowAllLocations = async () => {
 
   return (
     <div className="space-y-6">
+      <h1 className="text-3xl font-bold mb-6">Location List</h1>
       <p>
         Total: <span className="text-red-600">{locations.length}</span> {locations.length === 1 ? "location" : "locations"}
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
         {locations.map((location) => (
-          <div key={location.id} className="p-4 bg-white rounded-lg shadow border-l-4 border-blue-500 space-x-2">
+          <div key={location.id} className="flex flex-col p-4 bg-white rounded-lg shadow border-l-4 border-indigo-500 space-x-2">
             <strong className="text-lg text-gray-900">{location.name}</strong>
             <Button variant="outline" size="sm" className="mt-2">
               <Link href={`/locations/edit/${location.id}`}>Edit Location</Link>

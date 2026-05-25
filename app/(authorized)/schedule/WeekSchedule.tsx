@@ -159,7 +159,7 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
     <div>
       {/* ── Header ── */}
       <div className="border-b border-stone-200 bg-white py-4 shadow-sm">
-        <div className="container mx-auto flex flex-wrap items-center justify-between gap-4">
+        <div className="container mx-auto not-sm:px-2 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-stone-900">Weekly Schedule</h1>
             <p className="text-sm text-stone-500 mt-0.5 flex items-center gap-1.5">
@@ -226,7 +226,7 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
       </div>
 
       {/* ── Table ── */}
-      <div className="container mx-auto py-6 overflow-x-auto">
+      <div className="container mx-auto not-sm:px-2 py-6 overflow-x-auto">
         <div className="rounded-xl border border-stone-200 bg-white shadow-sm overflow-hidden">
           <table className="w-full border-collapse text-sm">
             <thead>

@@ -3,7 +3,7 @@
 import { Spinner } from "@/components/ui/spinner";
 import { push } from "@/lib/router";
 import { useParams } from "next/navigation";
-import { type ChangeEvent, type FormEvent, type ReactNode, useEffect, useEffectEvent, useState } from "react";
+import { type ChangeEvent, type SubmitEvent, type ReactNode, useEffect, useEffectEvent, useState } from "react";
 import { toast } from "sonner";
 
 type EditableEntity = {
@@ -77,7 +77,7 @@ export default function EditEntityPage<T extends EditableEntity>({
     });
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setError("");

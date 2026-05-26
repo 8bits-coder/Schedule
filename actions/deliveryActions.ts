@@ -4,7 +4,9 @@ import prisma from "../lib/prisma";
 import { headers } from "next/headers";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 
-export async function AddDeliveryReceipt(formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any }) {
+export async function AddDeliveryReceipt(
+  formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any },
+) {
   const user = await auth.api
     .getSession({
       headers: await headers(),
@@ -44,6 +46,8 @@ export async function GetDeliveryData() {
   ]);
   return { users, items, workLocations };
 }
+
+export type DeliveryDataResponse = Awaited<ReturnType<typeof GetDeliveryData>>;
 
 export async function GetDeliveryReceipts() {
   const user = await auth.api.getSession({

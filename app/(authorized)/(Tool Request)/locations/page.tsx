@@ -1,13 +1,14 @@
 "use server";
 
+import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 import LocationForm from "./form";
 import ShowAllLocations from "./locations";
 
 export default async function LocationPage() {
   return (
-    <div className="container mx-auto py-8 not-sm:px-2 space-y-8">
+    <BodyWrapper>
       <LocationForm />
       <ShowAllLocations />
-    </div>
+    </BodyWrapper>
   );
 }

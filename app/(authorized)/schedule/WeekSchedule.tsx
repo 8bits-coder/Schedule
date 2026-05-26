@@ -7,17 +7,47 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Clock, Pencil, Trash2, ChevronLeft, ChevronRight, CalendarDays, Copy, ClipboardPaste, X, Lock } from "lucide-react";
+import {
+  Plus,
+  Clock,
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  CalendarDays,
+  Copy,
+  ClipboardPaste,
+  X,
+  Lock,
+} from "lucide-react";
 import { useAuth } from "@/components/context/AuthContext";
 import { deleteSchedule, Employee, Shift, updateSchedule, WorkLocation } from "@/actions/schedule";
 import { ShiftEntry, shiftType } from "@/types/shift";
 import { DAYS, shiftTypes } from "./constants";
-import { addDays, formatDate, getISOWeekNumber, getWeekStart, isToday, ScheduleData, scheduleKey, toDateStr } from "./dateHelpers";
+import {
+  addDays,
+  formatDate,
+  getISOWeekNumber,
+  getWeekStart,
+  isToday,
+  ScheduleData,
+  scheduleKey,
+  toDateStr,
+} from "./dateHelpers";
 import { toast } from "sonner";
+import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function WeekSchedule({ employees, shifts, locations }: { employees: Employee[]; shifts: Shift[]; locations: WorkLocation[] }) {
+export default function WeekSchedule({
+  employees,
+  shifts,
+  locations,
+}: {
+  employees: Employee[];
+  shifts: Shift[];
+  locations: WorkLocation[];
+}) {
   const { isManager } = useAuth();
 
   const [weekStart, setWeekStart] = useState<Date>(() => getWeekStart(new Date()));
@@ -80,7 +110,10 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
     month: "long",
     year: "numeric",
   });
-  const monthLabel = startMonthStr === endMonthStr ? startMonthStr : `${weekStart.toLocaleDateString("en-US", { month: "short" })} – ${endMonthStr}`;
+  const monthLabel =
+    startMonthStr === endMonthStr
+      ? startMonthStr
+      : `${weekStart.toLocaleDateString("en-US", { month: "short" })} – ${endMonthStr}`;
 
   const openDialog = (empId: string, date: Date, dayLabel: string) => {
     if (!isManager) return;
@@ -156,10 +189,10 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
   const employee = editing ? employees.find((e) => e.id === editing.empId) : null;
 
   return (
-    <div>
+    <BodyWrapper>
       {/* ── Header ── */}
-      <div className="border-b border-stone-200 bg-white py-4 shadow-sm">
-        <div className="container mx-auto not-sm:px-2 flex flex-wrap items-center justify-between gap-4">
+      <div className="border-b border-stone-200 bg-white p-6 shadow-sm rounded-xl">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-stone-900">Weekly Schedule</h1>
             <p className="text-sm text-stone-500 mt-0.5 flex items-center gap-1.5">
@@ -176,7 +209,9 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
 
           {/* Week navigation */}
           <div className="flex items-center gap-2">
-            <button onClick={prevWeek} className="p-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 transition-colors">
+            <button
+              onClick={prevWeek}
+              className="p-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 transition-colors">
               <ChevronLeft className="size-4" />
             </button>
             <div className="text-center min-w-[170px]">
@@ -186,7 +221,9 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                 Week {weekNumber}
               </div>
             </div>
-            <button onClick={nextWeek} className="p-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 transition-colors">
+            <button
+              onClick={nextWeek}
+              className="p-1.5 rounded-lg border border-stone-200 hover:bg-stone-100 text-stone-600 transition-colors">
               <ChevronRight className="size-4" />
             </button>
             <button
@@ -204,7 +241,9 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                 <span>
                   <span className="font-semibold">{clipboard.entry.shiftType}</span>
                   copied
-                  {clipboard.entry.startTime ? ` · ${clipboard.entry.startTime}${clipboard.entry.endTime ? `–${clipboard.entry.endTime}` : ""}` : ""}
+                  {clipboard.entry.startTime
+                    ? ` · ${clipboard.entry.startTime}${clipboard.entry.endTime ? `–${clipboard.entry.endTime}` : ""}`
+                    : ""}
                   &nbsp;— click any empty cell to paste
                 </span>
                 <button onClick={clearClipboard} className="ml-1 p-0.5 rounded hover:bg-indigo-200 transition-colors">
@@ -226,7 +265,7 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
       </div>
 
       {/* ── Table ── */}
-      <div className="container mx-auto not-sm:px-2 py-6 overflow-x-auto">
+      <div className=" py-6 overflow-x-auto">
         <div className="rounded-xl border border-stone-200 bg-white shadow-sm overflow-hidden">
           <table className="w-full border-collapse text-sm">
             <thead>
@@ -239,8 +278,13 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                   const today = isToday(date);
                   const weekend = i === 0 || i === 6;
                   return (
-                    <th key={day} className={`px-3 py-2.5 text-center font-semibold min-w-[130px] ${weekend ? "bg-rose-50/60" : ""}`}>
-                      <div className={`text-xs uppercase tracking-wider font-semibold ${weekend ? "text-rose-400" : "text-stone-400"}`}>{day.slice(0, 3)}</div>
+                    <th
+                      key={day}
+                      className={`px-3 py-2.5 text-center font-semibold min-w-[130px] ${weekend ? "bg-rose-50/60" : ""}`}>
+                      <div
+                        className={`text-xs uppercase tracking-wider font-semibold ${weekend ? "text-rose-400" : "text-stone-400"}`}>
+                        {day.slice(0, 3)}
+                      </div>
                       <div
                         className={`mt-1 mx-auto flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold
                         ${today ? "bg-indigo-600 text-white shadow-md shadow-indigo-200" : weekend ? "text-rose-500" : "text-stone-700"}`}>
@@ -320,7 +364,8 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                                 COPIED
                               </div>
                             )}
-                            <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold mb-1 ${colors!.badge}`}>
+                            <span
+                              className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold mb-1 ${colors!.badge}`}>
                               {entry.locationName ? `${entry.locationName}` : entry.shiftType}
                             </span>
                             {entry.startTime && (
@@ -332,7 +377,9 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
                                 </span>
                               </div>
                             )}
-                            <div className="text-[10px] text-stone-400 mt-0.5 truncate max-w-[110px]">{entry.notes || "N/A"}</div>
+                            <div className="text-[10px] text-stone-400 mt-0.5 truncate max-w-[110px]">
+                              {entry.notes || "N/A"}
+                            </div>
                             {/* Manager-only hover toolbar */}
                             {isManager && hovered && (
                               <div className="absolute top-1 right-1 flex gap-0.5 z-10">
@@ -454,11 +501,21 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-1.5">
                   <Label htmlFor="startTime">Start Time</Label>
-                  <Input id="startTime" type="time" value={form.startTime} onChange={(e) => setForm((f) => ({ ...f, startTime: e.target.value }))} />
+                  <Input
+                    id="startTime"
+                    type="time"
+                    value={form.startTime}
+                    onChange={(e) => setForm((f) => ({ ...f, startTime: e.target.value }))}
+                  />
                 </div>
                 <div className="grid gap-1.5">
                   <Label htmlFor="endTime">End Time</Label>
-                  <Input id="endTime" type="time" value={form.endTime} onChange={(e) => setForm((f) => ({ ...f, endTime: e.target.value }))} />
+                  <Input
+                    id="endTime"
+                    type="time"
+                    value={form.endTime}
+                    onChange={(e) => setForm((f) => ({ ...f, endTime: e.target.value }))}
+                  />
                 </div>
               </div>
               <div className="grid gap-1.5">
@@ -501,13 +558,16 @@ export default function WeekSchedule({ employees, shifts, locations }: { employe
               <Button variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={saveEntry} disabled={!form.shiftType} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+              <Button
+                onClick={saveEntry}
+                disabled={!form.shiftType}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white">
                 Save Shift
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       )}
-    </div>
+    </BodyWrapper>
   );
 }

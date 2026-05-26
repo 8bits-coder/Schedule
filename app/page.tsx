@@ -1,10 +1,11 @@
 "use client";
 import { useAuth } from "@/components/context/AuthContext";
+import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 
 export default function Home() {
   const { user } = useAuth();
   return (
-    <div className="container mx-auto py-4 not-sm:px-2 space-y-8">
+    <BodyWrapper>
       <div className="animate-fade-in">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome, {user?.name || "Manager"}</h1>
         <p className="text-lg text-gray-600">Manage your team shifts efficiently</p>
@@ -41,13 +42,15 @@ export default function Home() {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Today's Schedule</h2>
         <div className="space-y-3">
           {[1, 2, 3].map((item) => (
-            <div key={item} className="flex items-center justify-between p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
+            <div
+              key={item}
+              className="flex items-center justify-between p-4 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
               <span className="text-gray-700">Shift {item}</span>
               <span className="text-sm text-gray-500">9:00 AM - 5:00 PM</span>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </BodyWrapper>
   );
 }

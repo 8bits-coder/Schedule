@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { AuthProvider } from "@/components/context/AuthContext";
-import { GlobalRouterProvider } from "@/lib/router";
 import { Toaster } from "@/components/ui/sonner";
 import TopBar from "@/components/custom/header/TopBar";
 
@@ -35,16 +33,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, geistMonoHeading.variable)}>
-      <AuthProvider>
-        <body className="h-full flex flex-col bg-gray-100">
-          <TopBar />
-          <main className="flex-1 grid">{children}</main>
-          <footer className="text-center text-xs bg-white text-stone-400 py-4">&copy; {new Date().getFullYear()} ShiftManager. All rights reserved.</footer>
-          <Toaster position="top-right" richColors />
-        </body>
-        <GlobalRouterProvider />
-      </AuthProvider>
+    <html
+      lang="en"
+      className={cn(
+        "h-full antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        inter.variable,
+        geistMonoHeading.variable,
+      )}>
+      <body className="h-full flex flex-col bg-gray-100">
+        <TopBar />
+        <main className="flex-1 grid">{children}</main>
+        <footer className="text-center text-xs bg-white text-stone-400 py-4">
+          &copy; {new Date().getFullYear()} ShiftManager. All rights reserved.
+        </footer>
+        <Toaster position="top-right" richColors />
+      </body>
     </html>
   );
 }

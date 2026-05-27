@@ -1,9 +1,9 @@
-"use client";
-import { useAuth } from "@/components/context/AuthContext";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import { getServerUser } from "@/lib/server-session";
 
-export default function Home() {
-  const { user } = useAuth();
+export default async function Home() {
+  const user = await getServerUser();
+
   return (
     <BodyWrapper>
       <div className="animate-fade-in">

@@ -20,7 +20,6 @@ import {
   X,
   Lock,
 } from "lucide-react";
-import { useAuth } from "@/components/context/AuthContext";
 import { deleteSchedule, Employee, Shift, updateSchedule, WorkLocation } from "@/actions/schedule";
 import { ShiftEntry, shiftType } from "@/types/shift";
 import { DAYS, shiftTypes } from "./constants";
@@ -43,13 +42,13 @@ export default function WeekSchedule({
   employees,
   shifts,
   locations,
+  isManager,
 }: {
   employees: Employee[];
   shifts: Shift[];
   locations: WorkLocation[];
+  isManager: boolean;
 }) {
-  const { isManager } = useAuth();
-
   const [weekStart, setWeekStart] = useState<Date>(() => getWeekStart(new Date()));
   const [schedule, setSchedule] = useState<ScheduleData>({});
   const [open, setOpen] = useState(false);

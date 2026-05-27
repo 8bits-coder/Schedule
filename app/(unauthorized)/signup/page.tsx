@@ -8,9 +8,10 @@ import { Schema, SignUpSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { authClient } from "@/lib/auth-client";
-import { push } from "@/lib/router";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<Schema>({
@@ -38,7 +39,7 @@ export default function SignupPage() {
           setLoading(false);
         },
         onSuccess: () => {
-          push("/login");
+          router.push("/login");
         },
         onError: (error) => {
           console.error(error);
@@ -63,7 +64,13 @@ export default function SignupPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-name">Full Name</FieldLabel>
-                    <Input {...field} id="form-rhf-demo-name" aria-invalid={fieldState.invalid} placeholder="John Doe" autoComplete="off" />
+                    <Input
+                      {...field}
+                      id="form-rhf-demo-name"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="John Doe"
+                      autoComplete="off"
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
@@ -76,7 +83,13 @@ export default function SignupPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-email">Email</FieldLabel>
-                    <Input {...field} id="form-rhf-demo-email" aria-invalid={fieldState.invalid} placeholder="john@example.com" autoComplete="off" />
+                    <Input
+                      {...field}
+                      id="form-rhf-demo-email"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="john@example.com"
+                      autoComplete="off"
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
@@ -89,7 +102,14 @@ export default function SignupPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-password">Password</FieldLabel>
-                    <Input {...field} id="form-rhf-demo-password" type="password" aria-invalid={fieldState.invalid} placeholder="••••••••" autoComplete="off" />
+                    <Input
+                      {...field}
+                      id="form-rhf-demo-password"
+                      type="password"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="••••••••"
+                      autoComplete="off"
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}

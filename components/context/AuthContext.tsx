@@ -1,33 +1,20 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  ReactNode,
-  useState,
-  useEffect,
-} from "react";
+import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
-import { AuthUser } from "@/types/session";
-import { push } from "@/lib/router";
-import { Role } from "@/prisma/generated/prisma/enums";
+import { useRouter } from "next/navigation";
 
 interface AuthContextValue {
-  user: AuthUser | null;
   login: (email: string, password: string) => void;
   logout: () => void;
-  isUserPending: boolean;
   isRequestSubmitting: boolean;
   loginError: string | null;
-  isManager: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { data, isPending } = authClient.useSession();
-  const user: AuthUser | null = data?.user ?? null;
-  const isManager = user?.role === Role.ADMIN;
+  const router = useRouter();
   const [isRequestSubmitting, setRequestSubmitting] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -55,12 +42,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setRequestSubmitting(false);
         },
         onSuccess: () => {
-          push("/");
+          // router.push("/");
+          router.refresh();
         },
         onError: (error) => {
-          setLoginError(
-            error?.error?.message ?? "An error occurred while logging in.",
-          );
+          setLoginError(error?.error?.message ?? "An error occurred while logging in.");
         },
       },
     );
@@ -70,7 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return authClient.signOut(
       {},
       {
-        onSuccess: () => push("/"),
+        // onSuccess: () => router.push("/"),
+        onSuccess: () => router.refresh(),
         onError: () => {
           console.error("An error occurred while logging out.");
         },
@@ -81,15 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
-        user,
         login,
         logout,
-        isUserPending: isPending,
         isRequestSubmitting,
         loginError,
-        isManager,
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );

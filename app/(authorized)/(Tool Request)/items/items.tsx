@@ -11,7 +11,6 @@ const ShowAllItems = async () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold mb-6">Items List</h1>
       <p>
         Total: <span className="text-red-600">{items.length}</span> {items.length === 1 ? "item" : "items"}
       </p>
@@ -21,7 +20,7 @@ const ShowAllItems = async () => {
           .map((item) => (
             <div
               key={item.id}
-              className="p-4 bg-white rounded-lg drop-shadow-lg border-l-4 border-indigo-500 flex flex-col justify-between">
+              className="p-4 bg-white rounded-lg shadow-md border-l-4 border-indigo-500 flex flex-col justify-between">
               <strong className="text-lg text-gray-900">{item.name}</strong>
               <p className="text-gray-600 mt-1">{item.description}</p>
               <Button variant="outline" size="sm" className="mt-2">

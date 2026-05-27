@@ -1,5 +1,7 @@
 "use client";
 
+import BackButton from "@/components/custom/BackButton";
+import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
 import { push } from "@/lib/router";
 import { useParams } from "next/navigation";
@@ -118,40 +120,43 @@ export default function EditEntityPage<T extends EditableEntity>({
   }
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <div className="flex gap-x-2 items-center">
-        <h1 className="text-2xl font-bold mb-4">{title}</h1>
-      </div>
+    <BodyWrapper>
+      <BackButton />
+      <div className="bg-white max-w-lg mx-auto p-8 rounded-lg shadow">
+        <div className="flex gap-x-2 items-center">
+          <h1 className="text-2xl font-bold mb-4">{title}</h1>
+        </div>
 
-      {!formData ? (
-        error ? (
-          <div className="text-red-600 mb-4">{error}</div>
+        {!formData ? (
+          error ? (
+            <div className="text-red-600 mb-4">{error}</div>
+          ) : (
+            <div className="h-full flex items-center justify-center">
+              <Spinner className="size-8" />
+            </div>
+          )
         ) : (
-          <div className="h-full flex items-center justify-center">
-            <Spinner className="size-8" />
-          </div>
-        )
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error ? <div className="text-red-600">{error}</div> : null}
-          {renderFields({ formData, handleChange, loading })}
-          <div className="space-y-2">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50">
-              {loading ? "Saving..." : "Save"}
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={loading}
-              className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 disabled:opacity-50">
-              Delete
-            </button>
-          </div>
-        </form>
-      )}
-    </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error ? <div className="text-red-600">{error}</div> : null}
+            {renderFields({ formData, handleChange, loading })}
+            <div className="flex gap-x-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-50 ring py-2 rounded-md hover:shadow-md hover:shadow-blue-300 text-blue-600 disabled:opacity-50">
+                {loading ? "Updating..." : "Update"}
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={loading}
+                className="w-full bg-red-50 ring py-2 rounded-md hover:shadow-md hover:shadow-red-300 text-red-600 disabled:opacity-50">
+                Delete
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </BodyWrapper>
   );
 }

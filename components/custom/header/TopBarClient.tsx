@@ -1,18 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import type { ComponentType, ForwardRefExoticComponent, RefAttributes, SVGProps } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, CalendarDays, LucideProps } from "lucide-react";
+import { LogOut, CalendarDays } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { authClient } from "@/lib/auth-client";
 
 type NavItem = {
   href: string;
   label: string;
-  //   icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   badge: number;
 };
 

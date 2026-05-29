@@ -1,5 +1,5 @@
 import { GetAllLocations } from "@/actions/locationActions";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllLocations = async () => {
@@ -22,11 +22,13 @@ const ShowAllLocations = async () => {
           .map((location) => (
             <div
               key={location.id}
-              className="flex flex-col justify-between p-4 bg-white rounded-lg shadow border-l-4 border-indigo-500 space-x-2">
+              className="flex flex-col justify-between p-4 bg-white rounded-lg shadow border-l-4 border-indigo-500 space-y-4">
               <strong className="text-lg text-gray-900">{location.name}</strong>
-              <Button variant="outline" size="sm" className="mt-2">
-                <Link href={`/locations/edit/${location.id}`}>Edit Location</Link>
-              </Button>
+              <Link href={`/locations/edit/${location.id}`}>
+                <Button variant="outline" className={"w-full"}>
+                  Edit Location
+                </Button>
+              </Link>
             </div>
           ))}
       </div>

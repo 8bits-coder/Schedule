@@ -1,5 +1,5 @@
 import { GetAllItems } from "@/actions/itemActions";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllItems = async () => {
@@ -20,12 +20,14 @@ const ShowAllItems = async () => {
           .map((item) => (
             <div
               key={item.id}
-              className="p-4 bg-white rounded-lg shadow-md border-l-4 border-indigo-500 flex flex-col justify-between">
+              className="p-4 bg-white rounded-lg shadow-md border-l-4 border-indigo-500 flex flex-col justify-between space-y-4">
               <strong className="text-lg text-gray-900">{item.name}</strong>
-              <p className="text-gray-600 mt-1">{item.description}</p>
-              <Button variant="outline" size="sm" className="mt-2">
-                <Link href={`/items/edit/${item.id}`}>Edit Item</Link>
-              </Button>
+              <p className="text-gray-600">{item.description}</p>
+              <Link href={`/items/edit/${item.id}`}>
+                <Button variant="outline" className={"w-full"}>
+                  Edit Item
+                </Button>
+              </Link>
             </div>
           ))}
       </div>

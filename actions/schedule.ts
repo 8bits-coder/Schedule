@@ -1,23 +1,21 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { ShiftType } from "@/prisma/generated/prisma/browser";
+import { ShiftType } from "@/prisma/generated/prisma/enums";
 import { ShiftEntry } from "@/types/shift";
 
-export async function updateSchedule(
-  empId: string,
-  dateStr: string,
-  shiftEntry: ShiftEntry,
-) {
+export async function updateSchedule(shiftEntry: ShiftEntry) {
+  // return console.log({ shiftEntry });
   const data = await prisma.shift.upsert({
     where: {
       userId_shiftDate: {
-        userId: empId,
-        shiftDate: new Date(dateStr),
+        userId: shiftEntry.userId,
+        shiftDate: new Date(shiftEntry.shiftDate),
       },
     },
     create: {
-      userId: empId,
-      shiftDate: new Date(dateStr),
+      // ...shiftEntry,
+      userId: shiftEntry.userId,
+      shiftDate: new Date(shiftEntry.shiftDate),
       shiftType: shiftEntry.shiftType as ShiftType,
       startTime: shiftEntry.startTime,
       endTime: shiftEntry.endTime,
@@ -25,6 +23,7 @@ export async function updateSchedule(
       notes: shiftEntry.notes,
     },
     update: {
+      // ...shiftEntry,
       shiftType: shiftEntry.shiftType as ShiftType,
       startTime: shiftEntry.startTime,
       endTime: shiftEntry.endTime,
@@ -68,10 +67,6 @@ export async function getSchedule() {
   return { employees, shifts, locations };
 }
 
-export type Employee = Awaited<
-  ReturnType<typeof getSchedule>
->["employees"][number];
+export type Employee = Awaited<ReturnType<typeof getSchedule>>["employees"][number];
 export type Shift = Awaited<ReturnType<typeof getSchedule>>["shifts"][number];
-export type WorkLocation = Awaited<
-  ReturnType<typeof getSchedule>
->["locations"][number];
+export type WorkLocation = Awaited<ReturnType<typeof getSchedule>>["locations"][number];

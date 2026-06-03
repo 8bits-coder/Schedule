@@ -142,7 +142,7 @@ export default function WeekSchedule({
       [scheduleKey(editing.empId, editing.dateStr)]: form,
     }));
     setOpen(false);
-    await updateSchedule(editing.empId, editing.dateStr, form)
+    await updateSchedule(form)
       .then(() => {
         toast.success("Schedule updated successfully");
       })
@@ -181,7 +181,7 @@ export default function WeekSchedule({
     setSchedule((prev) => ({ ...prev, [key]: { ...clipboard.entry } }));
     setPasteFlash(key);
     setTimeout(() => setPasteFlash(null), 600);
-    await updateSchedule(empId, dateStr, clipboard.entry);
+    await updateSchedule(clipboard.entry);
   };
 
   const clearClipboard = () => setClipboard(null);

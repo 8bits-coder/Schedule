@@ -1,6 +1,6 @@
 import { pipe, string, nonEmpty, email, object, InferOutput } from "valibot";
 
-export const LoginSchema = object({
+export const Schema = object({
   email: pipe(
     string(),
     nonEmpty("Please enter your email."),
@@ -9,4 +9,4 @@ export const LoginSchema = object({
   password: pipe(string(), nonEmpty("Please enter your password.")),
 });
 
-export type Schema = InferOutput<typeof LoginSchema>;
+export type LoginSchema = InferOutput<typeof Schema>;

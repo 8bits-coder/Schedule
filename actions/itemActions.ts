@@ -1,8 +1,10 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAuthenticatedUserId } from "./user";
 
 export async function AddItem(FormData: FormData) {
+  await requireAuthenticatedUserId();
   const name = FormData.get("name") as string;
   const description = FormData.get("description") as string;
   if (!name) {
@@ -24,14 +26,22 @@ export async function AddItem(FormData: FormData) {
 }
 
 export async function GetAllItems() {
-  const items = await prisma.item.findMany();
-  if (!items) {
-    throw new Error("No items found");
-  }
-  return items;
+  await requireAuthenticatedUserId();
+
+  return prisma.item.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
 }
 
 export async function GetItemById(id: string) {
+  await requireAuthenticatedUserId();
   const item = await prisma.item.findUnique({
     where: { id },
     select: {
@@ -48,6 +58,7 @@ export async function GetItemById(id: string) {
 }
 
 export async function UpdateItem(id: string, name: string, description: string) {
+  await requireAuthenticatedUserId();
   const updatedItem = await prisma.item.update({
     where: { id },
     data: { name, description },
@@ -65,6 +76,7 @@ export async function UpdateItem(id: string, name: string, description: string) 
 }
 
 export async function DeleteItem(id: string) {
+  await requireAuthenticatedUserId();
   const deletedItem = await prisma.item.delete({
     where: { id },
     select: {

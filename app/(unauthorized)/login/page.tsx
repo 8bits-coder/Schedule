@@ -10,16 +10,16 @@ import { useAuth } from "@/components/context/AuthContext";
 
 export default function LoginPage() {
   const { login, isRequestSubmitting, loginError } = useAuth();
-  const form = useForm<Schema>({
+  const form = useForm<LoginSchema>({
     mode: "onChange",
-    resolver: valibotResolver(LoginSchema),
+    resolver: valibotResolver(Schema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (data: Schema) => {
+  const onSubmit = (data: LoginSchema) => {
     login(data.email, data.password);
   };
 

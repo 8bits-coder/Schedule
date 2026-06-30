@@ -1,21 +1,14 @@
 "use server";
-import { auth } from "@/lib/auth";
 import prisma from "../lib/prisma";
-import { headers } from "next/headers";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
+import { requireAuthenticatedUserId } from "./user";
+
+
 
 export async function AddDeliveryReceipt(
   formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any },
 ) {
-  const user = await auth.api
-    .getSession({
-      headers: await headers(),
-    })
-    .then((session) => session?.user);
-
-  if (!user?.id) {
-    throw new Error("Unauthorized");
-  }
+  const userId = await requireAuthenticatedUserId();
 
   return prisma.deliveryReceipt.create({
     data: {
@@ -26,39 +19,37 @@ export async function AddDeliveryReceipt(
       quantity: formData.quantity,
       receivedPersonId: formData.receivedPersonId,
       receivedPersonTitle: formData.receivedPersonTitle,
-      deliveryPersonId: user.id,
+      deliveryPersonId: userId,
       deliveryDate: formData.deliveryDate,
     },
   });
 }
 
 export async function GetDeliveryData() {
-  const user = await auth.api.getSession({
-    headers: await headers(),
-  });
-  if (!user) {
-    throw new Error("Unauthorized");
-  }
+  await requireAuthenticatedUserId();
+
+  const idNameSelect = {
+    id: true,
+    name: true,
+  } as const;
+
   const [users, items, workLocations] = await Promise.all([
-    prisma.user.findMany().then((users) => users.map((user) => ({ id: user.id, name: user.name }))),
-    prisma.item.findMany().then((items) => items.map((item) => ({ id: item.id, name: item.name }))),
-    prisma.workLocation.findMany().then((locations) => locations.map((loc) => ({ id: loc.id, name: loc.name }))),
+    prisma.user.findMany({ select: idNameSelect, orderBy: { name: "asc" } }),
+    prisma.item.findMany({ select: idNameSelect, orderBy: { name: "asc" } }),
+    prisma.workLocation.findMany({ select: idNameSelect, orderBy: { name: "asc" } }),
   ]);
+
   return { users, items, workLocations };
 }
 
 export type DeliveryDataResponse = Awaited<ReturnType<typeof GetDeliveryData>>;
 
 export async function GetDeliveryReceipts() {
-  const user = await auth.api.getSession({
-    headers: await headers(),
-  });
-  if (!user?.user?.id) {
-    throw new Error("Unauthorized");
-  }
+  const userId = await requireAuthenticatedUserId();
+
   return prisma.deliveryReceipt.findMany({
     where: {
-      deliveryPersonId: user.user.id,
+      deliveryPersonId: userId,
     },
     include: {
       item: {

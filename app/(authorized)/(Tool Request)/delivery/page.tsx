@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { AddDeliveryReceipt, DeliveryDataResponse, GetDeliveryData } from "@/actions/deliveryActions";
+import { DeliveryDataResponse, LoadEntities } from "@/actions/deliveryActions";
 import {
   Select,
   SelectContent,
@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import { executeTask } from "@/actions/functions";
 
 const defaultFormData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any } = {
   itemId: "",
@@ -37,17 +38,19 @@ export default function DeliveryPage() {
   const [receivedPerson, setReceivedPerson] = useState<DeliveryDataResponse["users"]>([]);
   const [formData, setFormData] = useState<typeof defaultFormData>(defaultFormData);
 
-  const fetchItem = async () => {
-    try {
-      const { users, items, workLocations } = await GetDeliveryData();
-      setItems(items);
-      setWorkLocations(workLocations);
-      setReceivedPerson(users);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "An error occurred");
-    }
-  };
   useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = (await executeTask<DeliveryDataResponse>("getDeliveryData", {})).data;
+        if (response) {
+          setItems(response.items);
+          setWorkLocations(response.workLocations);
+          setReceivedPerson(response.users);
+        }
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "An error occurred");
+      }
+    };
     fetchItem();
   }, []);
 
@@ -61,7 +64,7 @@ export default function DeliveryPage() {
     setLoading(true);
 
     try {
-      const response = await AddDeliveryReceipt(formData);
+      const response = await executeTask("addDeliveryReceipt", formData);
 
       if (response) {
         setFormData(defaultFormData);

@@ -3,9 +3,7 @@ import prisma from "../lib/prisma";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 import { requireAuthenticatedUserId } from "./user";
 
-
-
-export async function AddDeliveryReceipt(
+export async function SubmitReceipt(
   formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any },
 ) {
   const userId = await requireAuthenticatedUserId();
@@ -25,26 +23,26 @@ export async function AddDeliveryReceipt(
   });
 }
 
-export async function GetDeliveryData() {
+const BASE_SELECT = {
+  id: true,
+  name: true,
+} as const;
+
+export async function LoadEntities() {
   await requireAuthenticatedUserId();
 
-  const idNameSelect = {
-    id: true,
-    name: true,
-  } as const;
-
   const [users, items, workLocations] = await Promise.all([
-    prisma.user.findMany({ select: idNameSelect, orderBy: { name: "asc" } }),
-    prisma.item.findMany({ select: idNameSelect, orderBy: { name: "asc" } }),
-    prisma.workLocation.findMany({ select: idNameSelect, orderBy: { name: "asc" } }),
+    prisma.user.findMany({ select: BASE_SELECT, orderBy: { name: "asc" } }),
+    prisma.item.findMany({ select: BASE_SELECT, orderBy: { name: "asc" } }),
+    prisma.workLocation.findMany({ select: BASE_SELECT, orderBy: { name: "asc" } }),
   ]);
 
   return { users, items, workLocations };
 }
 
-export type DeliveryDataResponse = Awaited<ReturnType<typeof GetDeliveryData>>;
+export type DeliveryDataResponse = Awaited<ReturnType<typeof LoadEntities>>;
 
-export async function GetDeliveryReceipts() {
+export async function LoadReceipts() {
   const userId = await requireAuthenticatedUserId();
 
   return prisma.deliveryReceipt.findMany({
@@ -71,4 +69,4 @@ export async function GetDeliveryReceipts() {
   });
 }
 
-export type DeliveryReceiptType = Awaited<ReturnType<typeof GetDeliveryReceipts>>[number];
+export type DeliveryReceiptType = Awaited<ReturnType<typeof LoadReceipts>>[number];

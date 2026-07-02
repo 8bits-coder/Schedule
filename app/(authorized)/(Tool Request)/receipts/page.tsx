@@ -1,6 +1,6 @@
 "use client";
 
-import { DeliveryReceiptType, GetDeliveryReceipts } from "@/actions/deliveryActions";
+import { DeliveryReceiptType, LoadReceipts } from "@/actions/deliveryActions";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
 import { useState, useEffect } from "react";
@@ -13,7 +13,7 @@ export default function ReceiptsPage() {
   async function fetchReceipts() {
     try {
       setLoading(true);
-      const receipts = await GetDeliveryReceipts();
+      const receipts = await LoadReceipts();
       setReceipts(receipts);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");

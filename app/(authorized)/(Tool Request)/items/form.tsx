@@ -1,25 +1,19 @@
 "use client";
+import { createFormSubmitHandler } from "../_components/createFormSubmitHandler";
 import { AddItem } from "@/actions/itemActions";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 
 const ItemForm = () => {
   const [showForm, setShowForm] = useState(false);
 
-  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    AddItem(formData)
-      .then(() => {
-        toast.success("Item added successfully!");
-        setShowForm(false);
-      })
-      .catch((error) => {
-        toast.error("Error adding item: " + error.message);
-      });
-  }
+  const handleSubmit = createFormSubmitHandler({
+    action: AddItem,
+    successMessage: "Item added successfully!",
+    errorPrefix: "Error adding item: ",
+    onSuccess: () => setShowForm(false),
+  });
   return (
     <div className="max-w-max bg-gray-200 border border-gray-300 drop-shadow-lg rounded-xl p-4">
       <button

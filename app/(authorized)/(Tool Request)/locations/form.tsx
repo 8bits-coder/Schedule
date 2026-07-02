@@ -1,25 +1,19 @@
 "use client";
+import { createFormSubmitHandler } from "../_components/createFormSubmitHandler";
 import { AddLocation } from "@/actions/locationActions";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 
 const LocationForm = () => {
   const [showForm, setShowForm] = useState(false);
 
-  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    AddLocation(formData)
-      .then(() => {
-        toast.success("Location added successfully!");
-        setShowForm(false);
-      })
-      .catch((error) => {
-        toast.error("Error adding location: " + error.message);
-      });
-  }
+  const handleSubmit = createFormSubmitHandler({
+    action: AddLocation,
+    successMessage: "Location added successfully!",
+    errorPrefix: "Error adding location: ",
+    onSuccess: () => setShowForm(false),
+  });
   return (
     <div>
       <button

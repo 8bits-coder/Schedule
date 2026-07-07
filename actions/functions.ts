@@ -8,8 +8,6 @@ const functionRegistry = {
   addDeliveryReceipt: (args: {
     formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any };
   }) => {
-    // console.log("Executing addDeliveryReceipt with args:", args.formData);
-    // return;
     return delivery.SubmitReceipt(args.formData);
   },
   getDeliveryData: (args: Record<string, never>) => {
@@ -53,10 +51,8 @@ const functionRegistry = {
 // 2. The Universal Executor Wrapper
 export async function executeTask<T extends FunctionName>(
   functionName: T,
-  payload: Parameters<FunctionRegistry[T]>[0],
+  payload: Parameters<FunctionRegistry[T]>[0] | undefined = undefined,
 ): Promise<{ success: boolean; data: FunctionResult<T>; error: string | null }> {
-  // console.log(`Executing task: ${functionName} with payload:`, payload);
-  // return new Promise((resolve) => {});
   try {
     // Check if the requested function exists in our environment-agnostic registry
     const targetFunction = functionRegistry[functionName];
@@ -93,5 +89,5 @@ export async function executeTask<T extends FunctionName>(
 }
 
 type FunctionRegistry = typeof functionRegistry;
-type FunctionName = keyof FunctionRegistry;
+export type FunctionName = keyof FunctionRegistry;
 type FunctionResult<T extends FunctionName> = Awaited<ReturnType<FunctionRegistry[T]>>;

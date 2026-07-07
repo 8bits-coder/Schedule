@@ -40,17 +40,15 @@ export default function DeliveryPage() {
 
   useEffect(() => {
     const fetchItem = async () => {
-      try {
-        const response = await executeTask("getDeliveryData", {});
-        if (response.success && response.data) {
-          setItems(response.data.items);
-          setWorkLocations(response.data.workLocations);
-          setReceivedPerson(response.data.users);
-        } else {
-          toast.error(response.error || "Failed to fetch delivery data");
-        }
-      } catch (err) {
-        toast.error(err instanceof Error ? err.message : "An error occurred");
+      const response = await executeTask("getDeliveryData");
+      if (response.error) {
+        toast.error(response.error || "Failed to fetch delivery data");
+        return;
+      }
+      if (response.success && response.data) {
+        setItems(response.data.items);
+        setWorkLocations(response.data.workLocations);
+        setReceivedPerson(response.data.users);
       }
     };
     fetchItem();

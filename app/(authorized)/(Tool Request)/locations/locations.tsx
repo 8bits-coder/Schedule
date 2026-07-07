@@ -1,11 +1,11 @@
-import { GetAllLocations } from "@/actions/locationActions";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { executeTask } from "@/actions/functions";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllLocations = async () => {
-  const locations = await GetAllLocations();
+  const { success, data: locations, error } = await executeTask("getAllLocations");
 
-  if (!locations) {
+  if (!locations || locations.length === 0 || error || !success) {
     return <div>No locations found.</div>;
   }
 

@@ -14,12 +14,12 @@ export default function ReceiptsPage() {
   async function fetchReceipts() {
     try {
       setLoading(true);
-      const response = await executeTask("getDeliveryReceipts", {});
-      if (!response.success) {
-        toast.error(response.error || "Failed to fetch receipts");
+      const { success, data: receipts, error } = await executeTask("getDeliveryReceipts");
+      if (!receipts || receipts.length === 0 || error || !success) {
+        toast.error(error || "Failed to fetch receipts");
         return;
       }
-      setReceipts(response.data);
+      setReceipts(receipts);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred");
       setLoading(false);

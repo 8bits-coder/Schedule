@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const ShowAllItems = async () => {
   try {
-    const { success, data: items, error } = await executeTask("getAllItems", {});
+    const { success, data: items, error } = await executeTask("getAllItems");
 
-    if (items.length === 0) {
+    if (!items || items.length === 0 || error || !success) {
       return <div className="text-sm text-muted-foreground">No items found.</div>;
     }
 

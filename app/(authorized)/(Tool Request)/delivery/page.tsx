@@ -41,11 +41,13 @@ export default function DeliveryPage() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = (await executeTask<DeliveryDataResponse>("getDeliveryData", {})).data;
-        if (response) {
-          setItems(response.items);
-          setWorkLocations(response.workLocations);
-          setReceivedPerson(response.users);
+        const response = await executeTask("getDeliveryData", {});
+        if (response.success && response.data) {
+          setItems(response.data.items);
+          setWorkLocations(response.data.workLocations);
+          setReceivedPerson(response.data.users);
+        } else {
+          toast.error(response.error || "Failed to fetch delivery data");
         }
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "An error occurred");
@@ -64,11 +66,15 @@ export default function DeliveryPage() {
     setLoading(true);
 
     try {
-      const response = await executeTask("addDeliveryReceipt", formData);
+      // console.log("Submitting form data:", formData);
+      // return;
+      const response = await executeTask("addDeliveryReceipt", { formData });
 
-      if (response) {
+      if (response.success) {
         setFormData(defaultFormData);
         toast.success("Delivery receipt added successfully!");
+      } else {
+        toast.error(response.error || "Failed to add delivery receipt");
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "An error occurred");

@@ -1,5 +1,6 @@
 "use client";
 
+import { executeTask } from "@/actions/functions";
 import BackButton from "@/components/custom/BackButton";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
@@ -21,7 +22,7 @@ type EditEntityPageProps<T extends EditableEntity> = {
   saveSuccessMessage: string;
   deleteSuccessMessage: string;
   deleteConfirmationMessage: string;
-  loadEntity: (id: string) => Promise<T>;
+  funcName: string;
   saveEntity: (formData: T) => Promise<unknown>;
   deleteEntity: (id: string) => Promise<unknown>;
   renderFields: (args: { formData: T; handleChange: (event: FieldChangeEvent) => void; loading: boolean }) => ReactNode;
@@ -33,7 +34,7 @@ export default function EditEntityPage<T extends EditableEntity>({
   saveSuccessMessage,
   deleteSuccessMessage,
   deleteConfirmationMessage,
-  loadEntity,
+  funcName,
   saveEntity,
   deleteEntity,
   renderFields,
@@ -55,8 +56,8 @@ export default function EditEntityPage<T extends EditableEntity>({
     try {
       setError("");
       setFormData(undefined);
-      const response = await loadEntity(id);
-      setFormData(response);
+      const response = await executeTask(funcName as any, { id });
+      setFormData(response.data as unknown as T);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     }

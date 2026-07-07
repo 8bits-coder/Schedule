@@ -1,5 +1,5 @@
 "use client";
-import { DeleteItem, GetItemById, ItemByIdResponse, UpdateItem } from "@/actions/itemActions";
+import { DeleteItem, ItemByIdResponse, UpdateItem } from "@/actions/itemActions";
 import EditEntityPage from "../../../_components/EditEntityPage";
 
 export default function EditItemPage() {
@@ -10,7 +10,7 @@ export default function EditItemPage() {
       saveSuccessMessage="Item updated successfully!"
       deleteSuccessMessage="Item deleted successfully!"
       deleteConfirmationMessage="Are you sure you want to delete this item?"
-      loadEntity={GetItemById}
+      funcName="getItemById"
       saveEntity={(formData) => UpdateItem(formData.id, formData.name, formData.description || "")}
       deleteEntity={DeleteItem}
       renderFields={({ formData, handleChange }) => (

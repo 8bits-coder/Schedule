@@ -89,7 +89,7 @@ export async function DeleteItem(id: string) {
     throw new Error("Failed to delete item");
   }
   revalidatePath("/items");
-  return deletedItem;
+  return true;
 }
 
 export type ItemResponse = Awaited<ReturnType<typeof GetAllItems>>;

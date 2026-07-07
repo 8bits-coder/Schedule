@@ -1,5 +1,5 @@
 "use client";
-import { DeleteLocation, GetLocationById, LocationById, UpdateLocation } from "@/actions/locationActions";
+import { DeleteLocation, LocationById, UpdateLocation } from "@/actions/locationActions";
 import EditEntityPage from "../../../_components/EditEntityPage";
 
 export default function EditLocationPage() {
@@ -10,7 +10,7 @@ export default function EditLocationPage() {
       saveSuccessMessage="Location updated successfully!"
       deleteSuccessMessage="Location deleted successfully!"
       deleteConfirmationMessage="Are you sure you want to delete this location?"
-      loadEntity={GetLocationById}
+      funcName="getLocationById"
       saveEntity={(formData) => UpdateLocation(formData.id, formData.name)}
       deleteEntity={DeleteLocation}
       renderFields={({ formData, handleChange }) => (

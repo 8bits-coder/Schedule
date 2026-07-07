@@ -1,10 +1,10 @@
-import { GetAllItems } from "@/actions/itemActions";
+import { executeTask } from "@/actions/functions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllItems = async () => {
   try {
-    const items = await GetAllItems();
+    const { success, data: items, error } = await executeTask("getAllItems", {});
 
     if (items.length === 0) {
       return <div className="text-sm text-muted-foreground">No items found.</div>;

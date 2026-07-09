@@ -10,9 +10,9 @@ export default function EditItemPage() {
       saveSuccessMessage="Item updated successfully!"
       deleteSuccessMessage="Item deleted successfully!"
       deleteConfirmationMessage="Are you sure you want to delete this item?"
-      funcName="getItemById"
-      saveEntity={(formData) => UpdateItem(formData.id, formData.name, formData.description || "")}
-      deleteEntity={DeleteItem}
+      loadEntity={{ functionName: "getItemById" }}
+      saveEntity={{ functionName: "updateItem" }}
+      deleteEntity={{ name: "deleteItem" }}
       renderFields={({ formData, handleChange }) => (
         <>
           <div>

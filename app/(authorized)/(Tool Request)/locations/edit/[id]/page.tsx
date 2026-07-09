@@ -10,9 +10,9 @@ export default function EditLocationPage() {
       saveSuccessMessage="Location updated successfully!"
       deleteSuccessMessage="Location deleted successfully!"
       deleteConfirmationMessage="Are you sure you want to delete this location?"
-      funcName="getLocationById"
-      saveEntity={(formData) => UpdateLocation(formData.id, formData.name)}
-      deleteEntity={DeleteLocation}
+      loadEntity={{ functionName: "getLocationById" }}
+      saveEntity={{ functionName: "updateLocation" }}
+      deleteEntity={{ name: "deleteLocation" }}
       renderFields={({ formData, handleChange }) => (
         <>
           <div>

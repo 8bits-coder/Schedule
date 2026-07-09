@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import TopBar from "@/components/custom/header/TopBar";
+import { GlobalRouterProvider } from "@/lib/router";
 
 const geistMonoHeading = Geist_Mono({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
           &copy; {new Date().getFullYear()} ShiftManager. All rights reserved.
         </footer>
         <Toaster position="top-right" richColors />
+        <GlobalRouterProvider />
       </body>
     </html>
   );

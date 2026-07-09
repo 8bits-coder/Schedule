@@ -1,6 +1,6 @@
 "use client";
 
-import { executeTask, FunctionName } from "@/actions/functions";
+import { executeTask, FunctionName, FunctionResult } from "@/actions/functions";
 import BackButton from "@/components/custom/BackButton";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
@@ -22,9 +22,9 @@ type EditEntityPageProps<T extends EditableEntity> = {
   saveSuccessMessage: string;
   deleteSuccessMessage: string;
   deleteConfirmationMessage: string;
-  funcName: FunctionName;
-  saveEntity: (formData: T) => Promise<unknown>;
-  deleteEntity: (id: string) => Promise<unknown>;
+  loadEntity: { functionName: FunctionName; payload?: FunctionResult<FunctionName> };
+  saveEntity: { functionName: FunctionName; payload?: FunctionResult<FunctionName> };
+  deleteEntity: { name: FunctionName; payload?: FunctionResult<FunctionName> };
   renderFields: (args: { formData: T; handleChange: (event: FieldChangeEvent) => void; loading: boolean }) => ReactNode;
 };
 
@@ -34,7 +34,7 @@ export default function EditEntityPage<T extends EditableEntity>({
   saveSuccessMessage,
   deleteSuccessMessage,
   deleteConfirmationMessage,
-  funcName,
+  loadEntity,
   saveEntity,
   deleteEntity,
   renderFields,
@@ -56,7 +56,11 @@ export default function EditEntityPage<T extends EditableEntity>({
     try {
       setError("");
       setFormData(undefined);
-      const response = await executeTask(funcName as any, { id });
+      const response = await executeTask(
+        loadEntity?.functionName as FunctionName,
+        { id, formData: loadEntity?.payload } as any,
+      );
+      // const response = await executeTask(funcName as any, { id });
       setFormData(response.data as unknown as T);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -92,7 +96,10 @@ export default function EditEntityPage<T extends EditableEntity>({
     }
 
     try {
-      await saveEntity(formData);
+      await executeTask(
+        saveEntity?.functionName as FunctionName,
+        { id: formData.id, name: formData.name, formData: saveEntity?.payload } as any,
+      );
       toast.success(saveSuccessMessage);
       push(redirectPath);
     } catch (err) {
@@ -110,7 +117,7 @@ export default function EditEntityPage<T extends EditableEntity>({
     try {
       setLoading(true);
       setError("");
-      await deleteEntity(formData.id);
+      await executeTask(deleteEntity.name as FunctionName, { id: formData.id } as any);
       toast.success(deleteSuccessMessage);
       push(redirectPath);
     } catch (err) {

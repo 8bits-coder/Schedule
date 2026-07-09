@@ -90,4 +90,4 @@ export async function executeTask<T extends FunctionName>(
 
 type FunctionRegistry = typeof functionRegistry;
 export type FunctionName = keyof FunctionRegistry;
-type FunctionResult<T extends FunctionName> = Awaited<ReturnType<FunctionRegistry[T]>>;
+export type FunctionResult<T extends FunctionName> = Awaited<ReturnType<FunctionRegistry[T]>>;

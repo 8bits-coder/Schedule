@@ -1,7 +1,24 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@base-ui/react";
 import Link from "next/link";
+
+const NavigationItems = [
+  { name: "Delivery", link: "/delivery", color: "blue" },
+  { name: "Items", link: "/items", color: "green" },
+  { name: "Locations", link: "/locations", color: "purple" },
+  { name: "Receipts", link: "/receipts", color: "orange" },
+  { name: "Time keeping", link: "/timekeeping", color: "teal" },
+]
+
+const colorClasses: Record<string, string> = {
+  blue: "bg-blue-500 hover:bg-blue-600",
+  green: "bg-green-500 hover:bg-green-600",
+  purple: "bg-purple-500 hover:bg-purple-600",
+  orange: "bg-orange-500 hover:bg-orange-600",
+  teal: "bg-teal-500 hover:bg-teal-600",
+}
 
 export default function RequestPage() {
   return (
@@ -10,29 +27,13 @@ export default function RequestPage() {
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Tool Request</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link href="/delivery">
-            <Button className="w-full px-6 py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-              Delivery
-            </Button>
-          </Link>
-
-          <Link href="/items">
-            <Button className="w-full px-6 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-              Items
-            </Button>
-          </Link>
-
-          <Link href="/locations">
-            <Button className="w-full px-6 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-              Locations
-            </Button>
-          </Link>
-
-          <Link href="/receipts">
-            <Button className="w-full px-6 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-              Receipts
-            </Button>
-          </Link>
+          {NavigationItems.map((page) => (
+            <Link href={page.link} key={page.name}>
+              <Button className={cn(colorClasses[page.color], "w-full px-6 py-4 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105")}>
+                {page.name}
+              </Button>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

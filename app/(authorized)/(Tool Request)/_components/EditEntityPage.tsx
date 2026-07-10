@@ -53,22 +53,19 @@ export default function EditEntityPage<T extends EditableEntity>({
       return;
     }
 
-    try {
       setError("");
       setFormData(undefined);
-      const response = await executeTask(
+      const {data, error} = await executeTask(
         loadEntity?.functionName as FunctionName,
         { id, formData: loadEntity?.payload } as any,
       );
       // const response = await executeTask(funcName as any, { id });
-      setFormData(response.data as unknown as T);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    }
+      if (!error) setFormData(data as unknown as T);
+      else setError(error);
   });
 
   useEffect(() => {
-    void loadCurrentEntity();
+    loadCurrentEntity();
   }, [id]);
 
   function handleChange(event: FieldChangeEvent) {
@@ -95,18 +92,19 @@ export default function EditEntityPage<T extends EditableEntity>({
       return;
     }
 
-    try {
-      await executeTask(
-        saveEntity?.functionName as FunctionName,
-        { id: formData.id, name: formData.name, formData: saveEntity?.payload } as any,
-      );
+    const { success, error } = await executeTask(
+      saveEntity?.functionName as FunctionName,
+      { id: formData.id, name: formData.name, formData: saveEntity?.payload } as any,
+    );
+
+    if (success) {
       toast.success(saveSuccessMessage);
       push(redirectPath);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
     }
+
+    if (error) setError(error);
+    
+    setLoading(false);
   }
 
   async function handleDelete() {

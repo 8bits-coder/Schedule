@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { toast } from "sonner";
 import { DeliveryDataResponse, LoadEntities } from "@/actions/deliveryActions";
 import {
@@ -38,19 +38,20 @@ export default function DeliveryPage() {
   const [receivedPerson, setReceivedPerson] = useState<DeliveryDataResponse["users"]>([]);
   const [formData, setFormData] = useState<typeof defaultFormData>(defaultFormData);
 
+  const fetchItem = useEffectEvent(async () => {
+    const response = await executeTask("getDeliveryData");
+    if (response.error) {
+      toast.error(response.error || "Failed to fetch delivery data");
+      return;
+    }
+    if (response.success && response.data) {
+      setItems(response.data.items);
+      setWorkLocations(response.data.workLocations);
+      setReceivedPerson(response.data.users);
+    }
+  });
+
   useEffect(() => {
-    const fetchItem = async () => {
-      const response = await executeTask("getDeliveryData");
-      if (response.error) {
-        toast.error(response.error || "Failed to fetch delivery data");
-        return;
-      }
-      if (response.success && response.data) {
-        setItems(response.data.items);
-        setWorkLocations(response.data.workLocations);
-        setReceivedPerson(response.data.users);
-      }
-    };
     fetchItem();
   }, []);
 

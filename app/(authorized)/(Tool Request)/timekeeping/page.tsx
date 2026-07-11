@@ -16,6 +16,8 @@ type LocationChange = {
   arrivedAt: string;
 };
 
+type ReasonCategory = "OVERTIME" | "EMERGENCY" | "NO_OVERTIME";
+
 type TimeSession = {
   id: string;
   workDate: string;
@@ -26,8 +28,10 @@ type TimeSession = {
   locationChanges: LocationChange[];
   lunchBreaks: Array<{ start: string; end: string; total: string }>;
   clockInReasonType: "EARLY" | "LATE" | null;
+  clockInReasonCategory: ReasonCategory | null;
   clockInReason: string | null;
   clockOutReasonType: "EARLY" | "LATE" | null;
+  clockOutReasonCategory: ReasonCategory | null;
   clockOutReason: string | null;
   overtimeMinutes: number;
   overtimeReason: string | null;
@@ -44,6 +48,12 @@ const LOCATIONS = [
   { id: 2, name: "DeKalb Ave" },
   { id: 3, name: "Utica Ave" },
   { id: 4, name: "Jay St" },
+];
+
+const REASON_TYPE_OPTIONS: Array<{ value: ReasonCategory; label: string }> = [
+  { value: "OVERTIME", label: "Overtime" },
+  { value: "EMERGENCY", label: "Emergency" },
+  { value: "NO_OVERTIME", label: "No Overtime" },
 ];
 
 const getTodayAt = (hour: number, minute = 0) => {
@@ -90,12 +100,15 @@ export default function TimekeepingApp() {
   const [currentSessionLocationChanges, setCurrentSessionLocationChanges] = useState<LocationChange[]>([]);
   const [pendingArrivalLocation, setPendingArrivalLocation] = useState<string | null>(null);
   const [currentClockInReasonType, setCurrentClockInReasonType] = useState<"EARLY" | "LATE" | null>(null);
+  const [currentClockInReasonCategory, setCurrentClockInReasonCategory] = useState<ReasonCategory | null>(null);
   const [currentClockInReason, setCurrentClockInReason] = useState<string | null>(null);
   const [showClockOnModal, setShowClockOnModal] = useState<boolean>(false);
   const [clockOnLocationInput, setClockOnLocationInput] = useState<string>("");
+  const [clockOnReasonCategoryInput, setClockOnReasonCategoryInput] = useState<string>("");
   const [clockOnReasonInput, setClockOnReasonInput] = useState<string>("");
   const [pendingClockOnAt, setPendingClockOnAt] = useState<Date | null>(null);
   const [showClockOutReasonModal, setShowClockOutReasonModal] = useState<boolean>(false);
+  const [clockOutReasonCategoryInput, setClockOutReasonCategoryInput] = useState<string>("");
   const [clockOutReasonInput, setClockOutReasonInput] = useState<string>("");
   const [pendingClockOutAt, setPendingClockOutAt] = useState<Date | null>(null);
   const [pendingClockOutType, setPendingClockOutType] = useState<"EARLY" | "LATE" | null>(null);
@@ -123,6 +136,7 @@ export default function TimekeepingApp() {
     clockAt: Date,
     firstLocation: string,
     clockInReasonType: "EARLY" | "LATE" | null,
+    clockInReasonCategory: ReasonCategory | null,
     clockInReason: string | null,
   ) => {
     const now = clockAt.toLocaleTimeString();
@@ -134,6 +148,7 @@ export default function TimekeepingApp() {
     setIsOnLunch(false);
     setCurrentLunchBreaks([]);
     setCurrentClockInReasonType(clockInReasonType);
+    setCurrentClockInReasonCategory(clockInReasonCategory);
     setCurrentClockInReason(clockInReason);
     setPendingArrivalLocation(null);
     setCurrentSessionLocationChanges([{ location: firstLocation, arrivedAt: now }]);
@@ -141,6 +156,7 @@ export default function TimekeepingApp() {
 
   const performClockOff = (
     clockAt: Date,
+    clockOutReasonCategory: ReasonCategory | null,
     clockOutReason: string | null,
     clockOutReasonType: "EARLY" | "LATE" | null,
   ) => {
@@ -180,8 +196,10 @@ export default function TimekeepingApp() {
           total: formatDuration((lunchBreak.end ?? clockAt).getTime() - lunchBreak.start.getTime()),
         })),
         clockInReasonType: currentClockInReasonType,
+        clockInReasonCategory: currentClockInReasonCategory,
         clockInReason: currentClockInReason,
         clockOutReasonType,
+        clockOutReasonCategory,
         clockOutReason,
         overtimeMinutes: workedMs > EIGHT_HOURS_IN_MS ? Math.round((workedMs - EIGHT_HOURS_IN_MS) / (1000 * 60)) : 0,
         overtimeReason: null,
@@ -193,6 +211,7 @@ export default function TimekeepingApp() {
     setCurrentSessionLocationChanges([]);
     setPendingArrivalLocation(null);
     setCurrentClockInReasonType(null);
+    setCurrentClockInReasonCategory(null);
     setCurrentClockInReason(null);
 
     if (workedMs > EIGHT_HOURS_IN_MS) {
@@ -208,7 +227,8 @@ export default function TimekeepingApp() {
     }
 
     setPendingClockOnAt(new Date());
-    setClockOnLocationInput(currentLocation);
+    setClockOnLocationInput(currentLocation || LOCATIONS[0]?.name || "");
+    setClockOnReasonCategoryInput("");
     setClockOnReasonInput("");
     setShowClockOnModal(true);
   };
@@ -223,6 +243,7 @@ export default function TimekeepingApp() {
     if (now < scheduledEnd) {
       setPendingClockOutAt(now);
       setPendingClockOutType("EARLY");
+      setClockOutReasonCategoryInput("");
       setClockOutReasonInput("");
       setShowClockOutReasonModal(true);
       return;
@@ -231,12 +252,13 @@ export default function TimekeepingApp() {
     if (now > scheduledEnd) {
       setPendingClockOutAt(now);
       setPendingClockOutType("LATE");
+      setClockOutReasonCategoryInput("");
       setClockOutReasonInput("");
       setShowClockOutReasonModal(true);
       return;
     }
 
-    performClockOff(now, null, null);
+    performClockOff(now, null, null, null);
   };
 
   const handleClockOnSubmit = () => {
@@ -252,38 +274,50 @@ export default function TimekeepingApp() {
     const isEarlyClockIn = pendingClockOnAt < scheduledStart;
     const isLateClockIn = pendingClockOnAt > scheduledStart;
     const clockInReasonType: "EARLY" | "LATE" | null = isEarlyClockIn ? "EARLY" : isLateClockIn ? "LATE" : null;
+    const selectedReasonCategory = clockOnReasonCategoryInput ? (clockOnReasonCategoryInput as ReasonCategory) : null;
     const normalizedReason = clockOnReasonInput.trim();
+    const hasAnyClockOnReason = Boolean(selectedReasonCategory || normalizedReason);
 
-    if (isEarlyClockIn && pendingClockOnAt < earliestAllowedClockIn) {
+    if (isEarlyClockIn && pendingClockOnAt < earliestAllowedClockIn && !hasAnyClockOnReason) {
       toast.error(
-        `Clock-on is allowed at most ${EARLY_CLOCK_IN_WINDOW_MINUTES} minutes before schedule start (${formatTime(scheduledStart)}).`,
+        `Clock-on is allowed at most ${EARLY_CLOCK_IN_WINDOW_MINUTES} minutes before schedule start (${formatTime(scheduledStart)}) unless a reason is provided.`,
       );
       return;
     }
 
-    if (clockInReasonType && !normalizedReason) {
+    if (clockInReasonType && !hasAnyClockOnReason) {
       return;
     }
 
-    performClockOn(pendingClockOnAt, selectedLocation, clockInReasonType, clockInReasonType ? normalizedReason : null);
+    performClockOn(
+      pendingClockOnAt,
+      selectedLocation,
+      clockInReasonType,
+      clockInReasonType ? selectedReasonCategory : null,
+      clockInReasonType ? normalizedReason : null,
+    );
     setShowClockOnModal(false);
+    setClockOnReasonCategoryInput("");
     setClockOnReasonInput("");
     setPendingClockOnAt(null);
   };
 
   const handleCancelClockOnModal = () => {
     setShowClockOnModal(false);
+    setClockOnReasonCategoryInput("");
     setClockOnReasonInput("");
     setPendingClockOnAt(null);
   };
 
   const handleClockOutReasonSubmit = () => {
-    if (!pendingClockOutAt || !pendingClockOutType || !clockOutReasonInput.trim()) {
+    const selectedReasonCategory = clockOutReasonCategoryInput ? (clockOutReasonCategoryInput as ReasonCategory) : null;
+    if (!pendingClockOutAt || !pendingClockOutType || !selectedReasonCategory || !clockOutReasonInput.trim()) {
       return;
     }
 
-    performClockOff(pendingClockOutAt, clockOutReasonInput.trim(), pendingClockOutType);
+    performClockOff(pendingClockOutAt, selectedReasonCategory, clockOutReasonInput.trim(), pendingClockOutType);
     setShowClockOutReasonModal(false);
+    setClockOutReasonCategoryInput("");
     setClockOutReasonInput("");
     setPendingClockOutAt(null);
     setPendingClockOutType(null);
@@ -291,6 +325,7 @@ export default function TimekeepingApp() {
 
   const handleCancelClockOutReasonModal = () => {
     setShowClockOutReasonModal(false);
+    setClockOutReasonCategoryInput("");
     setClockOutReasonInput("");
     setPendingClockOutAt(null);
     setPendingClockOutType(null);
@@ -394,6 +429,7 @@ export default function TimekeepingApp() {
   const isEarlyClockOn = pendingClockOnAt ? pendingClockOnAt < scheduledStart : false;
   const isLateClockOn = pendingClockOnAt ? pendingClockOnAt > scheduledStart : false;
   const isTooEarlyClockOn = pendingClockOnAt ? pendingClockOnAt < earliestAllowedClockIn : false;
+  const hasAnyClockOnReason = Boolean(clockOnReasonCategoryInput || clockOnReasonInput.trim());
   const needsClockOnReason = isEarlyClockOn || isLateClockOn;
 
   return (
@@ -535,13 +571,13 @@ export default function TimekeepingApp() {
                       <div className="text-sm text-amber-700">
                         Clock-ON reason:{" "}
                         {session.clockInReasonType && session.clockInReason
-                          ? `${session.clockInReasonType === "EARLY" ? "Early" : "Late"} - ${session.clockInReason}`
+                          ? `${session.clockInReasonType === "EARLY" ? "Early" : "Late"} [${session.clockInReasonCategory ?? "Unspecified"}] - ${session.clockInReason}`
                           : "None"}
                       </div>
                       <div className="text-sm text-rose-700">
                         Clock-OUT reason:{" "}
                         {session.clockOutReasonType && session.clockOutReason
-                          ? `${session.clockOutReasonType === "EARLY" ? "Early" : "Late"} - ${session.clockOutReason}`
+                          ? `${session.clockOutReasonType === "EARLY" ? "Early" : "Late"} [${session.clockOutReasonCategory ?? "Unspecified"}] - ${session.clockOutReason}`
                           : "None"}
                       </div>
                       {session.overtimeMinutes > 0 && session.overtimeReason && (
@@ -635,7 +671,8 @@ export default function TimekeepingApp() {
           )}
           {isTooEarlyClockOn && (
             <p className="text-sm text-rose-700 mb-4">
-              This clock-on time is too early. You can submit at or after {formatTime(earliestAllowedClockIn)}.
+              This clock-on time is earlier than {formatTime(earliestAllowedClockIn)}. Provide a reason to allow this
+              early clock-on.
             </p>
           )}
           <select
@@ -655,6 +692,18 @@ export default function TimekeepingApp() {
                 {isEarlyClockOn ? "starts" : isLateClockOn ? "ends" : ""} (
                 {formatTime(isEarlyClockOn ? scheduledStart : scheduledEnd)}). Reason is required.
               </p>
+              <select
+                value={clockOnReasonCategoryInput}
+                onChange={(e) => setClockOnReasonCategoryInput(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <option value="">Select reason type</option>
+                {REASON_TYPE_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <div className="text-sm">You have to provide at least 6 symbols(e.g. RFA501)</div>
               <textarea
                 value={clockOnReasonInput}
                 onChange={(e) => setClockOnReasonInput(e.target.value)}
@@ -667,7 +716,11 @@ export default function TimekeepingApp() {
             <button
               onClick={handleClockOnSubmit}
               disabled={
-                isTooEarlyClockOn || !clockOnLocationInput.trim() || (needsClockOnReason && !clockOnReasonInput.trim())
+                !clockOnLocationInput.trim() ||
+                (needsClockOnReason && !hasAnyClockOnReason) ||
+                !clockOnReasonInput ||
+                clockOnReasonInput.length != 6 ||
+                (isTooEarlyClockOn && !hasAnyClockOnReason)
               }
               className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
               Start Shift
@@ -721,6 +774,17 @@ export default function TimekeepingApp() {
             You are clocking out {pendingClockOutType === "EARLY" ? "before" : "after"} shift end (
             {formatTime(scheduledEnd)}). Please provide a reason.
           </p>
+          <select
+            value={clockOutReasonCategoryInput}
+            onChange={(e) => setClockOutReasonCategoryInput(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-rose-500">
+            <option value="">Select reason type</option>
+            {REASON_TYPE_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
           <textarea
             value={clockOutReasonInput}
             onChange={(e) => setClockOutReasonInput(e.target.value)}
@@ -730,7 +794,7 @@ export default function TimekeepingApp() {
           <div className="flex gap-4">
             <button
               onClick={handleClockOutReasonSubmit}
-              disabled={!clockOutReasonInput.trim()}
+              disabled={!clockOutReasonCategoryInput || !clockOutReasonInput.trim()}
               className="flex-1 px-4 py-2 bg-rose-500 hover:bg-rose-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
               Submit & Clock Out
             </button>

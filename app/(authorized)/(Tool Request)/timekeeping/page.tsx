@@ -3,6 +3,7 @@
 import { X, MapPin, Coffee } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { toast } from "sonner";
 
 type LunchBreak = {
   id: string;
@@ -25,40 +26,73 @@ type TimeSession = {
   locationChanges: LocationChange[];
   lunchBreaks: Array<{ start: string; end: string; total: string }>;
   clockInReasonType: "EARLY" | "LATE" | null;
-  lateClockInReason: string | null;
+  clockInReason: string | null;
   clockOutReasonType: "EARLY" | "LATE" | null;
   clockOutReason: string | null;
   overtimeMinutes: number;
   overtimeReason: string | null;
 };
 
+// ---- Static config (module scope so it isn't recreated on every render) ----
+const SCHEDULE_START_HOUR = 6;
+const SCHEDULE_END_HOUR = 14;
+const EIGHT_HOURS_IN_MS = 8 * 60 * 60 * 1000;
+const EARLY_CLOCK_IN_WINDOW_MINUTES = 20;
+
+const LOCATIONS = [
+  { id: 1, name: "Atlantic Ave" },
+  { id: 2, name: "DeKalb Ave" },
+  { id: 3, name: "Utica Ave" },
+  { id: 4, name: "Jay St" },
+];
+
+const getTodayAt = (hour: number, minute = 0) => {
+  const date = new Date();
+  date.setHours(hour, minute, 0, 0);
+  return date;
+};
+
+const formatTime = (date: Date) => date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+const formatDuration = (durationMs: number) => {
+  const totalMinutes = Math.max(0, Math.floor(durationMs / (1000 * 60)));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}h ${minutes}m`;
+};
+
+const calculateLunchDurationMs = (lunchBreaks: LunchBreak[], shiftEnd: Date) =>
+  lunchBreaks.reduce((acc, lunchBreak) => {
+    const end = lunchBreak.end ?? shiftEnd;
+    return acc + Math.max(0, end.getTime() - lunchBreak.start.getTime());
+  }, 0);
+
+// ---- Shared modal shell (removes 4x duplicated overlay/card markup) ----
+function Modal({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">{children}</div>
+    </div>
+  );
+}
+
 export default function TimekeepingApp() {
-  const SCHEDULE_START_HOUR = 6;
-  const SCHEDULE_END_HOUR = 14;
-  const EIGHT_HOURS_IN_MS = 8 * 60 * 60 * 1000;
-
-  const LOCATIONS = [
-    { id: 1, name: "Atlantic Ave" },
-    { id: 2, name: "DeKalb Ave" },
-    { id: 3, name: "Utica Ave" },
-    { id: 4, name: "Jay St" },
-  ];
-
   const [isClocked, setIsClocked] = useState<boolean>(false);
   const [clockInDate, setClockInDate] = useState<Date | null>(null);
   const [clockInTime, setClockInTime] = useState<string | null>(null);
   const [clockOutTime, setClockOutTime] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
-  const [currentLocation, setCurrentLocation] = useState<string>(LOCATIONS[0]?.name ?? "");
+  const [currentLocation, setCurrentLocation] = useState<string>("");
   const [showLocationModal, setShowLocationModal] = useState<boolean>(false);
-  const [locationInput, setLocationInput] = useState<string>(LOCATIONS[0]?.name ?? "");
+  const [locationInput, setLocationInput] = useState<string>("");
   const [isOnLunch, setIsOnLunch] = useState<boolean>(false);
   const [currentLunchBreaks, setCurrentLunchBreaks] = useState<LunchBreak[]>([]);
   const [currentSessionLocationChanges, setCurrentSessionLocationChanges] = useState<LocationChange[]>([]);
   const [pendingArrivalLocation, setPendingArrivalLocation] = useState<string | null>(null);
-  const [currentLateClockInReason, setCurrentLateClockInReason] = useState<string | null>(null);
+  const [currentClockInReasonType, setCurrentClockInReasonType] = useState<"EARLY" | "LATE" | null>(null);
+  const [currentClockInReason, setCurrentClockInReason] = useState<string | null>(null);
   const [showClockOnModal, setShowClockOnModal] = useState<boolean>(false);
-  const [clockOnLocationInput, setClockOnLocationInput] = useState<string>(LOCATIONS[0]?.name ?? "");
+  const [clockOnLocationInput, setClockOnLocationInput] = useState<string>("");
   const [clockOnReasonInput, setClockOnReasonInput] = useState<string>("");
   const [pendingClockOnAt, setPendingClockOnAt] = useState<Date | null>(null);
   const [showClockOutReasonModal, setShowClockOutReasonModal] = useState<boolean>(false);
@@ -71,32 +105,9 @@ export default function TimekeepingApp() {
   const [pendingOvertimeSessionId, setPendingOvertimeSessionId] = useState<string | null>(null);
   const [timeSessions, setTimeSessions] = useState<TimeSession[]>([]);
 
-  const getTodayAt = (hour: number, minute = 0) => {
-    const date = new Date();
-    date.setHours(hour, minute, 0, 0);
-    return date;
-  };
-
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
-  const formatDuration = (durationMs: number) => {
-    const totalMinutes = Math.max(0, Math.floor(durationMs / (1000 * 60)));
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return `${hours}h ${minutes}m`;
-  };
-
-  const calculateLunchDurationMs = (lunchBreaks: LunchBreak[], shiftEnd: Date) => {
-    return lunchBreaks.reduce((acc, lunchBreak) => {
-      const end = lunchBreak.end ?? shiftEnd;
-      return acc + Math.max(0, end.getTime() - lunchBreak.start.getTime());
-    }, 0);
-  };
-
   const scheduledStart = getTodayAt(SCHEDULE_START_HOUR);
   const scheduledEnd = getTodayAt(SCHEDULE_END_HOUR);
+  const earliestAllowedClockIn = new Date(scheduledStart.getTime() - EARLY_CLOCK_IN_WINDOW_MINUTES * 60 * 1000);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -108,7 +119,12 @@ export default function TimekeepingApp() {
     };
   }, []);
 
-  const performClockOn = (clockAt: Date, firstLocation: string, lateReason: string | null) => {
+  const performClockOn = (
+    clockAt: Date,
+    firstLocation: string,
+    clockInReasonType: "EARLY" | "LATE" | null,
+    clockInReason: string | null,
+  ) => {
     const now = clockAt.toLocaleTimeString();
     setIsClocked(true);
     setClockInDate(clockAt);
@@ -117,7 +133,8 @@ export default function TimekeepingApp() {
     setCurrentLocation(firstLocation);
     setIsOnLunch(false);
     setCurrentLunchBreaks([]);
-    setCurrentLateClockInReason(lateReason);
+    setCurrentClockInReasonType(clockInReasonType);
+    setCurrentClockInReason(clockInReason);
     setPendingArrivalLocation(null);
     setCurrentSessionLocationChanges([{ location: firstLocation, arrivedAt: now }]);
   };
@@ -162,8 +179,8 @@ export default function TimekeepingApp() {
           end: (lunchBreak.end ?? clockAt).toLocaleTimeString(),
           total: formatDuration((lunchBreak.end ?? clockAt).getTime() - lunchBreak.start.getTime()),
         })),
-        clockInReasonType: currentLateClockInReason ? "LATE" : null,
-        lateClockInReason: currentLateClockInReason,
+        clockInReasonType: currentClockInReasonType,
+        clockInReason: currentClockInReason,
         clockOutReasonType,
         clockOutReason,
         overtimeMinutes: workedMs > EIGHT_HOURS_IN_MS ? Math.round((workedMs - EIGHT_HOURS_IN_MS) / (1000 * 60)) : 0,
@@ -175,7 +192,8 @@ export default function TimekeepingApp() {
     setCurrentLunchBreaks([]);
     setCurrentSessionLocationChanges([]);
     setPendingArrivalLocation(null);
-    setCurrentLateClockInReason(null);
+    setCurrentClockInReasonType(null);
+    setCurrentClockInReason(null);
 
     if (workedMs > EIGHT_HOURS_IN_MS) {
       setPendingOvertimeMinutes(Math.round((workedMs - EIGHT_HOURS_IN_MS) / (1000 * 60)));
@@ -231,14 +249,23 @@ export default function TimekeepingApp() {
       return;
     }
 
+    const isEarlyClockIn = pendingClockOnAt < scheduledStart;
     const isLateClockIn = pendingClockOnAt > scheduledStart;
+    const clockInReasonType: "EARLY" | "LATE" | null = isEarlyClockIn ? "EARLY" : isLateClockIn ? "LATE" : null;
     const normalizedReason = clockOnReasonInput.trim();
 
-    if (isLateClockIn && !normalizedReason) {
+    if (isEarlyClockIn && pendingClockOnAt < earliestAllowedClockIn) {
+      toast.error(
+        `Clock-on is allowed at most ${EARLY_CLOCK_IN_WINDOW_MINUTES} minutes before schedule start (${formatTime(scheduledStart)}).`,
+      );
       return;
     }
 
-    performClockOn(pendingClockOnAt, selectedLocation, isLateClockIn ? normalizedReason : null);
+    if (clockInReasonType && !normalizedReason) {
+      return;
+    }
+
+    performClockOn(pendingClockOnAt, selectedLocation, clockInReasonType, clockInReasonType ? normalizedReason : null);
     setShowClockOnModal(false);
     setClockOnReasonInput("");
     setPendingClockOnAt(null);
@@ -364,7 +391,10 @@ export default function TimekeepingApp() {
     setTimeSessions(timeSessions.filter((session) => session.id !== id));
   };
 
+  const isEarlyClockOn = pendingClockOnAt ? pendingClockOnAt < scheduledStart : false;
   const isLateClockOn = pendingClockOnAt ? pendingClockOnAt > scheduledStart : false;
+  const isTooEarlyClockOn = pendingClockOnAt ? pendingClockOnAt < earliestAllowedClockIn : false;
+  const needsClockOnReason = isEarlyClockOn || isLateClockOn;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-8">
@@ -391,10 +421,8 @@ export default function TimekeepingApp() {
             className={`bg-linear-to-r rounded-lg p-8 mb-8 text-center ${
               isClocked ? "from-green-500 to-lime-600" : "from-red-500 to-rose-600"
             }`}>
-            <div className={`text-5xl font-bold text-white mb-4 ${isClocked ? "text-green-300" : "text-red-300"}`}>
-              {isClocked ? "CLOCKED IN" : "CLOCKED OUT"}
-            </div>
-            {/* <div className="text-xl text-white">{currentTime.toLocaleTimeString()}</div> */}
+            <div className="text-5xl font-bold mb-4 text-white">{isClocked ? "CLOCKED IN" : "CLOCKED OUT"}</div>
+            <div className="text-xl text-white font-mono">{new Date().toLocaleDateString()}</div>
           </div>
 
           {/* Current Location */}
@@ -405,6 +433,10 @@ export default function TimekeepingApp() {
             </div>
             <button
               onClick={() => {
+                if (!isClocked) {
+                  toast.warning("Clock on before changing your location.");
+                  return;
+                }
                 setLocationInput(currentLocation);
                 setShowLocationModal(true);
               }}
@@ -502,8 +534,8 @@ export default function TimekeepingApp() {
                       )}
                       <div className="text-sm text-amber-700">
                         Clock-ON reason:{" "}
-                        {session.clockInReasonType && session.lateClockInReason
-                          ? `${session.clockInReasonType === "EARLY" ? "Early" : "Late"} - ${session.lateClockInReason}`
+                        {session.clockInReasonType && session.clockInReason
+                          ? `${session.clockInReasonType === "EARLY" ? "Early" : "Late"} - ${session.clockInReason}`
                           : "None"}
                       </div>
                       <div className="text-sm text-rose-700">
@@ -543,6 +575,7 @@ export default function TimekeepingApp() {
                     <div>
                       <button
                         onClick={() => handleDeleteSession(session.id)}
+                        aria-label={`Delete session for ${session.workDate}`}
                         className="p-2 text-red-500 hover:bg-red-100 rounded-lg transition-colors">
                         <X size={20} />
                       </button>
@@ -557,146 +590,157 @@ export default function TimekeepingApp() {
 
       {/* Location Modal */}
       {showLocationModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Change Location</h2>
+        <Modal>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Change Location</h2>
 
-            <select
-              value={locationInput}
-              onChange={(e) => setLocationInput(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              {LOCATIONS.map((location) => (
-                <option key={location.id} value={location.name}>
-                  {location.name}
-                </option>
-              ))}
-            </select>
-            <div className="flex gap-4">
-              <button
-                onClick={handleLocationChange}
-                className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors">
-                Save
-              </button>
-              <button
-                onClick={() => setShowLocationModal(false)}
-                className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
-                Cancel
-              </button>
-            </div>
+          <select
+            value={locationInput}
+            onChange={(e) => setLocationInput(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            {LOCATIONS.map((location) => (
+              <option key={location.id} value={location.name}>
+                {location.name}
+              </option>
+            ))}
+          </select>
+          <div className="flex gap-4">
+            <button
+              onClick={handleLocationChange}
+              className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors">
+              Save
+            </button>
+            <button
+              onClick={() => setShowLocationModal(false)}
+              className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
+              Cancel
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Clock On Modal */}
       {showClockOnModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Clock ON Details</h2>
-            <p className="text-sm text-gray-600 mb-4">Select first work location before starting your shift.</p>
-            <select
-              value={clockOnLocationInput}
-              onChange={(e) => setClockOnLocationInput(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              {LOCATIONS.map((location) => (
-                <option key={location.id} value={location.name}>
-                  {location.name}
-                </option>
-              ))}
-            </select>
-            {isLateClockOn && (
-              <>
-                <p className="text-sm text-amber-700 mb-3">
-                  You are clocking in after shift start ({formatTime(scheduledStart)}). Reason is required.
-                </p>
-                <textarea
-                  value={clockOnReasonInput}
-                  onChange={(e) => setClockOnReasonInput(e.target.value)}
-                  placeholder="Enter late clock-in reason"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 min-h-28 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
-              </>
-            )}
-            <div className="flex gap-4">
-              <button
-                onClick={handleClockOnSubmit}
-                disabled={!clockOnLocationInput.trim() || (isLateClockOn && !clockOnReasonInput.trim())}
-                className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
-                Start Shift
-              </button>
-              <button
-                onClick={handleCancelClockOnModal}
-                className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
-                Cancel
-              </button>
-            </div>
+        <Modal>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Clock ON Details</h2>
+          <p className="text-sm text-gray-600 mb-1">Select first work location before starting your shift.</p>
+          <p className="text-sm text-indigo-700 mb-4">
+            Clock-on time status:{" "}
+            {isEarlyClockOn ? "Before schedule start" : isLateClockOn ? "After schedule start" : "On time"}
+          </p>
+          {isEarlyClockOn && (
+            <p className="text-sm text-amber-700 mb-4">
+              Early clock-on is allowed only within {EARLY_CLOCK_IN_WINDOW_MINUTES} minutes of shift start. Earliest
+              allowed time: {formatTime(earliestAllowedClockIn)}.
+            </p>
+          )}
+          {isTooEarlyClockOn && (
+            <p className="text-sm text-rose-700 mb-4">
+              This clock-on time is too early. You can submit at or after {formatTime(earliestAllowedClockIn)}.
+            </p>
+          )}
+          <select
+            value={clockOnLocationInput}
+            onChange={(e) => setClockOnLocationInput(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            {LOCATIONS.map((location) => (
+              <option key={location.id} value={location.name}>
+                {location.name}
+              </option>
+            ))}
+          </select>
+          {needsClockOnReason && (
+            <>
+              <p className="text-sm text-amber-700 mb-3">
+                You are clocking in {isEarlyClockOn ? "before" : isLateClockOn ? "after" : ""} shift{" "}
+                {isEarlyClockOn ? "starts" : isLateClockOn ? "ends" : ""} (
+                {formatTime(isEarlyClockOn ? scheduledStart : scheduledEnd)}). Reason is required.
+              </p>
+              <textarea
+                value={clockOnReasonInput}
+                onChange={(e) => setClockOnReasonInput(e.target.value)}
+                placeholder="Enter clock-in reason"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 min-h-28 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
+            </>
+          )}
+          <div className="flex gap-4">
+            <button
+              onClick={handleClockOnSubmit}
+              disabled={
+                isTooEarlyClockOn || !clockOnLocationInput.trim() || (needsClockOnReason && !clockOnReasonInput.trim())
+              }
+              className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
+              Start Shift
+            </button>
+            <button
+              onClick={handleCancelClockOnModal}
+              className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
+              Cancel
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Overtime Modal */}
       {showOvertimeModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Overtime Request</h2>
-            <p className="text-sm text-gray-600 mb-6">
-              You exceeded 8 hours for this shift by{" "}
-              <span className="font-semibold">{pendingOvertimeMinutes} minute(s)</span>. Please submit a reason.
-            </p>
-            <textarea
-              value={overtimeReasonInput}
-              onChange={(e) => setOvertimeReasonInput(e.target.value)}
-              placeholder="Enter overtime reason"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 min-h-28 focus:outline-none focus:ring-2 focus:ring-sky-500"
-            />
-            <div className="flex gap-4">
-              <button
-                onClick={handleOvertimeSubmit}
-                disabled={!overtimeReasonInput.trim()}
-                className="flex-1 px-4 py-2 bg-sky-500 hover:bg-sky-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
-                Submit Overtime
-              </button>
-              <button
-                onClick={handleCancelOvertimeModal}
-                className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
-                Cancel
-              </button>
-            </div>
+        <Modal>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Overtime Request</h2>
+          <p className="text-sm text-gray-600 mb-6">
+            You exceeded 8 hours for this shift by{" "}
+            <span className="font-semibold">{pendingOvertimeMinutes} minute(s)</span>. Please submit a reason.
+          </p>
+          <textarea
+            value={overtimeReasonInput}
+            onChange={(e) => setOvertimeReasonInput(e.target.value)}
+            placeholder="Enter overtime reason"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 min-h-28 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          />
+          <div className="flex gap-4">
+            <button
+              onClick={handleOvertimeSubmit}
+              disabled={!overtimeReasonInput.trim()}
+              className="flex-1 px-4 py-2 bg-sky-500 hover:bg-sky-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
+              Submit Overtime
+            </button>
+            <button
+              onClick={handleCancelOvertimeModal}
+              className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
+              Cancel
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Clock Out Reason Modal */}
       {showClockOutReasonModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              {pendingClockOutType === "EARLY" ? "Early Clock-Out" : "Late Clock-Out"} Reason
-            </h2>
-            <p className="text-sm text-gray-600 mb-6">
-              You are clocking out {pendingClockOutType === "EARLY" ? "before" : "after"} shift end (
-              {formatTime(scheduledEnd)}). Please provide a reason.
-            </p>
-            <textarea
-              value={clockOutReasonInput}
-              onChange={(e) => setClockOutReasonInput(e.target.value)}
-              placeholder="Enter clock-out reason"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 min-h-28 focus:outline-none focus:ring-2 focus:ring-rose-500"
-            />
-            <div className="flex gap-4">
-              <button
-                onClick={handleClockOutReasonSubmit}
-                disabled={!clockOutReasonInput.trim()}
-                className="flex-1 px-4 py-2 bg-rose-500 hover:bg-rose-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
-                Submit & Clock Out
-              </button>
-              <button
-                onClick={handleCancelClockOutReasonModal}
-                className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
-                Cancel
-              </button>
-            </div>
+        <Modal>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            {pendingClockOutType === "EARLY" ? "Early Clock-Out" : "Late Clock-Out"} Reason
+          </h2>
+          <p className="text-sm text-gray-600 mb-6">
+            You are clocking out {pendingClockOutType === "EARLY" ? "before" : "after"} shift end (
+            {formatTime(scheduledEnd)}). Please provide a reason.
+          </p>
+          <textarea
+            value={clockOutReasonInput}
+            onChange={(e) => setClockOutReasonInput(e.target.value)}
+            placeholder="Enter clock-out reason"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-6 min-h-28 focus:outline-none focus:ring-2 focus:ring-rose-500"
+          />
+          <div className="flex gap-4">
+            <button
+              onClick={handleClockOutReasonSubmit}
+              disabled={!clockOutReasonInput.trim()}
+              className="flex-1 px-4 py-2 bg-rose-500 hover:bg-rose-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">
+              Submit & Clock Out
+            </button>
+            <button
+              onClick={handleCancelClockOutReasonModal}
+              className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold rounded-lg transition-colors">
+              Cancel
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

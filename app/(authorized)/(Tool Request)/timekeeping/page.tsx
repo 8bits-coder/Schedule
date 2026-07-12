@@ -689,8 +689,8 @@ export default function TimekeepingApp() {
             <>
               <p className="text-sm text-amber-700 mb-3">
                 You are clocking in {isEarlyClockOn ? "before" : isLateClockOn ? "after" : ""} shift{" "}
-                {isEarlyClockOn ? "starts" : isLateClockOn ? "ends" : ""} (
-                {formatTime(isEarlyClockOn ? scheduledStart : scheduledEnd)}). Reason is required.
+                {isLateClockOn ? "starts" : isEarlyClockOn ? "ends" : ""} (
+                {formatTime(isLateClockOn ? scheduledStart : scheduledEnd)}). Reason is required.
               </p>
               <select
                 value={clockOnReasonCategoryInput}
@@ -719,7 +719,7 @@ export default function TimekeepingApp() {
                 !clockOnLocationInput.trim() ||
                 (needsClockOnReason && !hasAnyClockOnReason) ||
                 !clockOnReasonInput ||
-                clockOnReasonInput.length != 6 ||
+                clockOnReasonInput.length < 6 ||
                 (isTooEarlyClockOn && !hasAnyClockOnReason)
               }
               className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors">

@@ -19,8 +19,8 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = (data: LoginSchema) => {
-    login(data.email, data.password);
+  const onSubmit = async (data: LoginSchema) => {
+    await login(data.email, data.password);
   };
 
   return (
@@ -39,7 +39,13 @@ export default function LoginPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-email">Email</FieldLabel>
-                    <Input {...field} id="form-rhf-demo-email" aria-invalid={fieldState.invalid} placeholder="john@example.com" autoComplete="off" />
+                    <Input
+                      {...field}
+                      id="form-rhf-demo-email"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="john@example.com"
+                      autoComplete="off"
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
@@ -52,7 +58,14 @@ export default function LoginPage() {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-rhf-demo-password">Password</FieldLabel>
-                    <Input {...field} id="form-rhf-demo-password" type="password" aria-invalid={fieldState.invalid} placeholder="••••••••" autoComplete="off" />
+                    <Input
+                      {...field}
+                      id="form-rhf-demo-password"
+                      type="password"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="••••••••"
+                      autoComplete="off"
+                    />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}

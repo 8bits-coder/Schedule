@@ -11,40 +11,40 @@ const functionRegistry = {
     return delivery.SubmitReceipt(args.formData);
   },
   getDeliveryData: (args: Record<string, never>) => {
-    return delivery.LoadEntities();
+    return delivery.Create();
   },
   getDeliveryReceipts: (args: Record<string, never>) => {
-    return delivery.LoadReceipts();
+    return delivery.GetAll();
   },
   addItem: (args: { formData: FormData }) => {
-    return item.AddItem(args.formData);
+    return item.Create(args.formData);
   },
   getAllItems: (args: Record<string, never>) => {
-    return item.GetAllItems();
+    return item.GetAll();
   },
   getItemById: (args: { id: string }) => {
-    return item.GetItemById(args.id);
+    return item.GetById(args.id);
   },
   updateItem: (args: { id: string; name: string; description: string }) => {
-    return item.UpdateItem(args.id, args.name, args.description);
+    return item.Update(args.id, args.name, args.description);
   },
   deleteItem: (args: { id: string }) => {
-    return item.DeleteItem(args.id);
+    return item.Delete(args.id);
   },
   addLocation: (args: { formData: FormData }) => {
-    return location.AddLocation(args.formData);
+    return location.Create(args.formData);
   },
   getAllLocations: (args: Record<string, never>) => {
-    return location.GetAllLocations();
+    return location.GetAll();
   },
   getLocationById: (args: { id: string }) => {
-    return location.GetLocationById(args.id);
+    return location.GetById(args.id);
   },
   updateLocation: (args: { id: string; name: string }) => {
-    return location.UpdateLocation(args.id, args.name);
+    return location.Update(args.id, args.name);
   },
   deleteLocation: (args: { id: string }) => {
-    return location.DeleteLocation(args.id);
+    return location.Delete(args.id);
   },
 } as const;
 

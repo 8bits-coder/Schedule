@@ -6,6 +6,7 @@ import { requireAuthenticatedUserId } from "./user";
 
 const LOCATION_LIST_PATH = "/locations";
 const LOCATION_NAME_MAX_LENGTH = 120;
+const LOCATION_NAME_MIN_LENGTH = 5;
 
 function normalizeRequiredString(value: FormDataEntryValue | string | null, fieldName: string): string {
   const normalized = typeof value === "string" ? value.trim() : "";
@@ -32,6 +33,10 @@ function validateLocationName(name: string): string {
     throw new Error(`Location name must be ${LOCATION_NAME_MAX_LENGTH} characters or fewer`);
   }
 
+  if (normalizedName.length < LOCATION_NAME_MIN_LENGTH) {
+    throw new Error(`Location name must be at least ${LOCATION_NAME_MIN_LENGTH} character`);
+  }
+
   return normalizedName;
 }
 
@@ -42,16 +47,14 @@ function getPrismaErrorMessage(error: unknown, operation: "create" | "update" | 
     }
 
     if (error.code === "P2025") {
-      return operation === "delete"
-        ? "Location not found or already deleted"
-        : "Location not found";
+      return operation === "delete" ? "Location not found or already deleted" : "Location not found";
     }
   }
 
   return error instanceof Error ? error.message : `Failed to ${operation} location`;
 }
 
-export async function AddLocation(FormData: FormData): Promise<WorkLocation> {
+export async function Create(FormData: FormData): Promise<WorkLocation> {
   await requireAuthenticatedUserId();
 
   const name = validateLocationName(normalizeRequiredString(FormData.get("name"), "Location name"));
@@ -71,7 +74,7 @@ export async function AddLocation(FormData: FormData): Promise<WorkLocation> {
   }
 }
 
-export async function GetAllLocations(): Promise<WorkLocation[]> {
+export async function GetAll(): Promise<WorkLocation[]> {
   await requireAuthenticatedUserId();
 
   return prisma.workLocation.findMany({
@@ -81,7 +84,7 @@ export async function GetAllLocations(): Promise<WorkLocation[]> {
   });
 }
 
-export async function GetLocationById(id: string): Promise<WorkLocation> {
+export async function GetById(id: string): Promise<WorkLocation> {
   await requireAuthenticatedUserId();
 
   const locationId = validateLocationId(id);
@@ -96,7 +99,7 @@ export async function GetLocationById(id: string): Promise<WorkLocation> {
   return location;
 }
 
-export async function UpdateLocation(id: string, name: string): Promise<WorkLocation> {
+export async function Update(id: string, name: string): Promise<WorkLocation> {
   await requireAuthenticatedUserId();
 
   const locationId = validateLocationId(id);
@@ -115,7 +118,7 @@ export async function UpdateLocation(id: string, name: string): Promise<WorkLoca
   }
 }
 
-export async function DeleteLocation(id: string): Promise<WorkLocation> {
+export async function Delete(id: string): Promise<WorkLocation> {
   await requireAuthenticatedUserId();
 
   const locationId = validateLocationId(id);
@@ -132,8 +135,8 @@ export async function DeleteLocation(id: string): Promise<WorkLocation> {
   }
 }
 
-export type LocationResponse = Awaited<ReturnType<typeof GetAllLocations>>;
-export type LocationById = Awaited<ReturnType<typeof GetLocationById>>;
-export type AddLocationResponse = Awaited<ReturnType<typeof AddLocation>>;
-export type UpdateLocationResponse = Awaited<ReturnType<typeof UpdateLocation>>;
-export type DeleteLocationResponse = Awaited<ReturnType<typeof DeleteLocation>>;
+export type LocationResponse = Awaited<ReturnType<typeof GetAll>>;
+export type LocationById = Awaited<ReturnType<typeof GetById>>;
+export type AddLocationResponse = Awaited<ReturnType<typeof Create>>;
+export type UpdateLocationResponse = Awaited<ReturnType<typeof Update>>;
+export type DeleteLocationResponse = Awaited<ReturnType<typeof Delete>>;

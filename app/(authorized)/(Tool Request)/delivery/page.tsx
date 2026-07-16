@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useEffectEvent, useState } from "react";
 import { toast } from "sonner";
-import { DeliveryDataResponse, LoadEntities } from "@/actions/deliveryActions";
+import { DeliveryDataResponse, Create } from "@/actions/deliveryActions";
 import {
   Select,
   SelectContent,

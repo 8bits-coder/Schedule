@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAuthenticatedUserId } from "./user";
 
-export async function AddItem(FormData: FormData) {
+export async function Create(FormData: FormData) {
   await requireAuthenticatedUserId();
   const name = FormData.get("name") as string;
   const description = FormData.get("description") as string;
@@ -25,7 +25,7 @@ export async function AddItem(FormData: FormData) {
   return true;
 }
 
-export async function GetAllItems() {
+export async function GetAll() {
   await requireAuthenticatedUserId();
 
   return prisma.item.findMany({
@@ -40,7 +40,7 @@ export async function GetAllItems() {
   });
 }
 
-export async function GetItemById(id: string) {
+export async function GetById(id: string) {
   await requireAuthenticatedUserId();
   const item = await prisma.item.findUnique({
     where: { id },
@@ -57,7 +57,7 @@ export async function GetItemById(id: string) {
   }
 }
 
-export async function UpdateItem(id: string, name: string, description: string) {
+export async function Update(id: string, name: string, description: string) {
   await requireAuthenticatedUserId();
   const updatedItem = await prisma.item.update({
     where: { id },
@@ -75,7 +75,7 @@ export async function UpdateItem(id: string, name: string, description: string) 
   return updatedItem;
 }
 
-export async function DeleteItem(id: string) {
+export async function Delete(id: string) {
   await requireAuthenticatedUserId();
   const deletedItem = await prisma.item.delete({
     where: { id },
@@ -92,8 +92,8 @@ export async function DeleteItem(id: string) {
   return true;
 }
 
-export type ItemResponse = Awaited<ReturnType<typeof GetAllItems>>;
-export type ItemByIdResponse = Awaited<ReturnType<typeof GetItemById>>;
-export type AddItemResponse = Awaited<ReturnType<typeof AddItem>>;
-export type UpdateItemResponse = Awaited<ReturnType<typeof UpdateItem>>;
-export type DeleteItemResponse = Awaited<ReturnType<typeof DeleteItem>>;
+export type ItemResponse = Awaited<ReturnType<typeof GetAll>>;
+export type ItemByIdResponse = Awaited<ReturnType<typeof GetById>>;
+export type AddItemResponse = Awaited<ReturnType<typeof Create>>;
+export type UpdateItemResponse = Awaited<ReturnType<typeof Update>>;
+export type DeleteItemResponse = Awaited<ReturnType<typeof Delete>>;

@@ -1,6 +1,6 @@
 "use client";
 import { createFormSubmitHandler } from "../_components/createFormSubmitHandler";
-import { AddItem } from "@/actions/itemActions";
+import { Create } from "@/actions/itemActions";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -9,7 +9,7 @@ const ItemForm = () => {
   const [showForm, setShowForm] = useState(false);
 
   const handleSubmit = createFormSubmitHandler({
-    action: AddItem,
+    action: Create,
     successMessage: "Item added successfully!",
     errorPrefix: "Error adding item: ",
     onSuccess: () => setShowForm(false),

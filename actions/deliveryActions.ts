@@ -28,7 +28,7 @@ const BASE_SELECT = {
   name: true,
 } as const;
 
-export async function LoadEntities() {
+export async function Create() {
   await requireAuthenticatedUserId();
 
   const [users, items, workLocations] = await Promise.all([
@@ -40,9 +40,9 @@ export async function LoadEntities() {
   return { users, items, workLocations };
 }
 
-export type DeliveryDataResponse = Awaited<ReturnType<typeof LoadEntities>>;
+export type DeliveryDataResponse = Awaited<ReturnType<typeof Create>>;
 
-export async function LoadReceipts() {
+export async function GetAll() {
   const userId = await requireAuthenticatedUserId();
 
   return prisma.deliveryReceipt.findMany({
@@ -69,4 +69,4 @@ export async function LoadReceipts() {
   });
 }
 
-export type DeliveryReceiptType = Awaited<ReturnType<typeof LoadReceipts>>[number];
+export type DeliveryReceiptType = Awaited<ReturnType<typeof GetAll>>[number];

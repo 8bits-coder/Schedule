@@ -62,7 +62,6 @@ export async function Create(FormData: FormData): Promise<WorkLocation> {
   try {
     const location = await prisma.workLocation.create({
       data: {
-        id: crypto.randomUUID(),
         name,
       },
     });

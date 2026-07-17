@@ -12,7 +12,6 @@ export async function Create(FormData: FormData) {
   }
   const item = await prisma.item.create({
     data: {
-      id: crypto.randomUUID(),
       name,
       description,
     },

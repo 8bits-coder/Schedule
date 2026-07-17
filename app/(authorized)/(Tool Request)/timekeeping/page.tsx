@@ -688,9 +688,7 @@ export default function TimekeepingApp() {
           {needsClockOnReason && (
             <>
               <p className="text-sm text-amber-700 mb-3">
-                You are clocking in {isEarlyClockOn ? "before" : isLateClockOn ? "after" : ""} shift{" "}
-                {isLateClockOn ? "starts" : isEarlyClockOn ? "ends" : ""} (
-                {formatTime(isLateClockOn ? scheduledStart : scheduledEnd)}). Reason is required.
+                You are clocking on {isEarlyClockOn ? "before" : "after"} schedule start. Please provide a reason.
               </p>
               <select
                 value={clockOnReasonCategoryInput}

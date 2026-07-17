@@ -10,7 +10,6 @@ export async function SubmitReceipt(
 
   return prisma.deliveryReceipt.create({
     data: {
-      id: crypto.randomUUID(),
       itemId: formData.itemId,
       itemSerialNumber: formData.itemSerialNumber,
       workLocationId: formData.workLocationId,

@@ -1,0 +1,22 @@
+model User {
+  id                      String              @id
+  name                    String
+  email                   String
+  emailVerified           Boolean             @default(false)
+  image                   String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  role                    Role                @default(USER)
+  sessions                Session[]
+  accounts                Account[]
+  receivedDeliveries      DeliveryReceipt[]   @relation("ReceivedPerson")
+  deliveredDeliveries     DeliveryReceipt[]   @relation("DeliveryPerson")
+  shifts                  Shift[]
+  timeOffRequests         TimeOffRequest[]
+  reviewedTimeOffRequests TimeOffRequest[]    @relation("TimeOffReviewer")
+  timeOffBalances         TimeOffBalance[]
+  jobDetails              EmployeeJobDetails?
+
+  @@unique([email])
+  @@map("user")
+}

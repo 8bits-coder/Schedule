@@ -8,6 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/TimeOffRequest'
+export type * from './models/TimeOffBalance'
+export type * from './models/TimeOffPolicy'
 export type * from './models/User'
 export type * from './models/EmployeeJobDetails'
 export type * from './models/Session'

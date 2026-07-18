@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -13,4 +13,16 @@ export async function requireAuthenticatedUserId() {
   }
 
   return userId;
+}
+
+export async function verifyAdminAccess() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isAdmin = session?.user?.role === "admin";
+  if (!isAdmin) {
+    throw new Error("Unauthorized");
+  }
+
+  return isAdmin;
 }

@@ -18,6 +18,21 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model TimeOffRequest
+ * 
+ */
+export type TimeOffRequest = Prisma.TimeOffRequestModel
+/**
+ * Model TimeOffBalance
+ * 
+ */
+export type TimeOffBalance = Prisma.TimeOffBalanceModel
+/**
+ * Model TimeOffPolicy
+ * 
+ */
+export type TimeOffPolicy = Prisma.TimeOffPolicyModel
+/**
  * Model User
  * 
  */

@@ -211,6 +211,9 @@ export type UserWhereInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptListRelationFilter
   deliveredDeliveries?: Prisma.DeliveryReceiptListRelationFilter
   shifts?: Prisma.ShiftListRelationFilter
+  timeOffRequests?: Prisma.TimeOffRequestListRelationFilter
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestListRelationFilter
+  timeOffBalances?: Prisma.TimeOffBalanceListRelationFilter
   jobDetails?: Prisma.XOR<Prisma.EmployeeJobDetailsNullableScalarRelationFilter, Prisma.EmployeeJobDetailsWhereInput> | null
 }
 
@@ -228,6 +231,9 @@ export type UserOrderByWithRelationInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
   deliveredDeliveries?: Prisma.DeliveryReceiptOrderByRelationAggregateInput
   shifts?: Prisma.ShiftOrderByRelationAggregateInput
+  timeOffRequests?: Prisma.TimeOffRequestOrderByRelationAggregateInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestOrderByRelationAggregateInput
+  timeOffBalances?: Prisma.TimeOffBalanceOrderByRelationAggregateInput
   jobDetails?: Prisma.EmployeeJobDetailsOrderByWithRelationInput
 }
 
@@ -248,6 +254,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   receivedDeliveries?: Prisma.DeliveryReceiptListRelationFilter
   deliveredDeliveries?: Prisma.DeliveryReceiptListRelationFilter
   shifts?: Prisma.ShiftListRelationFilter
+  timeOffRequests?: Prisma.TimeOffRequestListRelationFilter
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestListRelationFilter
+  timeOffBalances?: Prisma.TimeOffBalanceListRelationFilter
   jobDetails?: Prisma.XOR<Prisma.EmployeeJobDetailsNullableScalarRelationFilter, Prisma.EmployeeJobDetailsWhereInput> | null
 }, "id" | "email">
 
@@ -293,6 +302,9 @@ export type UserCreateInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
 }
 
@@ -310,6 +322,9 @@ export type UserUncheckedCreateInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -327,6 +342,9 @@ export type UserUpdateInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
 }
 
@@ -344,6 +362,9 @@ export type UserUncheckedUpdateInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -380,6 +401,16 @@ export type UserUncheckedUpdateManyInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -413,25 +444,48 @@ export type UserMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
+export type UserCreateNestedOneWithoutTimeOffRequestsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutTimeOffRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTimeOffRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type UserCreateNestedOneWithoutReviewedTimeOffRequestsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedTimeOffRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedTimeOffRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type UserUpdateOneRequiredWithoutTimeOffRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutTimeOffRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTimeOffRequestsInput
+  upsert?: Prisma.UserUpsertWithoutTimeOffRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTimeOffRequestsInput, Prisma.UserUpdateWithoutTimeOffRequestsInput>, Prisma.UserUncheckedUpdateWithoutTimeOffRequestsInput>
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type UserUpdateOneWithoutReviewedTimeOffRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedTimeOffRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedTimeOffRequestsInput
+  upsert?: Prisma.UserUpsertWithoutReviewedTimeOffRequestsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedTimeOffRequestsInput, Prisma.UserUpdateWithoutReviewedTimeOffRequestsInput>, Prisma.UserUncheckedUpdateWithoutReviewedTimeOffRequestsInput>
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type UserCreateNestedOneWithoutTimeOffBalancesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTimeOffBalancesInput, Prisma.UserUncheckedCreateWithoutTimeOffBalancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTimeOffBalancesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTimeOffBalancesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTimeOffBalancesInput, Prisma.UserUncheckedCreateWithoutTimeOffBalancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTimeOffBalancesInput
+  upsert?: Prisma.UserUpsertWithoutTimeOffBalancesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTimeOffBalancesInput, Prisma.UserUpdateWithoutTimeOffBalancesInput>, Prisma.UserUncheckedUpdateWithoutTimeOffBalancesInput>
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
@@ -522,6 +576,282 @@ export type UserUpdateOneRequiredWithoutShiftsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutShiftsInput, Prisma.UserUpdateWithoutShiftsInput>, Prisma.UserUncheckedUpdateWithoutShiftsInput>
 }
 
+export type UserCreateWithoutTimeOffRequestsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
+  jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTimeOffRequestsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
+  jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTimeOffRequestsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutTimeOffRequestsInput>
+}
+
+export type UserCreateWithoutReviewedTimeOffRequestsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
+  jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutReviewedTimeOffRequestsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
+  jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutReviewedTimeOffRequestsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedTimeOffRequestsInput>
+}
+
+export type UserUpsertWithoutTimeOffRequestsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTimeOffRequestsInput, Prisma.UserUncheckedUpdateWithoutTimeOffRequestsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutTimeOffRequestsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTimeOffRequestsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTimeOffRequestsInput, Prisma.UserUncheckedUpdateWithoutTimeOffRequestsInput>
+}
+
+export type UserUpdateWithoutTimeOffRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
+  jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTimeOffRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
+  jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutReviewedTimeOffRequestsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedTimeOffRequestsInput, Prisma.UserUncheckedUpdateWithoutReviewedTimeOffRequestsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedTimeOffRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedTimeOffRequestsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedTimeOffRequestsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedTimeOffRequestsInput, Prisma.UserUncheckedUpdateWithoutReviewedTimeOffRequestsInput>
+}
+
+export type UserUpdateWithoutReviewedTimeOffRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
+  jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedTimeOffRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
+  jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTimeOffBalancesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTimeOffBalancesInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTimeOffBalancesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTimeOffBalancesInput, Prisma.UserUncheckedCreateWithoutTimeOffBalancesInput>
+}
+
+export type UserUpsertWithoutTimeOffBalancesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTimeOffBalancesInput, Prisma.UserUncheckedUpdateWithoutTimeOffBalancesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTimeOffBalancesInput, Prisma.UserUncheckedCreateWithoutTimeOffBalancesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTimeOffBalancesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTimeOffBalancesInput, Prisma.UserUncheckedUpdateWithoutTimeOffBalancesInput>
+}
+
+export type UserUpdateWithoutTimeOffBalancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTimeOffBalancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
+  deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
+}
+
 export type UserCreateWithoutJobDetailsInput = {
   id: string
   name: string
@@ -536,6 +866,9 @@ export type UserCreateWithoutJobDetailsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutJobDetailsInput = {
@@ -552,6 +885,9 @@ export type UserUncheckedCreateWithoutJobDetailsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutJobDetailsInput = {
@@ -584,6 +920,9 @@ export type UserUpdateWithoutJobDetailsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutJobDetailsInput = {
@@ -600,6 +939,9 @@ export type UserUncheckedUpdateWithoutJobDetailsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -615,6 +957,9 @@ export type UserCreateWithoutSessionsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
 }
 
@@ -631,6 +976,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -663,6 +1011,9 @@ export type UserUpdateWithoutSessionsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
 }
 
@@ -679,6 +1030,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -695,6 +1049,9 @@ export type UserCreateWithoutAccountsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
 }
 
@@ -711,6 +1068,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -743,6 +1103,9 @@ export type UserUpdateWithoutAccountsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
 }
 
@@ -759,6 +1122,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -775,6 +1141,9 @@ export type UserCreateWithoutReceivedDeliveriesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
 }
 
@@ -791,6 +1160,9 @@ export type UserUncheckedCreateWithoutReceivedDeliveriesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
   shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -812,6 +1184,9 @@ export type UserCreateWithoutDeliveredDeliveriesInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   shifts?: Prisma.ShiftCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
 }
 
@@ -828,6 +1203,9 @@ export type UserUncheckedCreateWithoutDeliveredDeliveriesInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   shifts?: Prisma.ShiftUncheckedCreateNestedManyWithoutUserInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -860,6 +1238,9 @@ export type UserUpdateWithoutReceivedDeliveriesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
 }
 
@@ -876,6 +1257,9 @@ export type UserUncheckedUpdateWithoutReceivedDeliveriesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
   shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -903,6 +1287,9 @@ export type UserUpdateWithoutDeliveredDeliveriesInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   shifts?: Prisma.ShiftUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
 }
 
@@ -919,6 +1306,9 @@ export type UserUncheckedUpdateWithoutDeliveredDeliveriesInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   shifts?: Prisma.ShiftUncheckedUpdateManyWithoutUserNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -935,6 +1325,9 @@ export type UserCreateWithoutShiftsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptCreateNestedManyWithoutDeliveryPersonInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsCreateNestedOneWithoutUserInput
 }
 
@@ -951,6 +1344,9 @@ export type UserUncheckedCreateWithoutShiftsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutReceivedPersonInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedCreateNestedManyWithoutDeliveryPersonInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutUserInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutReviewerInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedCreateNestedManyWithoutUserInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -983,6 +1379,9 @@ export type UserUpdateWithoutShiftsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUpdateManyWithoutDeliveryPersonNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUpdateOneWithoutUserNestedInput
 }
 
@@ -999,6 +1398,9 @@ export type UserUncheckedUpdateWithoutShiftsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   receivedDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutReceivedPersonNestedInput
   deliveredDeliveries?: Prisma.DeliveryReceiptUncheckedUpdateManyWithoutDeliveryPersonNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutUserNestedInput
+  reviewedTimeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  timeOffBalances?: Prisma.TimeOffBalanceUncheckedUpdateManyWithoutUserNestedInput
   jobDetails?: Prisma.EmployeeJobDetailsUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1013,6 +1415,9 @@ export type UserCountOutputType = {
   receivedDeliveries: number
   deliveredDeliveries: number
   shifts: number
+  timeOffRequests: number
+  reviewedTimeOffRequests: number
+  timeOffBalances: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1021,6 +1426,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   receivedDeliveries?: boolean | UserCountOutputTypeCountReceivedDeliveriesArgs
   deliveredDeliveries?: boolean | UserCountOutputTypeCountDeliveredDeliveriesArgs
   shifts?: boolean | UserCountOutputTypeCountShiftsArgs
+  timeOffRequests?: boolean | UserCountOutputTypeCountTimeOffRequestsArgs
+  reviewedTimeOffRequests?: boolean | UserCountOutputTypeCountReviewedTimeOffRequestsArgs
+  timeOffBalances?: boolean | UserCountOutputTypeCountTimeOffBalancesArgs
 }
 
 /**
@@ -1068,6 +1476,27 @@ export type UserCountOutputTypeCountShiftsArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.ShiftWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTimeOffRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimeOffRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewedTimeOffRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimeOffRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTimeOffBalancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimeOffBalanceWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1083,6 +1512,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   receivedDeliveries?: boolean | Prisma.User$receivedDeliveriesArgs<ExtArgs>
   deliveredDeliveries?: boolean | Prisma.User$deliveredDeliveriesArgs<ExtArgs>
   shifts?: boolean | Prisma.User$shiftsArgs<ExtArgs>
+  timeOffRequests?: boolean | Prisma.User$timeOffRequestsArgs<ExtArgs>
+  reviewedTimeOffRequests?: boolean | Prisma.User$reviewedTimeOffRequestsArgs<ExtArgs>
+  timeOffBalances?: boolean | Prisma.User$timeOffBalancesArgs<ExtArgs>
   jobDetails?: boolean | Prisma.User$jobDetailsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -1127,6 +1559,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   receivedDeliveries?: boolean | Prisma.User$receivedDeliveriesArgs<ExtArgs>
   deliveredDeliveries?: boolean | Prisma.User$deliveredDeliveriesArgs<ExtArgs>
   shifts?: boolean | Prisma.User$shiftsArgs<ExtArgs>
+  timeOffRequests?: boolean | Prisma.User$timeOffRequestsArgs<ExtArgs>
+  reviewedTimeOffRequests?: boolean | Prisma.User$reviewedTimeOffRequestsArgs<ExtArgs>
+  timeOffBalances?: boolean | Prisma.User$timeOffBalancesArgs<ExtArgs>
   jobDetails?: boolean | Prisma.User$jobDetailsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1141,6 +1576,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     receivedDeliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
     deliveredDeliveries: Prisma.$DeliveryReceiptPayload<ExtArgs>[]
     shifts: Prisma.$ShiftPayload<ExtArgs>[]
+    timeOffRequests: Prisma.$TimeOffRequestPayload<ExtArgs>[]
+    reviewedTimeOffRequests: Prisma.$TimeOffRequestPayload<ExtArgs>[]
+    timeOffBalances: Prisma.$TimeOffBalancePayload<ExtArgs>[]
     jobDetails: Prisma.$EmployeeJobDetailsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1551,6 +1989,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   receivedDeliveries<T extends Prisma.User$receivedDeliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedDeliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deliveredDeliveries<T extends Prisma.User$deliveredDeliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deliveredDeliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeliveryReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   shifts<T extends Prisma.User$shiftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shiftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  timeOffRequests<T extends Prisma.User$timeOffRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$timeOffRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeOffRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedTimeOffRequests<T extends Prisma.User$reviewedTimeOffRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedTimeOffRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeOffRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  timeOffBalances<T extends Prisma.User$timeOffBalancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$timeOffBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeOffBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   jobDetails<T extends Prisma.User$jobDetailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$jobDetailsArgs<ExtArgs>>): Prisma.Prisma__EmployeeJobDetailsClient<runtime.Types.Result.GetResult<Prisma.$EmployeeJobDetailsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2099,6 +2540,78 @@ export type User$shiftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.ShiftScalarFieldEnum | Prisma.ShiftScalarFieldEnum[]
+}
+
+/**
+ * User.timeOffRequests
+ */
+export type User$timeOffRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimeOffRequest
+   */
+  select?: Prisma.TimeOffRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimeOffRequest
+   */
+  omit?: Prisma.TimeOffRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimeOffRequestInclude<ExtArgs> | null
+  where?: Prisma.TimeOffRequestWhereInput
+  orderBy?: Prisma.TimeOffRequestOrderByWithRelationInput | Prisma.TimeOffRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TimeOffRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimeOffRequestScalarFieldEnum | Prisma.TimeOffRequestScalarFieldEnum[]
+}
+
+/**
+ * User.reviewedTimeOffRequests
+ */
+export type User$reviewedTimeOffRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimeOffRequest
+   */
+  select?: Prisma.TimeOffRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimeOffRequest
+   */
+  omit?: Prisma.TimeOffRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimeOffRequestInclude<ExtArgs> | null
+  where?: Prisma.TimeOffRequestWhereInput
+  orderBy?: Prisma.TimeOffRequestOrderByWithRelationInput | Prisma.TimeOffRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TimeOffRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimeOffRequestScalarFieldEnum | Prisma.TimeOffRequestScalarFieldEnum[]
+}
+
+/**
+ * User.timeOffBalances
+ */
+export type User$timeOffBalancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimeOffBalance
+   */
+  select?: Prisma.TimeOffBalanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimeOffBalance
+   */
+  omit?: Prisma.TimeOffBalanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimeOffBalanceInclude<ExtArgs> | null
+  where?: Prisma.TimeOffBalanceWhereInput
+  orderBy?: Prisma.TimeOffBalanceOrderByWithRelationInput | Prisma.TimeOffBalanceOrderByWithRelationInput[]
+  cursor?: Prisma.TimeOffBalanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimeOffBalanceScalarFieldEnum | Prisma.TimeOffBalanceScalarFieldEnum[]
 }
 
 /**

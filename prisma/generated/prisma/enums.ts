@@ -9,6 +9,32 @@
 * 🟢 You can import this file directly.
 */
 
+export const TimeOffType = {
+  VACATION: 'VACATION',
+  SICK: 'SICK',
+  PERSONAL: 'PERSONAL',
+  HOLIDAY: 'HOLIDAY',
+  OTO: 'OTO',
+  MATERNITY: 'MATERNITY',
+  PATERNITY: 'PATERNITY',
+  BEREAVEMENT: 'BEREAVEMENT',
+  UNPAID: 'UNPAID',
+  OTHER: 'OTHER'
+} as const
+
+export type TimeOffType = (typeof TimeOffType)[keyof typeof TimeOffType]
+
+
+export const TimeOffStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type TimeOffStatus = (typeof TimeOffStatus)[keyof typeof TimeOffStatus]
+
+
 export const Role = {
   USER: 'USER',
   ADMIN: 'ADMIN'

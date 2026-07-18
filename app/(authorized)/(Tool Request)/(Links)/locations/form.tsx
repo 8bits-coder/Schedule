@@ -1,5 +1,5 @@
 "use client";
-import { createFormSubmitHandler } from "../_components/createFormSubmitHandler";
+import { createFormSubmitHandler } from "../../_components/createFormSubmitHandler";
 import { Create } from "@/actions/locationActions";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";

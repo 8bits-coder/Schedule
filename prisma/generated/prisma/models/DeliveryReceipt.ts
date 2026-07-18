@@ -667,14 +667,6 @@ export type DeliveryReceiptUncheckedUpdateManyWithoutWorkLocationNestedInput = {
   deleteMany?: Prisma.DeliveryReceiptScalarWhereInput | Prisma.DeliveryReceiptScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type DeliveryReceiptCreateWithoutReceivedPersonInput = {
   id?: string
   itemSerialNumber?: string

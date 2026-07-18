@@ -10,7 +10,8 @@ const NavigationItems = [
   { name: "Locations", link: "/locations", color: "purple" },
   { name: "Receipts", link: "/receipts", color: "orange" },
   { name: "Time keeping", link: "/timekeeping", color: "teal" },
-]
+  { name: "Time Request", link: "/timerequest", color: "blue" },
+];
 
 const colorClasses: Record<string, string> = {
   blue: "bg-blue-500 hover:bg-blue-600",
@@ -18,7 +19,7 @@ const colorClasses: Record<string, string> = {
   purple: "bg-purple-500 hover:bg-purple-600",
   orange: "bg-orange-500 hover:bg-orange-600",
   teal: "bg-teal-500 hover:bg-teal-600",
-}
+};
 
 export default function RequestPage() {
   return (
@@ -29,7 +30,11 @@ export default function RequestPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {NavigationItems.map((page) => (
             <Link href={page.link} key={page.name}>
-              <Button className={cn(colorClasses[page.color], "w-full px-6 py-4 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105")}>
+              <Button
+                className={cn(
+                  colorClasses[page.color],
+                  "w-full px-6 py-4 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105",
+                )}>
                 {page.name}
               </Button>
             </Link>

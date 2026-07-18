@@ -384,6 +384,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  TimeOffRequest: 'TimeOffRequest',
+  TimeOffBalance: 'TimeOffBalance',
+  TimeOffPolicy: 'TimeOffPolicy',
   User: 'User',
   EmployeeJobDetails: 'EmployeeJobDetails',
   Session: 'Session',
@@ -409,10 +412,232 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "employeeJobDetails" | "session" | "account" | "verification" | "item" | "workLocation" | "deliveryReceipt" | "shift" | "shiftBadge"
+    modelProps: "timeOffRequest" | "timeOffBalance" | "timeOffPolicy" | "user" | "employeeJobDetails" | "session" | "account" | "verification" | "item" | "workLocation" | "deliveryReceipt" | "shift" | "shiftBadge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    TimeOffRequest: {
+      payload: Prisma.$TimeOffRequestPayload<ExtArgs>
+      fields: Prisma.TimeOffRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TimeOffRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TimeOffRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.TimeOffRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TimeOffRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        findMany: {
+          args: Prisma.TimeOffRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>[]
+        }
+        create: {
+          args: Prisma.TimeOffRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        createMany: {
+          args: Prisma.TimeOffRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TimeOffRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.TimeOffRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        update: {
+          args: Prisma.TimeOffRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.TimeOffRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TimeOffRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TimeOffRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.TimeOffRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.TimeOffRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTimeOffRequest>
+        }
+        groupBy: {
+          args: Prisma.TimeOffRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TimeOffRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    TimeOffBalance: {
+      payload: Prisma.$TimeOffBalancePayload<ExtArgs>
+      fields: Prisma.TimeOffBalanceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TimeOffBalanceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TimeOffBalanceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>
+        }
+        findFirst: {
+          args: Prisma.TimeOffBalanceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TimeOffBalanceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>
+        }
+        findMany: {
+          args: Prisma.TimeOffBalanceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>[]
+        }
+        create: {
+          args: Prisma.TimeOffBalanceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>
+        }
+        createMany: {
+          args: Prisma.TimeOffBalanceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TimeOffBalanceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>[]
+        }
+        delete: {
+          args: Prisma.TimeOffBalanceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>
+        }
+        update: {
+          args: Prisma.TimeOffBalanceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>
+        }
+        deleteMany: {
+          args: Prisma.TimeOffBalanceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TimeOffBalanceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TimeOffBalanceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>[]
+        }
+        upsert: {
+          args: Prisma.TimeOffBalanceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffBalancePayload>
+        }
+        aggregate: {
+          args: Prisma.TimeOffBalanceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTimeOffBalance>
+        }
+        groupBy: {
+          args: Prisma.TimeOffBalanceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffBalanceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TimeOffBalanceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffBalanceCountAggregateOutputType> | number
+        }
+      }
+    }
+    TimeOffPolicy: {
+      payload: Prisma.$TimeOffPolicyPayload<ExtArgs>
+      fields: Prisma.TimeOffPolicyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TimeOffPolicyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TimeOffPolicyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>
+        }
+        findFirst: {
+          args: Prisma.TimeOffPolicyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TimeOffPolicyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>
+        }
+        findMany: {
+          args: Prisma.TimeOffPolicyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>[]
+        }
+        create: {
+          args: Prisma.TimeOffPolicyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>
+        }
+        createMany: {
+          args: Prisma.TimeOffPolicyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TimeOffPolicyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>[]
+        }
+        delete: {
+          args: Prisma.TimeOffPolicyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>
+        }
+        update: {
+          args: Prisma.TimeOffPolicyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>
+        }
+        deleteMany: {
+          args: Prisma.TimeOffPolicyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TimeOffPolicyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TimeOffPolicyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>[]
+        }
+        upsert: {
+          args: Prisma.TimeOffPolicyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffPolicyPayload>
+        }
+        aggregate: {
+          args: Prisma.TimeOffPolicyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTimeOffPolicy>
+        }
+        groupBy: {
+          args: Prisma.TimeOffPolicyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffPolicyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TimeOffPolicyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffPolicyCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -1192,6 +1417,58 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const TimeOffRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  hours: 'hours',
+  reason: 'reason',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNote: 'reviewNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffRequestScalarFieldEnum = (typeof TimeOffRequestScalarFieldEnum)[keyof typeof TimeOffRequestScalarFieldEnum]
+
+
+export const TimeOffBalanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  year: 'year',
+  allocated: 'allocated',
+  used: 'used',
+  pending: 'pending',
+  remaining: 'remaining',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffBalanceScalarFieldEnum = (typeof TimeOffBalanceScalarFieldEnum)[keyof typeof TimeOffBalanceScalarFieldEnum]
+
+
+export const TimeOffPolicyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  daysAllowed: 'daysAllowed',
+  carryOverAllowed: 'carryOverAllowed',
+  maxCarryOverDays: 'maxCarryOverDays',
+  requiresApproval: 'requiresApproval',
+  minNoticeDays: 'minNoticeDays',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffPolicyScalarFieldEnum = (typeof TimeOffPolicyScalarFieldEnum)[keyof typeof TimeOffPolicyScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1375,9 +1652,30 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Boolean'
+ * Reference to a field of type 'TimeOffType'
  */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type EnumTimeOffTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimeOffType'>
+    
+
+
+/**
+ * Reference to a field of type 'TimeOffType[]'
+ */
+export type ListEnumTimeOffTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimeOffType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TimeOffStatus'
+ */
+export type EnumTimeOffStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimeOffStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TimeOffStatus[]'
+ */
+export type ListEnumTimeOffStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimeOffStatus[]'>
     
 
 
@@ -1392,6 +1690,41 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1424,20 +1757,6 @@ export type ListEnumWeekDayFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
  * Reference to a field of type 'ShiftType'
  */
 export type EnumShiftTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShiftType'>
@@ -1448,20 +1767,6 @@ export type EnumShiftTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'ShiftType[]'
  */
 export type ListEnumShiftTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShiftType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1574,6 +1879,9 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
+  timeOffRequest?: Prisma.TimeOffRequestOmit
+  timeOffBalance?: Prisma.TimeOffBalanceOmit
+  timeOffPolicy?: Prisma.TimeOffPolicyOmit
   user?: Prisma.UserOmit
   employeeJobDetails?: Prisma.EmployeeJobDetailsOmit
   session?: Prisma.SessionOmit

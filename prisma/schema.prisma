@@ -27,26 +27,6 @@ enum WeekDay {
   Sunday
 }
 
-model User {
-  id                  String              @id
-  name                String
-  email               String
-  emailVerified       Boolean             @default(false)
-  image               String?
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-  role                Role                @default(USER)
-  sessions            Session[]
-  accounts            Account[]
-  receivedDeliveries  DeliveryReceipt[]   @relation("ReceivedPerson")
-  deliveredDeliveries DeliveryReceipt[]   @relation("DeliveryPerson")
-  shifts              Shift[]
-  jobDetails          EmployeeJobDetails?
-
-  @@unique([email])
-  @@map("user")
-}
-
 model EmployeeJobDetails {
   id         String   @id @default(uuid())
   userId     String   @unique

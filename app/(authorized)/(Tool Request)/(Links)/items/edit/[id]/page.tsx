@@ -1,6 +1,6 @@
 "use client";
 import { Delete, ItemByIdResponse, Update } from "@/actions/itemActions";
-import EditEntityPage from "../../../_components/EditEntityPage";
+import EditEntityPage from "../../../../_components/EditEntityPage";
 
 export default function EditItemPage() {
   return (

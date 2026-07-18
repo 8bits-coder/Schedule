@@ -51,6 +51,9 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  TimeOffRequest: 'TimeOffRequest',
+  TimeOffBalance: 'TimeOffBalance',
+  TimeOffPolicy: 'TimeOffPolicy',
   User: 'User',
   EmployeeJobDetails: 'EmployeeJobDetails',
   Session: 'Session',
@@ -77,6 +80,58 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const TimeOffRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  hours: 'hours',
+  reason: 'reason',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNote: 'reviewNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffRequestScalarFieldEnum = (typeof TimeOffRequestScalarFieldEnum)[keyof typeof TimeOffRequestScalarFieldEnum]
+
+
+export const TimeOffBalanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  year: 'year',
+  allocated: 'allocated',
+  used: 'used',
+  pending: 'pending',
+  remaining: 'remaining',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffBalanceScalarFieldEnum = (typeof TimeOffBalanceScalarFieldEnum)[keyof typeof TimeOffBalanceScalarFieldEnum]
+
+
+export const TimeOffPolicyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  daysAllowed: 'daysAllowed',
+  carryOverAllowed: 'carryOverAllowed',
+  maxCarryOverDays: 'maxCarryOverDays',
+  requiresApproval: 'requiresApproval',
+  minNoticeDays: 'minNoticeDays',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffPolicyScalarFieldEnum = (typeof TimeOffPolicyScalarFieldEnum)[keyof typeof TimeOffPolicyScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

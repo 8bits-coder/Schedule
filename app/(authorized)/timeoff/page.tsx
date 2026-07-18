@@ -1,16 +1,19 @@
 "use client";
+import { submitTimeOffRequest } from "@/actions/timeOffActions";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import { TimeOffType as PrismaTimeOffType } from "@/prisma/generated/prisma/browser";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
-const timeOffTypes = ["vacation", "sick", "personal", "holiday", "overtime_offset", "unpaid"] as const;
-type TimeOffType = (typeof timeOffTypes)[number];
-
-const duration = ["full", "hours"] as const;
-type Portion = (typeof duration)[number];
+type TimeOffType = (typeof PrismaTimeOffType)[keyof typeof PrismaTimeOffType] extends infer T
+  ? T extends string
+    ? Uppercase<T>
+    : never
+  : never;
 
 const inputClassName =
-  "mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20";
+  "mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20";
 
 const leaveTypes: Array<{
   value: TimeOffType;
@@ -18,48 +21,78 @@ const leaveTypes: Array<{
   description: string;
 }> = [
   {
-    value: "vacation",
+    value: "VACATION",
     label: "Vacation",
     description: "Planned personal time away from work.",
   },
   {
-    value: "sick",
+    value: "SICK",
     label: "Sick leave",
     description: "Illness, recovery, or medical appointments.",
   },
   {
-    value: "personal",
+    value: "PERSONAL",
     label: "Personal day",
     description: "Short personal matters or urgent life events.",
   },
   {
-    value: "holiday",
+    value: "HOLIDAY",
     label: "Holiday",
     description: "Extended family or bonding leave.",
   },
   {
-    value: "overtime_offset",
-    label: "OTO",
+    value: "OTO",
+    label: "Overtime offset",
     description: "Leave outside standard paid balances.",
+  },
+  {
+    value: "UNPAID",
+    label: "Unpaid leave",
+    description: "Time off without pay.",
+  },
+  {
+    value: "MATERNITY",
+    label: "Maternity leave",
+    description: "Extended family or bonding leave.",
+  },
+  {
+    value: "PATERNITY",
+    label: "Paternity leave",
+    description: "Extended family or bonding leave.",
+  },
+  {
+    value: "BEREAVEMENT",
+    label: "Bereavement leave",
+    description: "Time off to grieve the loss of a loved one.",
+  },
+  {
+    value: "OTHER",
+    label: "Other",
+    description: "Any other type of leave not listed.",
   },
 ];
 
 const balances: Record<TimeOffType, number> = {
-  vacation: 20,
-  sick: 8,
-  personal: 1,
-  holiday: 60,
-  overtime_offset: 5.5,
-  unpaid: 30,
+  VACATION: 20,
+  MATERNITY: 20,
+  PATERNITY: 20,
+  BEREAVEMENT: 3,
+  OTHER: 0,
+  SICK: 8,
+  PERSONAL: 1,
+  HOLIDAY: 60,
+  OTO: 5.5,
+  UNPAID: Infinity,
 };
 
 const timeOffRequestSchema = z
   .object({
-    type: z.enum(timeOffTypes, { error: "Select a leave type." }),
+    type: z.enum(leaveTypes.map((type) => type.value) as [TimeOffType, ...TimeOffType[]], {
+      error: "Select a leave type.",
+    }),
     startDate: z.string().trim().min(1, "Select a start date."),
     endDate: z.string().trim().min(1, "Select an end date."),
-    duration: z.enum(duration),
-    totalHours: z
+    hours: z
       .string()
       .trim()
       .min(1, "Enter the requested hours.")
@@ -100,25 +133,17 @@ const timeOffRequestSchema = z
       });
     }
 
-    if (value.duration !== "full" && value.startDate !== value.endDate) {
-      context.addIssue({
-        code: "custom",
-        path: ["portion"],
-        message: "Half-day requests are available for single-day requests only.",
-      });
-    }
+    const totalDays = countCalendarDays(value.startDate, value.endDate);
 
-    const duration = countBusinessDays(value.startDate, value.endDate, value.duration);
-
-    if (duration <= 0) {
+    if (totalDays <= 0) {
       context.addIssue({
         code: "custom",
         path: ["endDate"],
-        message: "Select a range that includes at least one business day.",
+        message: "Select a valid date range with at least one day.",
       });
     }
 
-    if (value.type !== "unpaid" && duration > balances[value.type]) {
+    if (value.type !== "UNPAID" && totalDays > balances[value.type]) {
       context.addIssue({
         code: "custom",
         path: ["type"],
@@ -132,11 +157,10 @@ type TimeOffRequestValues = z.output<typeof timeOffRequestSchema>;
 type FieldErrors = Partial<Record<keyof TimeOffFormValues, string>>;
 
 const initialForm: TimeOffFormValues = {
-  type: "vacation",
+  type: "VACATION",
   startDate: "",
   endDate: "",
-  duration: "full",
-  totalHours: "",
+  hours: "",
   reason: "",
 };
 
@@ -150,43 +174,26 @@ function parseLocalDate(value: string) {
   return new Date(year, month - 1, day);
 }
 
-function isWeekend(date: Date) {
-  const day = date.getDay();
-  return day === 0 || day === 6;
-}
-
-function countBusinessDays(startValue: string, endValue: string, duration: Portion) {
+function countCalendarDays(startValue: string, endValue: string) {
   const start = parseLocalDate(startValue);
   const end = parseLocalDate(endValue);
 
   if (!start || !end || start > end) return 0;
 
-  let count = 0;
-  const cursor = new Date(start);
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const startTime = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
+  const endTime = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
 
-  while (cursor <= end) {
-    if (!isWeekend(cursor)) count += 1;
-    cursor.setDate(cursor.getDate() + 1);
-  }
-
-  if (count > 0 && startValue === endValue && duration !== "full" && !isWeekend(start)) {
-    return 0.5;
-  }
-
-  return count;
+  return Math.floor((endTime - startTime) / msPerDay) + 1;
 }
 
-function getNextBusinessDay(value: string) {
+function getNextDay(value: string) {
   const date = parseLocalDate(value);
 
   if (!date) return null;
 
   const cursor = new Date(date);
   cursor.setDate(cursor.getDate() + 1);
-
-  while (isWeekend(cursor)) {
-    cursor.setDate(cursor.getDate() + 1);
-  }
 
   return cursor;
 }
@@ -229,18 +236,18 @@ function SectionCard({ title, subtitle, children }: { title: string; subtitle: s
   );
 }
 
-function getFieldErrors(values: TimeOffFormValues, effectivePortion: Portion): FieldErrors {
-  const result = timeOffRequestSchema.safeParse({ ...values, portion: effectivePortion });
+function getFieldErrors(values: TimeOffFormValues): FieldErrors {
+  const result = timeOffRequestSchema.safeParse(values);
 
   if (result.success) {
     return {};
   }
 
   const nextErrors: FieldErrors = {};
-  const flattened = result.error.flatten().fieldErrors;
+  const flattened = z.treeifyError(result.error); // result.error.flatten().fieldErrors;
 
-  (Object.keys(flattened) as Array<keyof TimeOffFormValues>).forEach((field) => {
-    const message = flattened[field]?.[0];
+  (Object.keys(flattened.properties ?? {}) as Array<keyof TimeOffFormValues>).forEach((field) => {
+    const message = flattened.properties?.[field]?.errors?.[0];
 
     if (message) {
       nextErrors[field] = message;
@@ -257,9 +264,6 @@ export default function TimeOffPage() {
   const [submittedRequest, setSubmittedRequest] = useState<TimeOffRequestValues | null>(null);
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success">("idle");
 
-  const isSingleDay = Boolean(form.startDate && form.startDate === form.endDate);
-  const effectivePortion = isSingleDay ? form.duration : "full";
-
   const dateError = useMemo(() => {
     if (!form.startDate || !form.endDate) return "";
 
@@ -272,29 +276,19 @@ export default function TimeOffPage() {
     return "";
   }, [form.startDate, form.endDate]);
 
-  const hasWeekendSelection = useMemo(() => {
-    const start = parseLocalDate(form.startDate);
-    const end = parseLocalDate(form.endDate);
-
-    return Boolean((start && isWeekend(start)) || (end && isWeekend(end)));
-  }, [form.startDate, form.endDate]);
-
-  const duration = useMemo(
-    () => countBusinessDays(form.startDate, form.endDate, effectivePortion),
-    [effectivePortion, form.endDate, form.startDate],
-  );
+  const duration = useMemo(() => countCalendarDays(form.startDate, form.endDate), [form.endDate, form.startDate]);
 
   const estimatedHours = duration > 0 ? duration * 8 : 0;
 
-  const balanceOk = form.type === "unpaid" || duration <= balances[form.type];
+  const balanceOk = form.type === "UNPAID" || duration <= balances[form.type];
 
   useEffect(() => {
     if (!attemptedSubmit) {
       return;
     }
 
-    setFieldErrors(getFieldErrors(form, effectivePortion));
-  }, [attemptedSubmit, effectivePortion, form]);
+    setFieldErrors(getFieldErrors(form));
+  }, [attemptedSubmit, form]);
 
   const updateField = <K extends keyof TimeOffFormValues>(field: K, value: TimeOffFormValues[K]) => {
     if (submitState === "success") {
@@ -307,7 +301,7 @@ export default function TimeOffPage() {
 
   const getInputStateClassName = (field: keyof TimeOffFormValues, extraClassName = "") => {
     const invalidClassName = fieldErrors[field]
-      ? " border-rose-500 bg-rose-50 text-rose-900 placeholder:text-rose-300 focus:border-rose-500 focus:ring-rose-500/20"
+      ? "border border-rose-500! bg-rose-50! text-rose-900! placeholder:text-rose-300! focus:border-rose-500! focus:ring-rose-500/20!"
       : "";
 
     return `${inputClassName}${invalidClassName}${extraClassName ? ` ${extraClassName}` : ""}`;
@@ -321,27 +315,29 @@ export default function TimeOffPage() {
     setSubmitState("idle");
   };
 
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAttemptedSubmit(true);
 
-    const validation = timeOffRequestSchema.safeParse({ ...form, portion: effectivePortion });
+    const validation = timeOffRequestSchema.safeParse(form);
 
     if (!validation.success) {
-      setFieldErrors(getFieldErrors(form, effectivePortion));
+      setFieldErrors(getFieldErrors(form));
       return;
     }
 
     setFieldErrors({});
+
     setSubmittedRequest(validation.data);
     setSubmitState("submitting");
-
+    const response = await submitTimeOffRequest(validation.data);
     setTimeout(() => {
       setSubmitState("success");
+      toast.success(`Request submitted successfully: ${JSON.stringify(response)}`);
     }, 2000);
   };
 
-  const returnDate = getNextBusinessDay(form.endDate);
+  const returnDate = getNextDay(form.endDate);
 
   return (
     <BodyWrapper>
@@ -362,8 +358,8 @@ export default function TimeOffPage() {
           <div
             aria-live="polite"
             className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
-            Request prepared successfully for {submittedRequest?.totalHours ?? 0} hours. Connect the submit handler to
-            the API or workflow when ready.
+            Request prepared successfully for {submittedRequest?.hours ?? 0} hours. Connect the submit handler to the
+            API or workflow when ready.
           </div>
         )}
 
@@ -391,7 +387,7 @@ export default function TimeOffPage() {
                   <p className="mt-2 text-xs text-slate-500">
                     {leaveTypes.find((type) => type.value === form.type)?.description} Available balance:{" "}
                     {formatDays(balances[form.type])}
-                    {form.type === "overtime_offset" ? " hours" : " days"}.
+                    {form.type === "OTO" ? " hours" : " days"}.
                   </p>
                 )}
               </div>
@@ -422,39 +418,19 @@ export default function TimeOffPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Day length</label>
-                  <select
-                    value={effectivePortion}
-                    disabled={!isSingleDay}
-                    onChange={(event) => updateField("duration", event.target.value as Portion)}
-                    aria-invalid={Boolean(fieldErrors.duration)}
-                    className={getInputStateClassName("duration", "disabled:cursor-not-allowed disabled:opacity-60")}>
-                    <option value="full">Full day</option>
-                    <option value="hours">Partial</option>
-                  </select>
-                  {fieldErrors.duration ? (
-                    <p className="mt-2 text-xs text-rose-600">{fieldErrors.duration}</p>
-                  ) : (
-                    <p className="mt-2 text-xs text-slate-500">
-                      Half-day requests are available for single-day requests only.
-                    </p>
-                  )}
-                </div>
-
-                <div>
                   <label className="text-sm font-medium text-slate-700">Total hours</label>
                   <input
                     type="number"
                     min="0"
                     step="0.5"
-                    value={form.totalHours}
-                    onChange={(event) => updateField("totalHours", event.target.value)}
+                    value={form.hours}
+                    onChange={(event) => updateField("hours", event.target.value)}
                     placeholder="8"
-                    aria-invalid={Boolean(fieldErrors.totalHours)}
-                    className={getInputStateClassName("totalHours")}
+                    aria-invalid={Boolean(fieldErrors.hours)}
+                    className={getInputStateClassName("hours")}
                   />
-                  {fieldErrors.totalHours ? (
-                    <p className="mt-2 text-xs text-rose-600">{fieldErrors.totalHours}</p>
+                  {fieldErrors.hours ? (
+                    <p className="mt-2 text-xs text-rose-600">{fieldErrors.hours}</p>
                   ) : (
                     <p className="mt-2 text-xs text-slate-500">
                       Enter the requested hours directly. Estimated from selected dates:{" "}
@@ -488,7 +464,7 @@ export default function TimeOffPage() {
                   <div>
                     <p className="text-sm font-medium text-slate-900">Request timing</p>
                     <p className="mt-1 text-xs text-slate-500">
-                      Duration is calculated in business days and excludes weekends.
+                      Duration is calculated in calendar days, including weekends.
                     </p>
                   </div>
                   <div className="text-sm text-slate-700">
@@ -504,15 +480,10 @@ export default function TimeOffPage() {
                       {dateError}
                     </span>
                   ) : null}
-                  {hasWeekendSelection ? (
-                    <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-800">
-                      Weekend dates are ignored in duration calculations.
-                    </span>
-                  ) : null}
                   {!dateError && duration > 0 ? (
                     <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">
-                      Estimated request: {form.totalHours} hour
-                      {Number(form.totalHours) > 1 ? "s" : ""}
+                      Estimated request: {form.hours} hour
+                      {Number(form.hours) > 1 ? "s" : ""}
                     </span>
                   ) : null}
                   {!dateError && duration > 0 && returnDate ? (

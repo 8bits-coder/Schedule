@@ -1,6 +1,6 @@
 "use client";
 import { Delete, LocationById, Update } from "@/actions/locationActions";
-import EditEntityPage from "../../../_components/EditEntityPage";
+import EditEntityPage from "../../../../_components/EditEntityPage";
 
 export default function EditLocationPage() {
   return (

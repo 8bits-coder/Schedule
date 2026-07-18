@@ -2,7 +2,7 @@
 
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { getRouter } from "@/lib/router";
 
 interface AuthContextValue {
   login: (email: string, password: string) => void;
@@ -14,7 +14,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const router = useRouter();
+  const router = getRouter();
   const [isRequestSubmitting, setRequestSubmitting] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 

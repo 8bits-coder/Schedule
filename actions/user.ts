@@ -19,7 +19,7 @@ export async function verifyAdminAccess() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const isAdmin = session?.user?.role === "admin";
+  const isAdmin = session?.user?.role === "ADMIN";
   if (!isAdmin) {
     throw new Error("Unauthorized");
   }

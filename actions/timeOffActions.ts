@@ -1,11 +1,12 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { TimeOffType } from "@/prisma/generated/prisma/enums";
+import { TimeOffStatus, TimeOffType } from "@/prisma/generated/prisma/enums";
 import { requireAuthenticatedUserId, verifyAdminAccess } from "./user";
 import { revalidatePath } from "next/cache";
+import { TimeOffRequest } from "@/prisma/generated/prisma/browser";
 
-type TimeOffRequest = {
+type TimeOffSubmission = {
   type: TimeOffType;
   startDate: string | Date;
   endDate: string | Date;
@@ -13,7 +14,7 @@ type TimeOffRequest = {
   reason: string | null;
 };
 
-export async function submitTimeOffRequest(formData: TimeOffRequest) {
+export async function submitTimeOffRequest(formData: TimeOffSubmission) {
   const { type, startDate, endDate, hours, reason } = formData;
 
   const user = await requireAuthenticatedUserId();
@@ -68,6 +69,7 @@ export async function cancelRequestByUserId(requestId: string) {
 
 export async function getTimeOffRequestById(requestId: string) {
   const user = await requireAuthenticatedUserId();
+
   return prisma.timeOffRequest.findFirst({
     where: {
       id: requestId,
@@ -79,11 +81,29 @@ export async function getTimeOffRequestById(requestId: string) {
       endDate: true,
       hours: true,
       reason: true,
+      reviewNote: true,
+      status: true,
     },
   });
 }
+export async function adminGetTimeOffRequestById(requestId: string) {
+  await verifyAdminAccess();
 
-export async function updateTimeOffRequestById(requestId: string, formData: TimeOffRequest) {
+  return prisma.timeOffRequest.findUnique({
+    where: {
+      id: requestId,
+    },
+    // include: {
+    //   user: {
+    //     select: {
+    //       name: true,
+    //     },
+    //   },
+    // },
+  });
+}
+
+export async function updateTimeOffRequestById(requestId: string, formData: Partial<TimeOffRequest>) {
   const { type, startDate, endDate, hours, reason } = formData;
   const user = await requireAuthenticatedUserId();
 
@@ -93,11 +113,35 @@ export async function updateTimeOffRequestById(requestId: string, formData: Time
       userId: user,
     },
     data: {
+      type: type?.toLocaleUpperCase() as TimeOffType,
+      startDate: new Date(startDate ?? ""),
+      endDate: new Date(endDate ?? ""),
+      hours: Number(hours),
+      reason,
+    },
+  });
+  revalidatePath("/timerequest");
+  return true;
+}
+export async function adminUpdateTimeOffRequestById(requestId: string, formData: TimeOffRequest) {
+  const { type, startDate, endDate, hours, reason, status, reviewNote } = formData;
+  await verifyAdminAccess();
+  const user = await requireAuthenticatedUserId();
+
+  await prisma.timeOffRequest.updateMany({
+    where: {
+      id: requestId,
+    },
+    data: {
       type: type.toLocaleUpperCase() as TimeOffType,
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       hours: Number(hours),
       reason,
+      reviewedAt: new Date(),
+      status: status?.toLocaleUpperCase() as TimeOffStatus,
+      reviewNote,
+      reviewedBy: user,
     },
   });
   revalidatePath("/timerequest");
@@ -111,6 +155,21 @@ export async function getAllTimeOffRequests() {
   return prisma.timeOffRequest.findMany({
     orderBy: {
       startDate: "desc",
+    },
+    select: {
+      id: true,
+      type: true,
+      startDate: true,
+      endDate: true,
+      hours: true,
+      reason: true,
+      status: true,
+      createdAt: true,
+      user: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 }

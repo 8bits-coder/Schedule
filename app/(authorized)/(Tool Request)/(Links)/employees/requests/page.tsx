@@ -1,4 +1,4 @@
-import { cancelRequestByUserId, getTimeOffRequestsByUserId } from "@/actions/timeOffActions";
+import { cancelRequestByUserId, getAllTimeOffRequests } from "@/actions/timeOffActions";
 import BodyWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffStatus } from "@/prisma/generated/prisma/enums";
 import Link from "next/link";
@@ -11,7 +11,7 @@ const statusStyles: Record<TimeOffStatus, string> = {
 };
 
 export default async function TimeRequestPage() {
-  const timeOffRequests = await getTimeOffRequestsByUserId();
+  const timeOffRequests = await getAllTimeOffRequests();
   return (
     <BodyWrapper>
       <div className="mb-6 flex items-center justify-between">
@@ -26,6 +26,7 @@ export default async function TimeRequestPage() {
           <table className="min-w-full divide-y divide-gray-200 text-sm">
             <thead className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
               <tr>
+                <th className="px-4 py-3">Employee</th>
                 <th className="px-4 py-3">Request Date</th>
                 <th className="px-4 py-3">Type</th>
                 <th className="px-4 py-3">Start Date</th>
@@ -39,6 +40,7 @@ export default async function TimeRequestPage() {
             <tbody className="divide-y divide-gray-100">
               {timeOffRequests.map((request) => (
                 <tr key={request.id} className="hover:bg-gray-50">
+                  <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900">{request.user.name}</td>
                   <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900">
                     {request.createdAt.toLocaleString([], {
                       hour: "2-digit",
@@ -62,26 +64,24 @@ export default async function TimeRequestPage() {
                   </td>
                   <td className="max-w-xs truncate px-4 py-3 text-gray-600">{request.reason || "—"}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-gray-700">
-                    {request.status === "PENDING" && (
-                      <div className="flex">
-                        <form
-                          action={async () => {
-                            "use server";
-                            await cancelRequestByUserId(request.id);
-                          }}>
-                          <button
-                            type="submit"
-                            className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2">
-                            Cancel
-                          </button>
-                        </form>
-                        <Link
-                          href={`/timerequest/edit/${request.id}`}
-                          className="ml-2 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-                          Edit
-                        </Link>
-                      </div>
-                    )}
+                    <div className="flex">
+                      <form
+                        action={async () => {
+                          "use server";
+                          await cancelRequestByUserId(request.id);
+                        }}>
+                        <button
+                          type="submit"
+                          className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2">
+                          Cancel
+                        </button>
+                      </form>
+                      <Link
+                        href={`/employees/requests/edit/${request.id}`}
+                        className="ml-2 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                        Edit
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}

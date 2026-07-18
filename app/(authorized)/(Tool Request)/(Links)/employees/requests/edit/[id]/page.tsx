@@ -39,7 +39,7 @@ export default function EditTimeOffRequestPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setSubmitting(true);
 
@@ -59,21 +59,21 @@ export default function EditTimeOffRequestPage() {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
   if (!formData) {
-    return <div className="flex justify-center items-center min-h-screen">Request not found</div>;
+    return <div className="flex items-center justify-center min-h-screen">Request not found</div>;
   }
 
   return (
-    <div className="container mx-auto py-10 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-6">Edit Time Off Request</h1>
+    <div className="container max-w-2xl py-10 mx-auto">
+      <h1 className="mb-6 text-3xl font-bold">Edit Time Off Request</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Request Type</label>
+            <label className="block mb-2 text-sm font-medium">Request Type</label>
             <select
               name="type"
               value={formData.type || ""}
@@ -90,7 +90,7 @@ export default function EditTimeOffRequestPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Start Date</label>
+            <label className="block mb-2 text-sm font-medium">Start Date</label>
             <input
               type="date"
               name="startDate"
@@ -101,7 +101,7 @@ export default function EditTimeOffRequestPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">End Date</label>
+            <label className="block mb-2 text-sm font-medium">End Date</label>
             <input
               type="date"
               name="endDate"
@@ -113,7 +113,7 @@ export default function EditTimeOffRequestPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Total hours</label>
+          <label className="block mb-2 text-sm font-medium">Total hours</label>
           <input
             name="hours"
             type="number"
@@ -125,7 +125,7 @@ export default function EditTimeOffRequestPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Status</label>
+            <label className="block mb-2 text-sm font-medium">Status</label>
             <select
               name="status"
               value={formData.status || ""}
@@ -140,7 +140,7 @@ export default function EditTimeOffRequestPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Approved By</label>
+            <label className="block mb-2 text-sm font-medium">Approved By</label>
             <input
               type="text"
               name="reviewedBy"
@@ -153,7 +153,7 @@ export default function EditTimeOffRequestPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Reason</label>
+          <label className="block mb-2 text-sm font-medium">Reason</label>
           <textarea
             name="reason"
             value={formData.reason || ""}
@@ -163,7 +163,7 @@ export default function EditTimeOffRequestPage() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Review Note</label>
+          <label className="block mb-2 text-sm font-medium">Review Note</label>
           <textarea
             name="reviewNote"
             value={formData.reviewNote || ""}
@@ -173,14 +173,14 @@ export default function EditTimeOffRequestPage() {
           />
         </div>
 
-        <div className="flex gap-4 justify-end">
+        <div className="flex justify-end gap-4">
           <button type="button" onClick={() => router.back()} className="px-4 py-2 border rounded hover:bg-gray-100">
             Cancel
           </button>
           <button
             type="submit"
             disabled={submitting}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
+            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50">
             {submitting ? "Saving..." : "Save Changes"}
           </button>
         </div>

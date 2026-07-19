@@ -24,7 +24,7 @@ type EditEntityPageProps<T extends EditableEntity> = {
   deleteConfirmationMessage: string;
   loadEntity: { functionName: FunctionName; payload?: FunctionResult<FunctionName> };
   saveEntity: { functionName: FunctionName; payload?: FunctionResult<FunctionName> };
-  deleteEntity: { name: FunctionName; payload?: FunctionResult<FunctionName> };
+  deleteEntity: { functionName: FunctionName; payload?: FunctionResult<FunctionName> };
   renderFields: (args: { formData: T; handleChange: (event: FieldChangeEvent) => void; loading: boolean }) => ReactNode;
 };
 
@@ -115,7 +115,7 @@ export default function EditEntityPage<T extends EditableEntity>({
     try {
       setLoading(true);
       setError("");
-      await executeTask(deleteEntity.name as FunctionName, { id: formData.id } as any);
+      await executeTask(deleteEntity.functionName as FunctionName, { id: formData.id } as any);
       toast.success(deleteSuccessMessage);
       push(redirectPath);
     } catch (err) {

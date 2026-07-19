@@ -12,7 +12,7 @@ export default function EditItemPage() {
       deleteConfirmationMessage="Are you sure you want to delete this item?"
       loadEntity={{ functionName: "getItemById" }}
       saveEntity={{ functionName: "updateItem" }}
-      deleteEntity={{ name: "deleteItem" }}
+      deleteEntity={{ functionName: "deleteItem" }}
       renderFields={({ formData, handleChange }) => (
         <>
           <div>

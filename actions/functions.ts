@@ -81,13 +81,6 @@ export async function executeTask<T extends FunctionName>(
     // Centralized error handling across Server and Client
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
 
-    // // Server-side logging environment check
-    // if (typeof window === "undefined") {
-    //   console.error(`[Server Error] [Task: ${functionName}]:`, error);
-    // } else {
-    //   console.error(`[Client Error] [Task: ${functionName}]:`, error);
-    // }
-
     return {
       success: false,
       data: null as any,
@@ -98,13 +91,6 @@ export async function executeTask<T extends FunctionName>(
 
 //TODO: Implement additional utility functions as needed
 type TaskResult<T> = { success: true; data: T } | { success: false; error: string };
-
-export async function Task<T>(task: Promise<T>): Promise<TaskResult<T>>;
-
-export async function Task<T, A extends unknown[]>(
-  task: (...args: A) => Promise<T>,
-  ...args: A
-): Promise<TaskResult<T>>;
 
 export async function Task<T, A extends unknown[]>(
   task: Promise<T> | ((...args: A) => Promise<T>),

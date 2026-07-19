@@ -93,11 +93,11 @@ export async function executeTask<T extends FunctionName>(
 type TaskResult<T> = { success: true; data: T } | { success: false; error: string };
 
 export async function Task<T, A extends unknown[]>(
-  task: Promise<T> | ((...args: A) => Promise<T>),
-  ...args: A
+  task: Promise<T> | ((...args: any[]) => Promise<T>),
+  payload?: Record<string, unknown>,
 ): Promise<TaskResult<T>> {
   try {
-    const data = await (typeof task === "function" ? task(...args) : task);
+    const data = await (typeof task === "function" ? task(...(payload ? Object.values(payload) : [])) : task);
     return { success: true, data };
   } catch (err) {
     return {
@@ -105,13 +105,6 @@ export async function Task<T, A extends unknown[]>(
       error: err instanceof Error ? err.message : "An unknown error occurred",
     };
   }
-}
-
-export async function executeTaskFn<T>(
-  task: (...args: any[]) => Promise<T>,
-  payload?: Record<string, unknown>,
-): Promise<TaskResult<T>> {
-  return Task(task, ...(payload ? Object.values(payload) : []));
 }
 
 type FunctionRegistry = typeof functionRegistry;

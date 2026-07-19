@@ -10,7 +10,7 @@ import { authClient } from "@/lib/auth-client";
 import Container from "@/components/custom_ui/Container";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Button } from "@base-ui/react/button";
-import { executeTaskFn } from "@/actions/functions";
+import { Task } from "@/actions/functions";
 
 export default function EditTimeOffRequestPage() {
   const params = useParams();
@@ -25,7 +25,7 @@ export default function EditTimeOffRequestPage() {
   useEffect(() => {
     const fetchRequest = async () => {
       try {
-        const response = await executeTaskFn(adminGetTimeOffRequestById, { id });
+        const response = await Task(adminGetTimeOffRequestById, { id });
         if (!response.success) throw new Error(response.error || "Failed to fetch request");
         setFormData(response.data);
       } catch (error) {
@@ -50,7 +50,7 @@ export default function EditTimeOffRequestPage() {
 
     try {
       // const response = await executeTask("adminUpdateTimeOffRequestById", { id, formData });
-      const response = await executeTaskFn(adminUpdateTimeOffRequestById, { id, formData });
+      const response = await Task(adminUpdateTimeOffRequestById, { id, formData });
 
       if (!response.success) toast.error(response.error || "Failed to update time off request");
 

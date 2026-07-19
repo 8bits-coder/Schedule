@@ -2,7 +2,7 @@
 
 import { executeTask, FunctionName, FunctionResult } from "@/actions/functions";
 import BackButton from "@/components/custom/BackButton";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
 import { push } from "@/lib/router";
 import { useParams } from "next/navigation";
@@ -53,15 +53,15 @@ export default function EditEntityPage<T extends EditableEntity>({
       return;
     }
 
-      setError("");
-      setFormData(undefined);
-      const {data, error} = await executeTask(
-        loadEntity?.functionName as FunctionName,
-        { id, formData: loadEntity?.payload } as any,
-      );
-      // const response = await executeTask(funcName as any, { id });
-      if (!error) setFormData(data as unknown as T);
-      else setError(error);
+    setError("");
+    setFormData(undefined);
+    const { data, error } = await executeTask(
+      loadEntity?.functionName as FunctionName,
+      { id, formData: loadEntity?.payload } as any,
+    );
+    // const response = await executeTask(funcName as any, { id });
+    if (!error) setFormData(data as unknown as T);
+    else setError(error);
   });
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function EditEntityPage<T extends EditableEntity>({
     }
 
     if (error) setError(error);
-    
+
     setLoading(false);
   }
 
@@ -126,7 +126,7 @@ export default function EditEntityPage<T extends EditableEntity>({
   }
 
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <BackButton />
       <div className="bg-white max-w-lg mx-auto p-8 rounded-lg shadow">
         <div className="flex gap-x-2 items-center">
@@ -163,6 +163,6 @@ export default function EditEntityPage<T extends EditableEntity>({
           </form>
         )}
       </div>
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

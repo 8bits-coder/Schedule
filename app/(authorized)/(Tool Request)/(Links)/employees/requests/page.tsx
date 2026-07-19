@@ -1,5 +1,6 @@
+import { Task } from "@/actions/functions";
 import { cancelRequestByUserId, getAllTimeOffRequests } from "@/actions/timeOffActions";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffStatus } from "@/prisma/generated/prisma/enums";
 import Link from "next/link";
 
@@ -11,9 +12,15 @@ const statusStyles: Record<TimeOffStatus, string> = {
 };
 
 export default async function TimeRequestPage() {
-  const timeOffRequests = await getAllTimeOffRequests();
+  const timeOffRequests = await Task(getAllTimeOffRequests);
+  if (!timeOffRequests.success) {
+    return <div>{timeOffRequests.error || "Failed to fetch time off requests."}</div>;
+  }
+
+  const timeOffRequestsData = timeOffRequests.data;
+
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Time Off Requests</h1>
@@ -38,7 +45,7 @@ export default async function TimeRequestPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {timeOffRequests.map((request) => (
+              {timeOffRequestsData.map((request) => (
                 <tr key={request.id} className="hover:bg-gray-50">
                   <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900">{request.user.name}</td>
                   <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900">
@@ -89,6 +96,6 @@ export default async function TimeRequestPage() {
           </table>
         </div>
       </div>
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

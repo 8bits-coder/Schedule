@@ -34,7 +34,7 @@ import {
   toDateStr,
 } from "./dateHelpers";
 import { toast } from "sonner";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -188,7 +188,7 @@ export default function WeekSchedule({
   const employee = editing ? employees.find((e) => e.id === editing.empId) : null;
 
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       {/* ── Header ── */}
       <div className="border-b border-stone-200 bg-white p-6 shadow-sm rounded-xl">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -567,6 +567,6 @@ export default function WeekSchedule({
           </DialogContent>
         </Dialog>
       )}
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

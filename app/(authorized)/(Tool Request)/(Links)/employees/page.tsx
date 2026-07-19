@@ -27,7 +27,7 @@ export default function RequestPage() {
               key={page.name}
               className={cn(
                 colorClasses[page.color],
-                "w-full px-6 py-4 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105",
+                "w-full px-6 py-4 text-white font-bold rounded-lg transition duration-200 ease-in-out transform hover:scale-105 text-center",
               )}>
               {page.name}
             </Link>

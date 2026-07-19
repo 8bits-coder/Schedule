@@ -2,8 +2,9 @@ import { DeliveryReceipt } from "@/prisma/generated/prisma/browser";
 import * as delivery from "./deliveryActions";
 import * as item from "./itemActions";
 import * as location from "./locationActions";
+import { adminUpdateTimeOffRequestById } from "./timeOffActions";
 
-// 1. Define a type-safe registry of your allowed universal functions
+//1. Define a type-safe registry of your allowed universal functions
 const functionRegistry = {
   addDeliveryReceipt: (args: {
     formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any };
@@ -20,7 +21,7 @@ const functionRegistry = {
     return item.Create(args.formData);
   },
   getAllItems: (args: Record<string, never>) => {
-    return item.GetAll();
+    return item.FetchAllItems();
   },
   getItemById: (args: { id: string }) => {
     return item.GetById(args.id);
@@ -46,6 +47,9 @@ const functionRegistry = {
   deleteLocation: (args: { id: string }) => {
     return location.Delete(args.id);
   },
+  adminUpdateTimeOffRequestById: (args: { id: string; formData: any }) => {
+    return adminUpdateTimeOffRequestById(args.id, args.formData);
+  },
 } as const;
 
 // 2. The Universal Executor Wrapper
@@ -58,7 +62,11 @@ export async function executeTask<T extends FunctionName>(
     const targetFunction = functionRegistry[functionName];
 
     if (!targetFunction) {
-      throw new Error(`Function "${functionName}" was not found in the universal registry.`);
+      return {
+        success: false,
+        data: null as any,
+        error: `Function "${functionName}" was not found in the universal registry.`,
+      };
     }
 
     // Execute the function (handles both synchronous and async/Promise return values)
@@ -73,12 +81,12 @@ export async function executeTask<T extends FunctionName>(
     // Centralized error handling across Server and Client
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
 
-    // Server-side logging environment check
-    if (typeof window === "undefined") {
-      console.error(`[Server Error] [Task: ${functionName}]:`, error);
-    } else {
-      console.error(`[Client Error] [Task: ${functionName}]:`, error);
-    }
+    // // Server-side logging environment check
+    // if (typeof window === "undefined") {
+    //   console.error(`[Server Error] [Task: ${functionName}]:`, error);
+    // } else {
+    //   console.error(`[Client Error] [Task: ${functionName}]:`, error);
+    // }
 
     return {
       success: false,
@@ -86,6 +94,38 @@ export async function executeTask<T extends FunctionName>(
       error: errorMessage,
     };
   }
+}
+
+//TODO: Implement additional utility functions as needed
+type TaskResult<T> = { success: true; data: T } | { success: false; error: string };
+
+export async function Task<T>(task: Promise<T>): Promise<TaskResult<T>>;
+
+export async function Task<T, A extends unknown[]>(
+  task: (...args: A) => Promise<T>,
+  ...args: A
+): Promise<TaskResult<T>>;
+
+export async function Task<T, A extends unknown[]>(
+  task: Promise<T> | ((...args: A) => Promise<T>),
+  ...args: A
+): Promise<TaskResult<T>> {
+  try {
+    const data = await (typeof task === "function" ? task(...args) : task);
+    return { success: true, data };
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "An unknown error occurred",
+    };
+  }
+}
+
+export async function executeTaskFn<T>(
+  task: (...args: any[]) => Promise<T>,
+  payload?: Record<string, unknown>,
+): Promise<TaskResult<T>> {
+  return Task(task, ...(payload ? Object.values(payload) : []));
 }
 
 type FunctionRegistry = typeof functionRegistry;

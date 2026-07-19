@@ -1,6 +1,6 @@
 "use client";
 import { submitTimeOffRequest } from "@/actions/timeOffActions";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffType as PrismaTimeOffType } from "@/prisma/generated/prisma/browser";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
@@ -340,7 +340,7 @@ export default function TimeOffPage() {
   const returnDate = getNextDay(form.endDate);
 
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <div className="py-4 text-slate-900">
         <div className="mb-8 rounded-3xl border border-slate-200 bg-indigo-50 shadow-sm shadow-slate-200/60">
           <div className="px-8 py-10">
@@ -526,6 +526,6 @@ export default function TimeOffPage() {
           </form>
         </div>
       </div>
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

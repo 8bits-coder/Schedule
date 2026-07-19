@@ -1,5 +1,6 @@
 "use server";
 import { auth } from "@/lib/auth";
+import { Role } from "@/prisma/generated/prisma/enums";
 import { headers } from "next/headers";
 
 export async function requireAuthenticatedUserId() {
@@ -19,7 +20,7 @@ export async function verifyAdminAccess() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const isAdmin = session?.user?.role === "ADMIN";
+  const isAdmin = session?.user?.role === Role.ADMIN;
   if (!isAdmin) {
     throw new Error("Unauthorized");
   }

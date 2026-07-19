@@ -24,7 +24,7 @@ export async function Create(FormData: FormData) {
   return true;
 }
 
-export async function GetAll() {
+export async function FetchAllItems() {
   await requireAuthenticatedUserId();
 
   return prisma.item.findMany({
@@ -91,7 +91,7 @@ export async function Delete(id: string) {
   return true;
 }
 
-export type ItemResponse = Awaited<ReturnType<typeof GetAll>>;
+export type ItemResponse = Awaited<ReturnType<typeof FetchAllItems>>;
 export type ItemByIdResponse = Awaited<ReturnType<typeof GetById>>;
 export type AddItemResponse = Awaited<ReturnType<typeof Create>>;
 export type UpdateItemResponse = Awaited<ReturnType<typeof Update>>;

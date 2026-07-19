@@ -1,22 +1,24 @@
-import { executeTask } from "@/actions/functions";
+import { executeTaskFn } from "@/actions/functions";
+import { FetchAllItems } from "@/actions/itemActions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const ShowAllItems = async () => {
   try {
-    const { success, data: items, error } = await executeTask("getAllItems");
+    const response = await executeTaskFn(FetchAllItems);
 
-    if (!items || items.length === 0 || error || !success) {
+    if (!response.success || !response.data || response.data.length === 0) {
       return <div className="text-sm text-muted-foreground">No items found.</div>;
     }
 
     return (
       <div className="space-y-6">
         <p>
-          Total: <span className="text-red-600">{items.length}</span> {items.length === 1 ? "item" : "items"}
+          Total: <span className="text-red-600">{response.data.length}</span>{" "}
+          {response.data.length === 1 ? "item" : "items"}
         </p>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
-          {items.map((item) => (
+          {response.data.map((item) => (
             <div
               key={item.id}
               className="p-4 bg-white rounded-lg shadow-md border-l-4 border-indigo-500 flex flex-col justify-between space-y-4">

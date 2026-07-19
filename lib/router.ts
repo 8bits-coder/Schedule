@@ -23,22 +23,20 @@ export function GlobalRouterProvider() {
 
 export function getRouter() {
   if (!globalRouter) {
-    throw new Error(
-      "Global router is not initialized. Render <GlobalRouterProvider /> first.",
-    );
+    throw new Error("Global router is not initialized. Render <GlobalRouterProvider /> first.");
   }
 
   return globalRouter;
 }
 
 export function push(href: string) {
-  getRouter().push(href);
+  globalRouter?.push(href);
 }
 
 export function replace(href: string) {
-  getRouter().replace(href);
+  globalRouter?.replace(href);
 }
 
 export function back() {
-  getRouter().back();
+  globalRouter?.back();
 }

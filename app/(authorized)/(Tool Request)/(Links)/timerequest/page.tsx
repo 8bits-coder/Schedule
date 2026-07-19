@@ -1,5 +1,5 @@
 import { cancelRequestByUserId, getTimeOffRequestsByUserId } from "@/actions/timeOffActions";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffStatus } from "@/prisma/generated/prisma/enums";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ const statusStyles: Record<TimeOffStatus, string> = {
 export default async function TimeRequestPage() {
   const timeOffRequests = await getTimeOffRequestsByUserId();
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Time Off Requests</h1>
@@ -89,6 +89,6 @@ export default async function TimeRequestPage() {
           </table>
         </div>
       </div>
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

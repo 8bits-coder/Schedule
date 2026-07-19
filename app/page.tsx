@@ -1,11 +1,11 @@
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { getServerUser } from "@/lib/server-session";
 
 export default async function Home() {
   const user = await getServerUser();
 
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <div className="animate-fade-in">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome, {user?.name || "Manager"}</h1>
         <p className="text-lg text-gray-600">Manage your team shifts efficiently</p>
@@ -51,6 +51,6 @@ export default async function Home() {
           ))}
         </div>
       </div>
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

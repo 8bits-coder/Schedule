@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { executeTask } from "@/actions/functions";
 
 const defaultFormData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any } = {
@@ -83,7 +83,7 @@ export default function DeliveryPage() {
   };
 
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-6">Delivery Receipt</h1>
 
@@ -200,6 +200,6 @@ export default function DeliveryPage() {
           </Button>
         </form>
       </div>
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

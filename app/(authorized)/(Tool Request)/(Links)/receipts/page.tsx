@@ -2,7 +2,7 @@
 
 import { DeliveryReceiptType } from "@/actions/deliveryActions";
 import { executeTask } from "@/actions/functions";
-import BodyWrapper from "@/components/custom_ui/BodyWrapper";
+import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -42,7 +42,7 @@ export default function ReceiptsPage() {
   }
 
   return (
-    <BodyWrapper>
+    <ContentWrapper>
       <h1 className="text-3xl font-bold mb-6">Receipts</h1>
 
       {receipts.length === 0 ? (
@@ -77,6 +77,6 @@ export default function ReceiptsPage() {
           </table>
         </div>
       )}
-    </BodyWrapper>
+    </ContentWrapper>
   );
 }

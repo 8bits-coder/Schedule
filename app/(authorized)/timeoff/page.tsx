@@ -307,7 +307,8 @@ export default function TimeOffPage() {
       setSubmitState("idle");
 
       setFieldErrors(getFieldErrors({ validationErrors: response.validationErrors }));
-      toast.error(`Failed to submit request.`);
+      toast.error(JSON.stringify(response.validationErrors));
+      // toast.error(`Failed to submit request.`);
     } else {
       setSubmitState("success");
       toast.success(`Request submitted successfully.`);

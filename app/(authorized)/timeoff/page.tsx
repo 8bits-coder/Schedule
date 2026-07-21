@@ -236,30 +236,20 @@ function SectionCard({ title, subtitle, children }: { title: string; subtitle: s
   );
 }
 
-function getFieldErrors(values: TimeOffFormValues): FieldErrors {
-  const result = timeOffRequestSchema.safeParse(values);
-
-  if (result.success) {
-    return {};
-  }
-
-  const nextErrors: FieldErrors = {};
-  const flattened = z.treeifyError(result.error); // result.error.flatten().fieldErrors;
-
-  (Object.keys(flattened.properties ?? {}) as Array<keyof TimeOffFormValues>).forEach((field) => {
-    const message = flattened.properties?.[field]?.errors?.[0];
-
-    if (message) {
-      nextErrors[field] = message;
+function getFieldErrors(values: { validationErrors: Record<string, any> }): FieldErrors {
+  const flattenedErrors: FieldErrors = {};
+  Object.entries(values.validationErrors).forEach(([key, value]) => {
+    if (value && typeof value === "object" && "_errors" in value && Array.isArray(value._errors)) {
+      flattenedErrors[key as keyof TimeOffFormValues] = value._errors[0] || "Invalid";
+    } else if (typeof value === "string") {
+      flattenedErrors[key as keyof TimeOffFormValues] = value;
     }
   });
-
-  return nextErrors;
+  return flattenedErrors;
 }
 
 export default function TimeOffPage() {
   const [form, setForm] = useState<TimeOffFormValues>(initialForm);
-  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [submittedRequest, setSubmittedRequest] = useState<TimeOffRequestValues | null>(null);
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success">("idle");
@@ -282,20 +272,12 @@ export default function TimeOffPage() {
 
   const balanceOk = form.type === "UNPAID" || duration <= balances[form.type];
 
-  useEffect(() => {
-    if (!attemptedSubmit) {
-      return;
-    }
-
-    setFieldErrors(getFieldErrors(form));
-  }, [attemptedSubmit, form]);
-
   const updateField = <K extends keyof TimeOffFormValues>(field: K, value: TimeOffFormValues[K]) => {
     if (submitState === "success") {
       setSubmitState("idle");
       setSubmittedRequest(null);
     }
-
+    setFieldErrors((current) => ({ ...current, [field]: value ? "" : current[field] }));
     setForm((current) => ({ ...current, [field]: value }));
   };
 
@@ -309,7 +291,6 @@ export default function TimeOffPage() {
 
   const resetForm = () => {
     setForm(initialForm);
-    setAttemptedSubmit(false);
     setFieldErrors({});
     setSubmittedRequest(null);
     setSubmitState("idle");
@@ -317,46 +298,21 @@ export default function TimeOffPage() {
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // setAttemptedSubmit(true);
 
-    // const validation = timeOffRequestSchema.safeParse(form);
-
-    // if (!validation.success) {
-    //   setFieldErrors(getFieldErrors(form));
-    //   return;
-    // }
-
-    // setFieldErrors({});
-
-    // setSubmittedRequest(validation.data);
     setSubmitState("submitting");
 
     const response = await submitTimeOffRequestAction({ ...form });
 
     if (response.validationErrors) {
       setSubmitState("idle");
-      const flattenedErrors: FieldErrors = {};
-      Object.entries(response.validationErrors).forEach(([key, value]) => {
-        if (value && typeof value === "object" && "_errors" in value && Array.isArray(value._errors)) {
-          flattenedErrors[key as keyof TimeOffFormValues] = value._errors[0] || "Invalid";
-        } else if (typeof value === "string") {
-          flattenedErrors[key as keyof TimeOffFormValues] = value;
-        }
-      });
-      setFieldErrors(flattenedErrors);
-      toast.error(`Failed to submit request: ${JSON.stringify(response)}`);
+
+      setFieldErrors(getFieldErrors({ validationErrors: response.validationErrors }));
+      toast.error(`Failed to submit request.`);
     } else {
       setSubmitState("success");
-      toast.success(`Request submitted successfully: ${JSON.stringify(response)}`);
+      toast.success(`Request submitted successfully.`);
       resetForm();
     }
-
- 
-    // const response = await submitTimeOffRequest(validation.data);
-    // setTimeout(() => {
-    //   setSubmitState("success");
-    //   toast.success(`Request submitted successfully: ${JSON.stringify(response)}`);
-    // }, 2000);
   };
 
   const returnDate = getNextDay(form.endDate);

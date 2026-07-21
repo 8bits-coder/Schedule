@@ -5,6 +5,8 @@ import { TimeOffStatus, TimeOffType } from "@/prisma/generated/prisma/enums";
 import { requireAuthenticatedUserId, verifyAdminAccess } from "./user";
 import { revalidatePath } from "next/cache";
 import { TimeOffRequest } from "@/prisma/generated/prisma/browser";
+import { z } from "zod";
+import { actionClient } from "@/lib/safe-action";
 
 type TimeOffSubmission = {
   type: TimeOffType;
@@ -13,6 +15,43 @@ type TimeOffSubmission = {
   hours: number;
   reason: string | null;
 };
+
+const timeOffSubmissionSchema = z.object({
+  type: z
+    .enum(TimeOffType)
+    .refine((value) => Object.values(TimeOffType).includes(value), { message: "Invalid leave type" }),
+  startDate: z
+    .union([z.string(), z.date()])
+    .refine((date) => !isNaN(new Date(date).getTime()), { message: "Invalid start date" }),
+  endDate: z
+    .union([z.string(), z.date()])
+    .refine((date) => !isNaN(new Date(date).getTime()), { message: "Invalid end date" }),
+  hours: z
+    .string()
+    .refine((value) => !isNaN(Number(value)) && Number(value) > 0, { message: "Invalid number of hours" }),
+  reason: z.string().nullable(),
+});
+
+export const submitTimeOffRequestAction = actionClient
+  .inputSchema(timeOffSubmissionSchema)
+  .action(async ({ parsedInput }) => {
+    // All fields are validated before this code runs
+    const user = await requireAuthenticatedUserId();
+    console.log(parsedInput);
+    await prisma.timeOffRequest.create({
+      data: {
+        userId: user,
+        type: parsedInput.type.toLocaleUpperCase() as TimeOffType,
+        startDate: new Date(parsedInput.startDate),
+        endDate: new Date(parsedInput.endDate),
+        hours: Number(parsedInput.hours),
+        reason: parsedInput.reason,
+      },
+    });
+    return {
+      ...parsedInput,
+    };
+  });
 
 export async function submitTimeOffRequest(formData: TimeOffSubmission) {
   const { type, startDate, endDate, hours, reason } = formData;
@@ -123,6 +162,7 @@ export async function updateTimeOffRequestById(requestId: string, formData: Part
   revalidatePath("/timerequest");
   return true;
 }
+
 export async function adminUpdateTimeOffRequestById(requestId: string, formData: TimeOffRequest) {
   const { type, startDate, endDate, hours, reason, status, reviewNote } = formData;
   await verifyAdminAccess();

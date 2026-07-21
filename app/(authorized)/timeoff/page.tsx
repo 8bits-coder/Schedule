@@ -1,5 +1,5 @@
 "use client";
-import { submitTimeOffRequest } from "@/actions/timeOffActions";
+import { submitTimeOffRequest, submitTimeOffRequestAction } from "@/actions/timeOffActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffType as PrismaTimeOffType } from "@/prisma/generated/prisma/browser";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
@@ -317,24 +317,46 @@ export default function TimeOffPage() {
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setAttemptedSubmit(true);
+    // setAttemptedSubmit(true);
 
-    const validation = timeOffRequestSchema.safeParse(form);
+    // const validation = timeOffRequestSchema.safeParse(form);
 
-    if (!validation.success) {
-      setFieldErrors(getFieldErrors(form));
-      return;
-    }
+    // if (!validation.success) {
+    //   setFieldErrors(getFieldErrors(form));
+    //   return;
+    // }
 
-    setFieldErrors({});
+    // setFieldErrors({});
 
-    setSubmittedRequest(validation.data);
+    // setSubmittedRequest(validation.data);
     setSubmitState("submitting");
-    const response = await submitTimeOffRequest(validation.data);
-    setTimeout(() => {
+
+    const response = await submitTimeOffRequestAction({ ...form });
+
+    if (response.validationErrors) {
+      setSubmitState("idle");
+      const flattenedErrors: FieldErrors = {};
+      Object.entries(response.validationErrors).forEach(([key, value]) => {
+        if (value && typeof value === "object" && "_errors" in value && Array.isArray(value._errors)) {
+          flattenedErrors[key as keyof TimeOffFormValues] = value._errors[0] || "Invalid";
+        } else if (typeof value === "string") {
+          flattenedErrors[key as keyof TimeOffFormValues] = value;
+        }
+      });
+      setFieldErrors(flattenedErrors);
+      toast.error(`Failed to submit request: ${JSON.stringify(response)}`);
+    } else {
       setSubmitState("success");
       toast.success(`Request submitted successfully: ${JSON.stringify(response)}`);
-    }, 2000);
+      resetForm();
+    }
+
+ 
+    // const response = await submitTimeOffRequest(validation.data);
+    // setTimeout(() => {
+    //   setSubmitState("success");
+    //   toast.success(`Request submitted successfully: ${JSON.stringify(response)}`);
+    // }, 2000);
   };
 
   const returnDate = getNextDay(form.endDate);

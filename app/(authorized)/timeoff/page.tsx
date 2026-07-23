@@ -5,6 +5,7 @@ import { TimeOffType as PrismaTimeOffType } from "@/prisma/generated/prisma/brow
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useAction } from "next-safe-action/hooks";
 
 type TimeOffType = (typeof PrismaTimeOffType)[keyof typeof PrismaTimeOffType] extends infer T
   ? T extends string
@@ -254,6 +255,19 @@ export default function TimeOffPage() {
   const [submittedRequest, setSubmittedRequest] = useState<TimeOffRequestValues | null>(null);
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success">("idle");
 
+  const { isExecuting, executeAsync } = useAction(submitTimeOffRequestAction, {
+    onSuccess: () => {
+      toast.success(`Request submitted successfully.`);
+      resetForm();
+    },
+    onError(args) {
+      if (args.error?.validationErrors)
+        setFieldErrors(getFieldErrors({ validationErrors: args.error.validationErrors }));
+      // if (args.error?.serverError) toast.error(JSON.stringify(args.error.serverError));
+      if (args.error?.serverError) toast.error(args.error.serverError);
+    },
+  });
+
   const dateError = useMemo(() => {
     if (!form.startDate || !form.endDate) return "";
 
@@ -298,22 +312,7 @@ export default function TimeOffPage() {
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    setSubmitState("submitting");
-
-    const response = await submitTimeOffRequestAction({ ...form });
-
-    if (response.validationErrors) {
-      setSubmitState("idle");
-
-      setFieldErrors(getFieldErrors({ validationErrors: response.validationErrors }));
-      toast.error(JSON.stringify(response.validationErrors));
-      // toast.error(`Failed to submit request.`);
-    } else {
-      setSubmitState("success");
-      toast.success(`Request submitted successfully.`);
-      resetForm();
-    }
+    executeAsync({ ...form });
   };
 
   const returnDate = getNextDay(form.endDate);
@@ -495,9 +494,9 @@ export default function TimeOffPage() {
                   </button>
                   <button
                     type="submit"
-                    disabled={submitState === "submitting"}
+                    disabled={isExecuting}
                     className="rounded-2xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-70">
-                    {submitState === "submitting" ? "Submitting..." : "Submit request"}
+                    {isExecuting ? "Submitting..." : "Submit request"}
                   </button>
                 </div>
               </div>

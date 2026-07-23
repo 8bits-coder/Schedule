@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { TimeOffRequest } from "@/prisma/generated/prisma/browser";
 import { z } from "zod";
 import { actionClient } from "@/lib/safe-action";
+import { Links } from "@/utility/classes/Links";
 
 type TimeOffSubmission = {
   type: TimeOffType;
@@ -103,7 +104,7 @@ export async function cancelRequestByUserId(requestId: string) {
       status: "CANCELLED",
     },
   });
-  return revalidatePath("/timerequest");
+  return revalidatePath(Links.TimeOffRequest);
 }
 
 export async function getTimeOffRequestById(requestId: string) {
@@ -159,7 +160,7 @@ export async function updateTimeOffRequestById(requestId: string, formData: Part
       reason,
     },
   });
-  revalidatePath("/timerequest");
+  revalidatePath(Links.TimeOffRequest);
   return true;
 }
 
@@ -184,7 +185,7 @@ export async function adminUpdateTimeOffRequestById(requestId: string, formData:
       reviewedBy: user,
     },
   });
-  revalidatePath("/timerequest");
+  revalidatePath(Links.TimeOffRequest);
   return true;
 }
 

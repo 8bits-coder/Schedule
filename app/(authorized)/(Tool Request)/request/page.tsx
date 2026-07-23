@@ -1,17 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { NavigationItems } from "@/utility/classes/Links";
 import { Button } from "@base-ui/react";
 import Link from "next/link";
-
-const NavigationItems = [
-  { name: "Delivery", link: "/delivery", color: "blue" },
-  { name: "Items", link: "/items", color: "green" },
-  { name: "Locations", link: "/locations", color: "purple" },
-  { name: "Receipts", link: "/receipts", color: "orange" },
-  { name: "Time keeping", link: "/timekeeping", color: "teal" },
-  { name: "Time Request", link: "/timerequest", color: "blue" },
-];
 
 const colorClasses: Record<string, string> = {
   blue: "bg-blue-500 hover:bg-blue-600",

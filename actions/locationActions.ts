@@ -3,8 +3,8 @@ import prisma from "@/lib/prisma";
 import { Prisma, WorkLocation } from "@/prisma/generated/prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireAuthenticatedUserId } from "./user";
+import { Links } from "@/utility/classes/Links";
 
-const LOCATION_LIST_PATH = "/locations";
 const LOCATION_NAME_MAX_LENGTH = 120;
 const LOCATION_NAME_MIN_LENGTH = 5;
 
@@ -66,7 +66,7 @@ export async function Create(FormData: FormData): Promise<WorkLocation> {
       },
     });
 
-    revalidatePath(LOCATION_LIST_PATH);
+    revalidatePath(Links.Locations);
     return location;
   } catch (error) {
     throw new Error(getPrismaErrorMessage(error, "create"));
@@ -110,7 +110,7 @@ export async function Update(id: string, name: string): Promise<WorkLocation> {
       data: { name: locationName },
     });
 
-    revalidatePath(LOCATION_LIST_PATH);
+    revalidatePath(Links.Locations);
     return updatedLocation;
   } catch (error) {
     throw new Error(getPrismaErrorMessage(error, "update"));
@@ -127,7 +127,7 @@ export async function Delete(id: string): Promise<WorkLocation> {
       where: { id: locationId },
     });
 
-    revalidatePath(LOCATION_LIST_PATH);
+    revalidatePath(Links.Locations);
     return deletedLocation;
   } catch (error) {
     throw new Error(getPrismaErrorMessage(error, "delete"));

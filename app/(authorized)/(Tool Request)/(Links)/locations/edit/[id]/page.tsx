@@ -1,18 +1,19 @@
 "use client";
 import { Delete, LocationById, Update } from "@/actions/locationActions";
 import EditEntityPage from "../../../../_components/EditEntityPage";
+import { Links } from "@/utility/classes/Links";
 
 export default function EditLocationPage() {
   return (
     <EditEntityPage<LocationById>
       title="Edit Location"
-      redirectPath="/locations"
+      redirectPath={Links.Locations}
       saveSuccessMessage="Location updated successfully!"
       deleteSuccessMessage="Location deleted successfully!"
       deleteConfirmationMessage="Are you sure you want to delete this location?"
       loadEntity={{ functionName: "getLocationById" }}
       saveEntity={{ functionName: "updateLocation" }}
-      deleteEntity={{ name: "deleteLocation" }}
+      deleteEntity={{ functionName: "deleteLocation" }}
       renderFields={({ formData, handleChange }) => (
         <>
           <div>

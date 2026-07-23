@@ -1,5 +1,6 @@
 import { executeTask } from "@/actions/functions";
 import { Button } from "@/components/ui/button";
+import { Links } from "@/utility/classes/Links";
 import Link from "next/link";
 
 const ShowAllLocations = async () => {
@@ -24,7 +25,7 @@ const ShowAllLocations = async () => {
               key={location.id}
               className="flex flex-col justify-between p-4 bg-white rounded-lg shadow border-l-4 border-indigo-500 space-y-4">
               <strong className="text-lg text-gray-900">{location.name}</strong>
-              <Link href={`/locations/edit/${location.id}`}>
+              <Link href={Links.Locations + `/edit/${location.id}`}>
                 <Button variant="outline" className={"w-full"}>
                   Edit Location
                 </Button>

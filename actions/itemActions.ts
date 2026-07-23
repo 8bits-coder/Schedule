@@ -2,6 +2,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAuthenticatedUserId } from "./user";
+import { Links } from "@/utility/classes/Links";
 
 export async function Create(FormData: FormData) {
   await requireAuthenticatedUserId();
@@ -20,7 +21,7 @@ export async function Create(FormData: FormData) {
   if (!item) {
     throw new Error("Failed to create item");
   }
-  revalidatePath("/items");
+  revalidatePath(Links.Items);
   return true;
 }
 
@@ -70,7 +71,7 @@ export async function Update(id: string, name: string, description: string) {
   if (!updatedItem) {
     throw new Error("Failed to update item");
   }
-  revalidatePath("/items");
+  revalidatePath(Links.Items);
   return updatedItem;
 }
 
@@ -87,7 +88,7 @@ export async function Delete(id: string) {
   if (!deletedItem) {
     throw new Error("Failed to delete item");
   }
-  revalidatePath("/items");
+  revalidatePath(Links.Items);
   return true;
 }
 

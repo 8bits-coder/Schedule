@@ -1,12 +1,13 @@
 "use client";
 import { Delete, ItemByIdResponse, Update } from "@/actions/itemActions";
 import EditEntityPage from "../../../../_components/EditEntityPage";
+import { Links } from "@/utility/classes/Links";
 
 export default function EditItemPage() {
   return (
     <EditEntityPage<ItemByIdResponse>
       title="Edit Item"
-      redirectPath="/items"
+      redirectPath={Links.Items}
       saveSuccessMessage="Item updated successfully!"
       deleteSuccessMessage="Item deleted successfully!"
       deleteConfirmationMessage="Are you sure you want to delete this item?"

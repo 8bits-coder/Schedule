@@ -1,12 +1,16 @@
-import { executeTask } from "@/actions/functions";
+import { FetchAllLocations } from "@/actions/locationActions";
 import { Button } from "@/components/ui/button";
 import { Links } from "@/utility/classes/Links";
 import Link from "next/link";
 
 const ShowAllLocations = async () => {
-  const { success, data: locations, error } = await executeTask("getAllLocations");
+  const { data, serverError } = await FetchAllLocations();
 
-  if (!locations || locations.length === 0 || error || !success) {
+  if (serverError) {
+    return <div>Error: {serverError}</div>;
+  }
+
+  if (!data || data.length === 0) {
     return <div>No locations found.</div>;
   }
 
@@ -14,11 +18,10 @@ const ShowAllLocations = async () => {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold mb-6">Location List</h1>
       <p>
-        Total: <span className="text-red-600">{locations.length}</span>{" "}
-        {locations.length === 1 ? "location" : "locations"}
+        Total: <span className="text-red-600">{data.length}</span> {data.length === 1 ? "location" : "locations"}
       </p>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
-        {locations
+        {data
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((location) => (
             <div

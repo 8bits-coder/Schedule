@@ -1,27 +1,15 @@
 import { cn } from "@/lib/utils";
+import { colorClasses, RequestsNavigationItems } from "@/utility/classes/Links";
 import Link from "next/link";
 
-const NavigationItems = [
-  { name: "All Employees", link: "employees/list", color: "blue" },
-  { name: "All Requests", link: "employees/requests", color: "green" },
-];
-
-const colorClasses: Record<string, string> = {
-  blue: "bg-blue-500 hover:bg-blue-600",
-  green: "bg-green-500 hover:bg-green-600",
-  purple: "bg-purple-500 hover:bg-purple-600",
-  orange: "bg-orange-500 hover:bg-orange-600",
-  teal: "bg-teal-500 hover:bg-teal-600",
-};
-
-export default function RequestPage() {
+export default function EmployeesPage() {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-gray-100">
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Tool Request</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Employees</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {NavigationItems.map((page) => (
+          {RequestsNavigationItems.map((page) => (
             <Link
               href={page.link}
               key={page.name}

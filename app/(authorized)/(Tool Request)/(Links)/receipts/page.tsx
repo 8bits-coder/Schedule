@@ -1,39 +1,19 @@
-"use client";
-
-import { DeliveryReceiptType } from "@/actions/deliveryActions";
-import { executeTask } from "@/actions/functions";
+import { FetchAllDeliveryReceipts } from "@/actions/deliveryActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
 
-export default function ReceiptsPage() {
-  const [receipts, setReceipts] = useState<DeliveryReceiptType[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function ReceiptsPage() {
+  const { data, serverError } = await FetchAllDeliveryReceipts();
 
-  async function fetchReceipts() {
-    try {
-      setLoading(true);
-      const { success, data: receipts, error } = await executeTask("getDeliveryReceipts");
-      if (!receipts || receipts.length === 0 || error || !success) {
-        toast.error(error || "Failed to fetch receipts");
-        return;
-      }
-      setReceipts(receipts);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "An error occurred");
-      setLoading(false);
-      return;
-    } finally {
-      setLoading(false);
-    }
+  if (serverError) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <p className="text-red-500">{serverError}</p>
+      </div>
+    );
   }
 
-  useEffect(() => {
-    fetchReceipts();
-  }, []);
-
-  if (loading) {
+  if (!data) {
     return (
       <div className="h-full flex items-center justify-center">
         <Spinner className="size-8" />
@@ -45,7 +25,7 @@ export default function ReceiptsPage() {
     <ContentWrapper>
       <h1 className="text-3xl font-bold mb-6">Receipts</h1>
 
-      {receipts.length === 0 ? (
+      {data.length === 0 ? (
         <p className="text-center text-gray-500 mt-4">No receipts found.</p>
       ) : (
         <div className="overflow-x-auto">
@@ -61,7 +41,7 @@ export default function ReceiptsPage() {
               </tr>
             </thead>
             <tbody>
-              {receipts.map((receipt) => (
+              {data.map((receipt) => (
                 <tr key={receipt.id} className="hover:bg-gray-50">
                   <td className="border border-gray-300 px-4 py-2">{receipt.deliveryDate}</td>
                   <td className="border border-gray-300 px-4 py-2">

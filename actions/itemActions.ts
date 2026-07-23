@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAuthenticatedUserId } from "./user";
 import { Links } from "@/utility/classes/Links";
+import { actionClient } from "@/lib/safe-action";
 
 export async function Create(FormData: FormData) {
   await requireAuthenticatedUserId();
@@ -25,9 +26,8 @@ export async function Create(FormData: FormData) {
   return true;
 }
 
-export async function FetchAllItems() {
+export const FetchAllItems = actionClient.action(async () => {
   await requireAuthenticatedUserId();
-
   return prisma.item.findMany({
     select: {
       id: true,
@@ -38,7 +38,22 @@ export async function FetchAllItems() {
       name: "asc",
     },
   });
-}
+});
+
+// export async function FetchAllItems() {
+//   await requireAuthenticatedUserId();
+
+//   return prisma.item.findMany({
+//     select: {
+//       id: true,
+//       name: true,
+//       description: true,
+//     },
+//     orderBy: {
+//       name: "asc",
+//     },
+//   });
+// }
 
 export async function GetById(id: string) {
   await requireAuthenticatedUserId();
@@ -92,7 +107,7 @@ export async function Delete(id: string) {
   return true;
 }
 
-export type ItemResponse = Awaited<ReturnType<typeof FetchAllItems>>;
+// export type ItemResponse = Awaited<ReturnType<typeof FetchAllItems>>;
 export type ItemByIdResponse = Awaited<ReturnType<typeof GetById>>;
 export type AddItemResponse = Awaited<ReturnType<typeof Create>>;
 export type UpdateItemResponse = Awaited<ReturnType<typeof Update>>;

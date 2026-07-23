@@ -2,6 +2,7 @@
 import prisma from "../lib/prisma";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 import { requireAuthenticatedUserId } from "./user";
+import { actionClient } from "@/lib/safe-action";
 
 export async function SubmitReceipt(
   formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any },
@@ -41,7 +42,9 @@ export async function Create() {
 
 export type DeliveryDataResponse = Awaited<ReturnType<typeof Create>>;
 
-export async function GetAll() {
+export const FetchAllDeliveryReceipts = actionClient.action(async () => {
+  // throw new Error("FetchAllDeliveryReceipts not implemented");
+  // All fields are validated before this code runs
   const userId = await requireAuthenticatedUserId();
 
   return prisma.deliveryReceipt.findMany({
@@ -66,6 +69,33 @@ export async function GetAll() {
       },
     },
   });
-}
+});
 
-export type DeliveryReceiptType = Awaited<ReturnType<typeof GetAll>>[number];
+// export async function GetAll() {
+//   const userId = await requireAuthenticatedUserId();
+
+//   return prisma.deliveryReceipt.findMany({
+//     where: {
+//       deliveryPersonId: userId,
+//     },
+//     include: {
+//       item: {
+//         select: {
+//           name: true,
+//         },
+//       },
+//       receivedPerson: {
+//         select: {
+//           name: true,
+//         },
+//       },
+//       workLocation: {
+//         select: {
+//           name: true,
+//         },
+//       },
+//     },
+//   });
+// }
+
+// export type DeliveryReceiptType = Awaited<ReturnType<typeof GetAll>>[number];

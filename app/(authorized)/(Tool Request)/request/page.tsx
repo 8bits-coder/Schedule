@@ -1,17 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { NavigationItems } from "@/utility/classes/Links";
+import { colorClasses, NavigationItems } from "@/utility/classes/Links";
 import { Button } from "@base-ui/react";
 import Link from "next/link";
-
-const colorClasses: Record<string, string> = {
-  blue: "bg-blue-500 hover:bg-blue-600",
-  green: "bg-green-500 hover:bg-green-600",
-  purple: "bg-purple-500 hover:bg-purple-600",
-  orange: "bg-orange-500 hover:bg-orange-600",
-  teal: "bg-teal-500 hover:bg-teal-600",
-};
 
 export default function RequestPage() {
   return (

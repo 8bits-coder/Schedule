@@ -11,6 +11,7 @@ import Container from "@/components/custom_ui/Container";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Button } from "@base-ui/react/button";
 import { Task } from "@/actions/functions";
+import { Links } from "@/utility/classes/Links";
 
 export default function EditTimeOffRequestPage() {
   const params = useParams();
@@ -56,7 +57,7 @@ export default function EditTimeOffRequestPage() {
 
       if (response.success) {
         toast.success("Time off request updated successfully");
-        router.push("/employees/requests");
+        router.push(Links["All Requests"]);
       }
     } catch (error) {
       toast.error("Failed to update time off request");

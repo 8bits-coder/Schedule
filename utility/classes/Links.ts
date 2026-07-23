@@ -1,4 +1,4 @@
-const colorClasses = {
+export const colorClasses: Record<string, string> = {
   blue: "bg-blue-500 hover:bg-blue-600",
   green: "bg-green-500 hover:bg-green-600",
   purple: "bg-purple-500 hover:bg-purple-600",
@@ -13,6 +13,8 @@ export const Links = {
   Receipts: "/receipts",
   TimeKeeping: "/timekeeping",
   TimeOffRequest: "/timeoffrequests",
+  "All Employees": "/employees/list",
+  "All Requests": "/employees/requests",
 };
 
 class NavigationLink {
@@ -22,6 +24,11 @@ class NavigationLink {
     public color: keyof typeof colorClasses,
   ) {}
 }
+
+export const RequestsNavigationItems: NavigationLink[] = [
+  new NavigationLink("All Employees", Links["All Employees"], "blue"),
+  new NavigationLink("All Requests", Links["All Requests"], "green"),
+];
 
 export const NavigationItems: NavigationLink[] = [
   new NavigationLink("Delivery", Links.Delivery, "blue"),

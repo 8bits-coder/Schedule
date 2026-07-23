@@ -15,7 +15,7 @@ const functionRegistry = {
     return delivery.Create();
   },
   getDeliveryReceipts: (args: Record<string, never>) => {
-    return delivery.GetAll();
+    return delivery.FetchAllDeliveryReceipts();
   },
   addItem: (args: { formData: FormData }) => {
     return item.Create(args.formData);
@@ -36,7 +36,7 @@ const functionRegistry = {
     return location.Create(args.formData);
   },
   getAllLocations: (args: Record<string, never>) => {
-    return location.GetAll();
+    return location.FetchAllLocations();
   },
   getLocationById: (args: { id: string }) => {
     return location.GetById(args.id);

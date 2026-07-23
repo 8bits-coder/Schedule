@@ -2,6 +2,7 @@ import { Task } from "@/actions/functions";
 import { cancelRequestByUserId, getAllTimeOffRequests } from "@/actions/timeOffActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffStatus } from "@/prisma/generated/prisma/enums";
+import { Links } from "@/utility/classes/Links";
 import Link from "next/link";
 
 const statusStyles: Record<TimeOffStatus, string> = {
@@ -84,7 +85,7 @@ export default async function TimeRequestPage() {
                         </button>
                       </form>
                       <Link
-                        href={`/employees/requests/edit/${request.id}`}
+                        href={Links["All Requests"] + `/edit/${request.id}`}
                         className="ml-2 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
                         Edit
                       </Link>

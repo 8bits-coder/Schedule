@@ -4,6 +4,7 @@ import { Prisma, WorkLocation } from "@/prisma/generated/prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireAuthenticatedUserId } from "./user";
 import { Links } from "@/utility/classes/Links";
+import { actionClient } from "@/lib/safe-action";
 
 const LOCATION_NAME_MAX_LENGTH = 120;
 const LOCATION_NAME_MIN_LENGTH = 5;
@@ -73,7 +74,7 @@ export async function Create(FormData: FormData): Promise<WorkLocation> {
   }
 }
 
-export async function GetAll(): Promise<WorkLocation[]> {
+export const FetchAllLocations = actionClient.action(async () => {
   await requireAuthenticatedUserId();
 
   return prisma.workLocation.findMany({
@@ -81,7 +82,7 @@ export async function GetAll(): Promise<WorkLocation[]> {
       name: "asc",
     },
   });
-}
+});
 
 export async function GetById(id: string): Promise<WorkLocation> {
   await requireAuthenticatedUserId();
@@ -134,7 +135,6 @@ export async function Delete(id: string): Promise<WorkLocation> {
   }
 }
 
-export type LocationResponse = Awaited<ReturnType<typeof GetAll>>;
 export type LocationById = Awaited<ReturnType<typeof GetById>>;
 export type AddLocationResponse = Awaited<ReturnType<typeof Create>>;
 export type UpdateLocationResponse = Awaited<ReturnType<typeof Update>>;

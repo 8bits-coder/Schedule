@@ -1,11 +1,15 @@
 "use client";
-import { submitTimeOffRequest, submitTimeOffRequestAction } from "@/actions/timeOffActions";
+
+import { submitTimeOffRequestAction } from "@/actions/timeOffActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffType as PrismaTimeOffType } from "@/prisma/generated/prisma/browser";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useAction } from "next-safe-action/hooks";
+import { getFieldErrors } from "@/utility/Errors";
+import { FieldErrors, TimeOffFormValues, timeOffSubmissionSchema } from "@/utility/schema/timeOffRequestSchema";
+import { useRouter } from "next/navigation";
 
 type TimeOffType = (typeof PrismaTimeOffType)[keyof typeof PrismaTimeOffType] extends infer T
   ? T extends string
@@ -85,77 +89,6 @@ const balances: Record<TimeOffType, number> = {
   OTO: 5.5,
   UNPAID: Infinity,
 };
-
-const timeOffRequestSchema = z
-  .object({
-    type: z.enum(leaveTypes.map((type) => type.value) as [TimeOffType, ...TimeOffType[]], {
-      error: "Select a leave type.",
-    }),
-    startDate: z.string().trim().min(1, "Select a start date."),
-    endDate: z.string().trim().min(1, "Select an end date."),
-    hours: z
-      .string()
-      .trim()
-      .min(1, "Enter the requested hours.")
-      .refine((value) => !Number.isNaN(Number(value)), "Enter a valid number of hours.")
-      .transform(Number)
-      .refine((value) => value > 0, "Hours must be greater than 0."),
-    reason: z.string().trim().max(500, "Keep the note under 500 characters."),
-  })
-  .superRefine((value, context) => {
-    const start = parseLocalDate(value.startDate);
-    const end = parseLocalDate(value.endDate);
-
-    if (value.startDate && !start) {
-      context.addIssue({
-        code: "custom",
-        path: ["startDate"],
-        message: "Enter a valid start date.",
-      });
-    }
-
-    if (value.endDate && !end) {
-      context.addIssue({
-        code: "custom",
-        path: ["endDate"],
-        message: "Enter a valid end date.",
-      });
-    }
-
-    if (!start || !end) {
-      return;
-    }
-
-    if (start > end) {
-      context.addIssue({
-        code: "custom",
-        path: ["endDate"],
-        message: "The end date must be on or after the start date.",
-      });
-    }
-
-    const totalDays = countCalendarDays(value.startDate, value.endDate);
-
-    if (totalDays <= 0) {
-      context.addIssue({
-        code: "custom",
-        path: ["endDate"],
-        message: "Select a valid date range with at least one day.",
-      });
-    }
-
-    if (value.type !== "UNPAID" && totalDays > balances[value.type]) {
-      context.addIssue({
-        code: "custom",
-        path: ["type"],
-        message: "This request is longer than the available balance for this leave type.",
-      });
-    }
-  });
-
-type TimeOffFormValues = z.input<typeof timeOffRequestSchema>;
-type TimeOffRequestValues = z.output<typeof timeOffRequestSchema>;
-type FieldErrors = Partial<Record<keyof TimeOffFormValues, string>>;
 
 const initialForm: TimeOffFormValues = {
   type: "VACATION",
@@ -237,33 +170,21 @@ function SectionCard({ title, subtitle, children }: { title: string; subtitle: s
   );
 }
 
-function getFieldErrors(values: { validationErrors: Record<string, any> }): FieldErrors {
-  const flattenedErrors: FieldErrors = {};
-  Object.entries(values.validationErrors).forEach(([key, value]) => {
-    if (value && typeof value === "object" && "_errors" in value && Array.isArray(value._errors)) {
-      flattenedErrors[key as keyof TimeOffFormValues] = value._errors[0] || "Invalid";
-    } else if (typeof value === "string") {
-      flattenedErrors[key as keyof TimeOffFormValues] = value;
-    }
-  });
-  return flattenedErrors;
-}
-
 export default function TimeOffPage() {
   const [form, setForm] = useState<TimeOffFormValues>(initialForm);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [submittedRequest, setSubmittedRequest] = useState<TimeOffRequestValues | null>(null);
-  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success">("idle");
 
-  const { isExecuting, executeAsync } = useAction(submitTimeOffRequestAction, {
+  const { isExecuting, executeAsync, hasSucceeded } = useAction(submitTimeOffRequestAction, {
     onSuccess: () => {
       toast.success(`Request submitted successfully.`);
       resetForm();
     },
     onError(args) {
-      if (args.error?.validationErrors)
+      if (args.error?.validationErrors) {
+        console.log("Validation errors:", args.error.validationErrors);
         setFieldErrors(getFieldErrors({ validationErrors: args.error.validationErrors }));
-      // if (args.error?.serverError) toast.error(JSON.stringify(args.error.serverError));
+      }
+
       if (args.error?.serverError) toast.error(args.error.serverError);
     },
   });
@@ -287,10 +208,6 @@ export default function TimeOffPage() {
   const balanceOk = form.type === "UNPAID" || duration <= balances[form.type];
 
   const updateField = <K extends keyof TimeOffFormValues>(field: K, value: TimeOffFormValues[K]) => {
-    if (submitState === "success") {
-      setSubmitState("idle");
-      setSubmittedRequest(null);
-    }
     setFieldErrors((current) => ({ ...current, [field]: value ? "" : current[field] }));
     setForm((current) => ({ ...current, [field]: value }));
   };
@@ -306,8 +223,6 @@ export default function TimeOffPage() {
   const resetForm = () => {
     setForm(initialForm);
     setFieldErrors({});
-    setSubmittedRequest(null);
-    setSubmitState("idle");
   };
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
@@ -332,12 +247,12 @@ export default function TimeOffPage() {
           </div>
         </div>
 
-        {submitState === "success" && (
+        {hasSucceeded && (
           <div
             aria-live="polite"
             className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
-            Request prepared successfully for {submittedRequest?.hours ?? 0} hours. Connect the submit handler to the
-            API or workflow when ready.
+            Request prepared successfully for {form.hours ?? 0} hours. Connect the submit handler to the API or workflow
+            when ready.
           </div>
         )}
 
@@ -481,7 +396,7 @@ export default function TimeOffPage() {
                 <div className="text-xs text-slate-500">
                   Submission status:{" "}
                   <span className="font-medium text-slate-700">
-                    {submitState === "idle" ? "Draft" : submitState === "submitting" ? "Submitting" : "Ready"}
+                    {isExecuting ? "Submitting" : hasSucceeded ? "Submitted" : "Ready"}
                   </span>
                 </div>
 

@@ -5,70 +5,92 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { adminGetTimeOffRequestById, adminUpdateTimeOffRequestById } from "@/actions/timeOffActions";
 import { TimeOffStatus, TimeOffType } from "@/prisma/generated/prisma/enums";
-import { TimeOffRequest } from "@/prisma/generated/prisma/browser";
 import { authClient } from "@/lib/auth-client";
 import Container from "@/components/custom_ui/Container";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Button } from "@base-ui/react/button";
-import { Task } from "@/actions/functions";
+import { useAction } from "next-safe-action/hooks";
+import { FieldErrors, TimeOffFormValues } from "@/utility/schema/timeOffRequestSchema";
+import { getFieldErrors } from "@/utility/Errors";
 import { Links } from "@/utility/classes/Links";
+import { resolve } from "node:dns";
+
+const initialForm: TimeOffFormValues = {
+  type: "VACATION",
+  startDate: "",
+  endDate: "",
+  hours: "",
+  reason: "",
+};
+
+const inputClassName =
+  "mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20";
 
 export default function EditTimeOffRequestPage() {
   const params = useParams();
   const router = useRouter();
   const userName = authClient.useSession().data?.user.name;
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState<TimeOffRequest | null>({} as TimeOffRequest);
-
+  const [formData, setFormData] = useState<TimeOffFormValues>(initialForm);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const id = params.id as string;
 
+  const { executeAsync, isExecuting } = useAction(adminUpdateTimeOffRequestById, {
+    onSuccess: () => {
+      toast.success(`Request submitted successfully.`);
+      router.push(Links["All Requests"]);
+    },
+    onError(args) {
+      if (args.error?.validationErrors) {
+        setFieldErrors(getFieldErrors({ validationErrors: args.error.validationErrors.formData || {} }));
+      }
+
+      if (args.error?.serverError) toast.error(args.error.serverError);
+    },
+  });
+
+  const getInputStateClassName = (field: keyof TimeOffFormValues, extraClassName = "") => {
+    const invalidClassName = fieldErrors[field]
+      ? "border border-rose-500! bg-rose-50! text-rose-900! placeholder:text-rose-300! focus:border-rose-500! focus:ring-rose-500/20!"
+      : "";
+
+    return `${inputClassName}${invalidClassName}${extraClassName ? ` ${extraClassName}` : ""}`;
+  };
+
   useEffect(() => {
-    const fetchRequest = async () => {
-      try {
-        const response = await Task(adminGetTimeOffRequestById, { id });
-        if (!response.success) throw new Error(response.error || "Failed to fetch request");
-        setFormData(response.data);
-      } catch (error) {
+    const fetchData = async () => {
+      const { data, serverError } = await adminGetTimeOffRequestById({ requestId: id });
+      if (serverError) {
         toast.error("Failed to load time off request");
-        setFormData({} as TimeOffRequest);
-      } finally {
-        setLoading(false);
+      } else if (data) {
+        setFormData({
+          ...data,
+          startDate: new Date(data.startDate).toISOString().split("T")[0] || "",
+          endDate: new Date(data.endDate).toISOString().split("T")[0] || "",
+          type: data.type || "",
+          hours: data.hours || "",
+          reason: data.reason || "",
+        });
       }
     };
-
-    if (id) fetchRequest();
+    fetchData();
   }, [id, toast]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => (prev ? { ...prev, [name]: value } : null));
-  };
-
-  const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    try {
-      // const response = await executeTask("adminUpdateTimeOffRequestById", { id, formData });
-      const response = await Task(adminUpdateTimeOffRequestById, { id, formData });
-
-      if (!response.success) toast.error(response.error || "Failed to update time off request");
-
-      if (response.success) {
-        toast.success("Time off request updated successfully");
-        router.push(Links["All Requests"]);
+    setFieldErrors((current) => {
+      const updated = { ...current };
+      if (value) {
+        delete updated[name as keyof FieldErrors];
       }
-    } catch (error) {
-      toast.error("Failed to update time off request");
-    } finally {
-      setSubmitting(false);
-    }
+      return updated;
+    });
+    setFormData((prev) => (prev ? { ...prev, [name]: value } : ({} as TimeOffFormValues)));
   };
 
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    executeAsync({ requestId: id, formData });
+  };
 
   if (!formData) {
     return <div className="flex items-center justify-center min-h-screen">Request not found</div>;
@@ -87,7 +109,7 @@ export default function EditTimeOffRequestPage() {
                 name="type"
                 value={formData.type || ""}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded">
+                className={getInputStateClassName("type")}>
                 {Object.values(TimeOffType).map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -103,10 +125,11 @@ export default function EditTimeOffRequestPage() {
               <input
                 type="date"
                 name="startDate"
-                value={formData.startDate ? new Date(formData.startDate).toISOString().split("T")[0] : ""}
+                value={formData.startDate}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded"
+                className={getInputStateClassName("startDate")}
               />
+              {fieldErrors.startDate ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.startDate}</p> : null}
             </div>
 
             <div>
@@ -114,10 +137,11 @@ export default function EditTimeOffRequestPage() {
               <input
                 type="date"
                 name="endDate"
-                value={formData.endDate ? new Date(formData.endDate).toISOString().split("T")[0] : ""}
+                value={formData.endDate}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded"
+                className={getInputStateClassName("endDate")}
               />
+              {fieldErrors.endDate ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.endDate}</p> : null}
             </div>
           </div>
 
@@ -128,8 +152,9 @@ export default function EditTimeOffRequestPage() {
               type="number"
               value={formData.hours || ""}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
+              className={getInputStateClassName("hours")}
             />
+            {fieldErrors.hours ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.hours}</p> : null}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -139,13 +164,14 @@ export default function EditTimeOffRequestPage() {
                 name="status"
                 value={formData.status || ""}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded">
+                className={getInputStateClassName("status")}>
                 {Object.values(TimeOffStatus).map((status) => (
                   <option key={status} value={status}>
                     {status}
                   </option>
                 ))}
               </select>
+              {fieldErrors.status ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.status}</p> : null}
             </div>
 
             <div>
@@ -156,7 +182,7 @@ export default function EditTimeOffRequestPage() {
                 disabled
                 value={userName || ""}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded disabled:text-gray-500 disabled:cursor-not-allowed"
+                className={getInputStateClassName("reviewedBy", "disabled:text-gray-500 disabled:cursor-not-allowed")}
               />
             </div>
           </div>
@@ -168,8 +194,9 @@ export default function EditTimeOffRequestPage() {
               value={formData.reason || ""}
               onChange={handleChange}
               rows={3}
-              className="w-full px-3 py-2 border rounded"
+              className={getInputStateClassName("reason")}
             />
+            {fieldErrors.reason ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.reason}</p> : null}
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium">Review Note</label>
@@ -178,8 +205,9 @@ export default function EditTimeOffRequestPage() {
               value={formData.reviewNote || ""}
               onChange={handleChange}
               rows={3}
-              className="w-full px-3 py-2 border rounded"
+              className={getInputStateClassName("reviewNote")}
             />
+            {fieldErrors.reviewNote ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.reviewNote}</p> : null}
           </div>
 
           <div className="flex justify-end gap-4">
@@ -188,9 +216,9 @@ export default function EditTimeOffRequestPage() {
             </Button>
             <Button
               type="submit"
-              disabled={submitting}
+              disabled={isExecuting || Object.keys(fieldErrors).length > 0}
               className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50">
-              {submitting ? "Saving..." : "Save Changes"}
+              {isExecuting ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>

@@ -1,24 +1,19 @@
-import { Task } from "@/actions/functions";
 import { cancelRequestByUserId, getAllTimeOffRequests } from "@/actions/timeOffActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
-import { TimeOffStatus } from "@/prisma/generated/prisma/enums";
 import { Links } from "@/utility/classes/Links";
+import { statusStyles } from "@/utility/Status";
 import Link from "next/link";
 
-const statusStyles: Record<TimeOffStatus, string> = {
-  APPROVED: "bg-green-100 text-green-700",
-  PENDING: "bg-yellow-100 text-yellow-700",
-  REJECTED: "bg-red-100 text-red-700",
-  CANCELLED: "bg-gray-100 text-gray-700",
-};
-
 export default async function TimeRequestPage() {
-  const timeOffRequests = await Task(getAllTimeOffRequests);
-  if (!timeOffRequests.success) {
-    return <div>{timeOffRequests.error || "Failed to fetch time off requests."}</div>;
+  const { data: timeOffRequestsData, serverError } = await getAllTimeOffRequests();
+
+  if (serverError) {
+    return <div>{serverError || "Failed to fetch time off requests."}</div>;
   }
 
-  const timeOffRequestsData = timeOffRequests.data;
+  if (!timeOffRequestsData) {
+    return <div>{"No time off requests found."}</div>;
+  }
 
   return (
     <ContentWrapper>

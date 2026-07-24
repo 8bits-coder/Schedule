@@ -5,40 +5,19 @@ import { TimeOffStatus, TimeOffType } from "@/prisma/generated/prisma/enums";
 import { requireAuthenticatedUserId, verifyAdminAccess } from "./user";
 import { revalidatePath } from "next/cache";
 import { TimeOffRequest } from "@/prisma/generated/prisma/browser";
-import { z } from "zod";
 import { actionClient } from "@/lib/safe-action";
 import { Links } from "@/utility/classes/Links";
-
-type TimeOffSubmission = {
-  type: TimeOffType;
-  startDate: string | Date;
-  endDate: string | Date;
-  hours: number;
-  reason: string | null;
-};
-
-const timeOffSubmissionSchema = z.object({
-  type: z
-    .enum(TimeOffType)
-    .refine((value) => Object.values(TimeOffType).includes(value), { message: "Invalid leave type" }),
-  startDate: z
-    .union([z.string(), z.date()])
-    .refine((date) => !isNaN(new Date(date).getTime()), { message: "Invalid start date" }),
-  endDate: z
-    .union([z.string(), z.date()])
-    .refine((date) => !isNaN(new Date(date).getTime()), { message: "Invalid end date" }),
-  hours: z
-    .string()
-    .refine((value) => !isNaN(Number(value)) && Number(value) > 0, { message: "Invalid number of hours" }),
-  reason: z.string().nullable(),
-});
+import {
+  timeOffRequestByIdSchema,
+  timeOffSubmissionSchema,
+  updateTimeOffRequestSchema,
+} from "@/utility/schema/timeOffRequestSchema";
 
 export const submitTimeOffRequestAction = actionClient
   .inputSchema(timeOffSubmissionSchema)
   .action(async ({ parsedInput }) => {
     // All fields are validated before this code runs
     const user = await requireAuthenticatedUserId();
-    console.log(parsedInput);
     await prisma.timeOffRequest.create({
       data: {
         userId: user,
@@ -53,31 +32,6 @@ export const submitTimeOffRequestAction = actionClient
       ...parsedInput,
     };
   });
-
-export async function submitTimeOffRequest(formData: TimeOffSubmission) {
-  const { type, startDate, endDate, hours, reason } = formData;
-
-  const user = await requireAuthenticatedUserId();
-
-  await prisma.timeOffRequest.create({
-    data: {
-      userId: user,
-      type: type.toLocaleUpperCase() as TimeOffType,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      hours,
-      reason,
-    },
-  });
-
-  return {
-    type,
-    startDate,
-    endDate,
-    hours,
-    reason,
-  };
-}
 
 export async function getTimeOffRequestsByUserId() {
   const user = await requireAuthenticatedUserId();
@@ -126,22 +80,27 @@ export async function getTimeOffRequestById(requestId: string) {
     },
   });
 }
-export async function adminGetTimeOffRequestById(requestId: string) {
-  await verifyAdminAccess();
 
-  return prisma.timeOffRequest.findUnique({
-    where: {
-      id: requestId,
-    },
-    // include: {
-    //   user: {
-    //     select: {
-    //       name: true,
-    //     },
-    //   },
-    // },
+export const adminGetTimeOffRequestById = actionClient
+  .inputSchema(timeOffRequestByIdSchema)
+  .action(async ({ parsedInput: { requestId } }) => {
+    await verifyAdminAccess();
+    const result = await prisma.timeOffRequest.findUnique({
+      where: {
+        id: requestId,
+      },
+    });
+    return {
+      type: result?.type as TimeOffType,
+      startDate: result?.startDate.toISOString() || "",
+      endDate: result?.endDate.toISOString() || "",
+      hours: result?.hours.toString() || "",
+      reason: result?.reason || "",
+      status: result?.status as TimeOffStatus,
+      reviewNote: result?.reviewNote || "",
+      reviewedBy: result?.reviewedBy || "",
+    };
   });
-}
 
 export async function updateTimeOffRequestById(requestId: string, formData: Partial<TimeOffRequest>) {
   const { type, startDate, endDate, hours, reason } = formData;
@@ -164,35 +123,57 @@ export async function updateTimeOffRequestById(requestId: string, formData: Part
   return true;
 }
 
-export async function adminUpdateTimeOffRequestById(requestId: string, formData: TimeOffRequest) {
-  const { type, startDate, endDate, hours, reason, status, reviewNote } = formData;
-  await verifyAdminAccess();
-  const user = await requireAuthenticatedUserId();
-
-  await prisma.timeOffRequest.updateMany({
-    where: {
-      id: requestId,
-    },
-    data: {
-      type: type.toLocaleUpperCase() as TimeOffType,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      hours: Number(hours),
-      reason,
-      reviewedAt: new Date(),
-      status: status?.toLocaleUpperCase() as TimeOffStatus,
-      reviewNote,
-      reviewedBy: user,
-    },
-  });
-  revalidatePath(Links.TimeOffRequest);
-  return true;
-}
-
 //! Admin functions
-export async function getAllTimeOffRequests() {
-  await verifyAdminAccess();
+export const adminUpdateTimeOffRequestById = actionClient
+  .inputSchema(updateTimeOffRequestSchema)
+  .action(async ({ parsedInput: { requestId, formData } }) => {
+    await verifyAdminAccess();
+    const user = await requireAuthenticatedUserId();
+    await prisma.timeOffRequest.updateMany({
+      where: {
+        id: requestId,
+      },
+      data: {
+        type: formData.type.toLocaleUpperCase() as TimeOffType,
+        startDate: new Date(formData.startDate),
+        endDate: new Date(formData.endDate),
+        hours: Number(formData.hours),
+        reason: formData.reason,
+        reviewedAt: new Date(),
+        status: formData.status?.toLocaleUpperCase() as TimeOffStatus,
+        reviewNote: formData.reviewNote,
+        reviewedBy: user,
+      },
+    });
+    return true;
+  });
+// export async function adminUpdateTimeOffRequestById(requestId: string, formData: TimeOffRequest) {
+//   const { type, startDate, endDate, hours, reason, status, reviewNote } = formData;
+//   await verifyAdminAccess();
+//   const user = await requireAuthenticatedUserId();
 
+//   await prisma.timeOffRequest.updateMany({
+//     where: {
+//       id: requestId,
+//     },
+//     data: {
+//       type: type.toLocaleUpperCase() as TimeOffType,
+//       startDate: new Date(startDate),
+//       endDate: new Date(endDate),
+//       hours: Number(hours),
+//       reason,
+//       reviewedAt: new Date(),
+//       status: status?.toLocaleUpperCase() as TimeOffStatus,
+//       reviewNote,
+//       reviewedBy: user,
+//     },
+//   });
+//   revalidatePath(Links.TimeOffRequest);
+//   return true;
+// }
+
+export const getAllTimeOffRequests = actionClient.action(async () => {
+  await verifyAdminAccess();
   return prisma.timeOffRequest.findMany({
     orderBy: {
       startDate: "desc",
@@ -213,4 +194,4 @@ export async function getAllTimeOffRequests() {
       },
     },
   });
-}
+});

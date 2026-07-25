@@ -228,11 +228,7 @@
 // }
 "use client";
 
-import {
-  adminGetTimeOffRequestById,
-  adminUpdateTimeOffRequestById,
-  submitTimeOffRequestAction,
-} from "@/actions/timeOffActions";
+import { adminGetTimeOffRequestById, adminUpdateTimeOffRequestById } from "@/actions/timeOffActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffStatus, TimeOffType } from "@/prisma/generated/prisma/browser";
 import React from "react";
@@ -333,6 +329,7 @@ function SectionCard({ title, subtitle, children }: { title: string; subtitle: s
 export default function EditTimeOffRequestPage() {
   const [form, setForm] = React.useState<TimeOffFormValues>(initialForm);
   const [fieldErrors, setFieldErrors] = React.useState<FieldErrors>({});
+  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const params = useParams();
   const userName = authClient.useSession().data?.user.name;
@@ -381,11 +378,6 @@ export default function EditTimeOffRequestPage() {
     return `${inputClassName}${invalidClassName}${extraClassName ? ` ${extraClassName}` : ""}`;
   };
 
-  const resetForm = () => {
-    setForm(initialForm);
-    setFieldErrors({});
-  };
-
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     executeAsync({ requestId: params.id as string, formData: form });
@@ -393,8 +385,9 @@ export default function EditTimeOffRequestPage() {
 
   const returnDate = getNextDay(form.endDate);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const { data, serverError } = await adminGetTimeOffRequestById({ requestId: params.id as string });
       if (serverError) {
         toast.error("Failed to load time off request");
@@ -410,14 +403,14 @@ export default function EditTimeOffRequestPage() {
         });
       }
     };
-    fetchData();
+    fetchData().finally(() => setLoading(false));
   }, [params.id, toast]);
 
-  if (!params.id) {
+  if (!params.id || !form) {
     return <div>Invalid request ID</div>;
   }
 
-  if (!form) return null;
+  if (loading) return null;
 
   return (
     <ContentWrapper>
@@ -532,13 +525,13 @@ export default function EditTimeOffRequestPage() {
                   {fieldErrors.reason && <p className="mt-2 text-xs text-rose-600">{fieldErrors.reason}</p>}
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Review Note</label>
+                  <label className="text-sm font-medium text-green-700">Review Note (optional)</label>
                   <textarea
                     name="reviewNote"
                     value={form.reviewNote || ""}
                     onChange={(event) => updateField("reviewNote", event.target.value)}
                     rows={3}
-                    className={getInputStateClassName("reviewNote")}
+                    className={getInputStateClassName("reviewNote", "border-green-700!")}
                   />
                   {fieldErrors.reviewNote ? (
                     <p className="mt-2 text-xs text-rose-600">{fieldErrors.reviewNote}</p>

@@ -5,11 +5,9 @@ import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { TimeOffType as PrismaTimeOffType } from "@/prisma/generated/prisma/browser";
 import { useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 import { useAction } from "next-safe-action/hooks";
 import { getFieldErrors } from "@/utility/Errors";
-import { FieldErrors, TimeOffFormValues, timeOffSubmissionSchema } from "@/utility/schema/timeOffRequestSchema";
-import { useRouter } from "next/navigation";
+import { FieldErrors, TimeOffFormValues } from "@/utility/schema/timeOffRequestSchema";
 
 type TimeOffType = (typeof PrismaTimeOffType)[keyof typeof PrismaTimeOffType] extends infer T
   ? T extends string

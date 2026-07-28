@@ -90,15 +90,20 @@ export const adminGetTimeOffRequestById = actionClient
         id: requestId,
       },
     });
+
+    if (!result) {
+      throw new Error("Time off request not found.");
+    }
+
     return {
-      type: result?.type as TimeOffType,
-      startDate: result?.startDate.toISOString() || "",
-      endDate: result?.endDate.toISOString() || "",
-      hours: result?.hours.toString() || "",
-      reason: result?.reason || "",
-      status: result?.status as TimeOffStatus,
-      reviewNote: result?.reviewNote || "",
-      reviewedBy: result?.reviewedBy || "",
+      type: result.type as TimeOffType,
+      startDate: result.startDate.toISOString().slice(0, 10),
+      endDate: result.endDate.toISOString().slice(0, 10),
+      hours: result.hours.toString(),
+      reason: result.reason || "",
+      status: result.status as TimeOffStatus,
+      reviewNote: result.reviewNote || "",
+      reviewedBy: result.reviewedBy || "",
     };
   });
 
@@ -129,7 +134,8 @@ export const adminUpdateTimeOffRequestById = actionClient
   .action(async ({ parsedInput: { requestId, formData } }) => {
     await verifyAdminAccess();
     const user = await requireAuthenticatedUserId();
-    await prisma.timeOffRequest.updateMany({
+
+    const result = await prisma.timeOffRequest.updateMany({
       where: {
         id: requestId,
       },
@@ -145,6 +151,14 @@ export const adminUpdateTimeOffRequestById = actionClient
         reviewedBy: user,
       },
     });
+
+    if (result.count === 0) {
+      throw new Error("Time off request not found or no changes were applied.");
+    }
+
+    revalidatePath(Links["All Requests"]);
+    revalidatePath(Links.TimeOffRequest);
+
     return true;
   });
 // export async function adminUpdateTimeOffRequestById(requestId: string, formData: TimeOffRequest) {

@@ -6,7 +6,7 @@ model TimeOffRequest {
   status     TimeOffStatus @default(PENDING)
   startDate  DateTime
   endDate    DateTime
-  hours      Int
+  hours      Float
   reason     String?
   reviewedBy String?
   reviewer   User?         @relation("TimeOffReviewer", fields: [reviewedBy], references: [id])

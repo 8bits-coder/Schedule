@@ -20,3 +20,7 @@ async def read_category_by_query(title: str):
         if role.get('title').casefold() == title.casefold():
             role_to_return = role
     return role_to_return
+
+@app.get("/api/py/engineer-roles/all")
+async def read_all_categories():
+    return ENGINEER_ROLES

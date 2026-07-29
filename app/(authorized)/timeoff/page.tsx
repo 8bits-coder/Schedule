@@ -96,7 +96,7 @@ const balances: Record<TimeOffType, number> = {
   UNPAID: Infinity,
 };
 
-const initialForm: TimeOffFormValues = {
+const defaultFormData: TimeOffFormValues = {
   type: "VACATION",
   startDate: "",
   endDate: "",
@@ -117,7 +117,7 @@ function SectionCard({ title, subtitle, children }: { title: string; subtitle: s
 }
 
 export default function TimeOffPage() {
-  const [form, setForm] = useState<TimeOffFormValues>(initialForm);
+  const [form, setForm] = useState<TimeOffFormValues>(defaultFormData);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const { isExecuting, executeAsync, hasSucceeded } = useAction(submitTimeOffRequestAction, {
@@ -167,7 +167,7 @@ export default function TimeOffPage() {
   };
 
   const resetForm = () => {
-    setForm(initialForm);
+    setForm(defaultFormData);
     setFieldErrors({});
   };
 

@@ -273,7 +273,7 @@ export type TimeOffRequestWhereInput = {
   status?: Prisma.EnumTimeOffStatusFilter<"TimeOffRequest"> | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   endDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
-  hours?: Prisma.IntFilter<"TimeOffRequest"> | number
+  hours?: Prisma.FloatFilter<"TimeOffRequest"> | number
   reason?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"TimeOffRequest"> | Date | string | null
@@ -312,7 +312,7 @@ export type TimeOffRequestWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumTimeOffStatusFilter<"TimeOffRequest"> | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   endDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
-  hours?: Prisma.IntFilter<"TimeOffRequest"> | number
+  hours?: Prisma.FloatFilter<"TimeOffRequest"> | number
   reason?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"TimeOffRequest"> | Date | string | null
@@ -354,7 +354,7 @@ export type TimeOffRequestScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumTimeOffStatusWithAggregatesFilter<"TimeOffRequest"> | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeWithAggregatesFilter<"TimeOffRequest"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"TimeOffRequest"> | Date | string
-  hours?: Prisma.IntWithAggregatesFilter<"TimeOffRequest"> | number
+  hours?: Prisma.FloatWithAggregatesFilter<"TimeOffRequest"> | number
   reason?: Prisma.StringNullableWithAggregatesFilter<"TimeOffRequest"> | string | null
   reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"TimeOffRequest"> | string | null
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TimeOffRequest"> | Date | string | null
@@ -401,7 +401,7 @@ export type TimeOffRequestUpdateInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -418,7 +418,7 @@ export type TimeOffRequestUncheckedUpdateInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -449,7 +449,7 @@ export type TimeOffRequestUpdateManyMutationInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -464,7 +464,7 @@ export type TimeOffRequestUncheckedUpdateManyInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -555,7 +555,7 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type IntFieldUpdateOperationsInput = {
+export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
@@ -761,7 +761,7 @@ export type TimeOffRequestScalarWhereInput = {
   status?: Prisma.EnumTimeOffStatusFilter<"TimeOffRequest"> | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   endDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
-  hours?: Prisma.IntFilter<"TimeOffRequest"> | number
+  hours?: Prisma.FloatFilter<"TimeOffRequest"> | number
   reason?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"TimeOffRequest"> | Date | string | null
@@ -822,7 +822,7 @@ export type TimeOffRequestUpdateWithoutUserInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -837,7 +837,7 @@ export type TimeOffRequestUncheckedUpdateWithoutUserInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -852,7 +852,7 @@ export type TimeOffRequestUncheckedUpdateManyWithoutUserInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -867,7 +867,7 @@ export type TimeOffRequestUpdateWithoutReviewerInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -883,7 +883,7 @@ export type TimeOffRequestUncheckedUpdateWithoutReviewerInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -898,7 +898,7 @@ export type TimeOffRequestUncheckedUpdateManyWithoutReviewerInput = {
   status?: Prisma.EnumTimeOffStatusFieldUpdateOperationsInput | $Enums.TimeOffStatus
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  hours?: Prisma.FloatFieldUpdateOperationsInput | number
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1443,7 +1443,7 @@ export interface TimeOffRequestFieldRefs {
   readonly status: Prisma.FieldRef<"TimeOffRequest", 'TimeOffStatus'>
   readonly startDate: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>
-  readonly hours: Prisma.FieldRef<"TimeOffRequest", 'Int'>
+  readonly hours: Prisma.FieldRef<"TimeOffRequest", 'Float'>
   readonly reason: Prisma.FieldRef<"TimeOffRequest", 'String'>
   readonly reviewedBy: Prisma.FieldRef<"TimeOffRequest", 'String'>
   readonly reviewedAt: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>

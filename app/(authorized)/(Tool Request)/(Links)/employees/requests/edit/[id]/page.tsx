@@ -11,6 +11,14 @@ import { FieldErrors, TimeOffFormValues } from "@/utility/schema/timeOffRequestS
 import { useParams, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Links } from "@/utility/classes/Links";
+import {
+  countCalendarDays,
+  formatDisplayDate,
+  formatDisplayDateFromDate,
+  getNextDay,
+  parseLocalDate,
+  toDateInputValue,
+} from "@/utility/timeOffDate";
 
 const inputClassName =
   "mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20";
@@ -25,66 +33,6 @@ const initialForm: TimeOffFormValues = {
   reviewNote: "",
   reviewedBy: "",
 };
-
-function parseLocalDate(value: string) {
-  if (!value) return null;
-
-  const [year, month, day] = value.split("-").map(Number);
-
-  if (!year || !month || !day) return null;
-
-  return new Date(year, month - 1, day);
-}
-
-function countCalendarDays(startValue: string, endValue: string) {
-  const start = parseLocalDate(startValue);
-  const end = parseLocalDate(endValue);
-
-  if (!start || !end || start > end) return 0;
-
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const startTime = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-  const endTime = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
-
-  return Math.floor((endTime - startTime) / msPerDay) + 1;
-}
-
-function getNextDay(value: string) {
-  const date = parseLocalDate(value);
-
-  if (!date) return null;
-
-  const cursor = new Date(date);
-  cursor.setDate(cursor.getDate() + 1);
-
-  return cursor;
-}
-
-function formatDisplayDate(value: string) {
-  const date = parseLocalDate(value);
-
-  if (!date) return "Not selected";
-
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-}
-
-function formatDisplayDateFromDate(value: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(value);
-}
-
-function formatDays(value: number) {
-  return Number.isInteger(value) ? String(value) : value.toFixed(1);
-}
 
 function SectionCard({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   return (
@@ -102,6 +50,7 @@ export default function EditTimeOffRequestPage() {
   const [form, setForm] = React.useState<TimeOffFormValues>(initialForm);
   const [fieldErrors, setFieldErrors] = React.useState<FieldErrors>({});
   const [loading, setLoading] = React.useState(false);
+  const [notFound, setNotFound] = React.useState(false);
   const router = useRouter();
   const params = useParams();
   const userName = authClient.useSession().data?.user.name;
@@ -150,7 +99,7 @@ export default function EditTimeOffRequestPage() {
     return `${inputClassName}${invalidClassName}${extraClassName ? ` ${extraClassName}` : ""}`;
   };
 
-  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     executeAsync({ requestId: params.id as string, formData: form });
   };
@@ -162,27 +111,37 @@ export default function EditTimeOffRequestPage() {
       setLoading(true);
       const { data, serverError } = await adminGetTimeOffRequestById({ requestId: params.id as string });
       if (serverError) {
-        toast.error("Failed to load time off request");
+        setNotFound(true);
+        toast.error(serverError);
+        return;
       }
       if (data) {
         setForm({
           ...data,
-          startDate: data.startDate ? new Date(data.startDate).toISOString().split("T")[0] : "",
-          endDate: data.endDate ? new Date(data.endDate).toISOString().split("T")[0] : "",
+          startDate: toDateInputValue(data.startDate),
+          endDate: toDateInputValue(data.endDate),
           type: data.type || "",
           hours: data.hours || "",
           reason: data.reason || "",
         });
+      } else {
+        setNotFound(true);
       }
     };
     fetchData().finally(() => setLoading(false));
-  }, [params.id, toast]);
+  }, [params.id]);
 
-  if (!params.id || !form) {
+  if (!params.id) {
     return <div>Invalid request ID</div>;
   }
 
-  if (loading) return null;
+  if (loading) {
+    return <ContentWrapper>Loading request details...</ContentWrapper>;
+  }
+
+  if (notFound) {
+    return <ContentWrapper>Time off request was not found.</ContentWrapper>;
+  }
 
   return (
     <ContentWrapper>
@@ -271,7 +230,7 @@ export default function EditTimeOffRequestPage() {
                   {fieldErrors.status ? <p className="mt-2 text-xs text-rose-600">{fieldErrors.status}</p> : null}
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Approved By</label>
+                  <label className="text-sm font-medium text-slate-700">Reviewer (on save)</label>
                   <input
                     type="text"
                     name="reviewedBy"
@@ -282,6 +241,9 @@ export default function EditTimeOffRequestPage() {
                       "disabled:text-gray-500 disabled:cursor-not-allowed",
                     )}
                   />
+                  {form.reviewedBy ? (
+                    <p className="mt-2 text-xs text-slate-500">Previously reviewed by ID: {form.reviewedBy}</p>
+                  ) : null}
                 </div>
                 <div>
                   <label className="text-sm font-medium text-slate-700">Note for manager</label>

@@ -68,19 +68,6 @@ export const timeOffSubmissionSchema = z
         path: ["hours"],
       });
     }
-
-    if (data.startDate === data.endDate) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Start date and end date cannot be the same.",
-        path: ["endDate"],
-      });
-      ctx.addIssue({
-        code: "custom",
-        message: "Start date and end date cannot be the same.",
-        path: ["startDate"],
-      });
-    }
   });
 
 export const timeOffRequestByIdSchema = z.object({

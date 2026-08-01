@@ -8,6 +8,14 @@ import { toast } from "sonner";
 import { useAction } from "next-safe-action/hooks";
 import { getFieldErrors } from "@/utility/Errors";
 import { FieldErrors, TimeOffFormValues } from "@/utility/schema/timeOffRequestSchema";
+import {
+  countCalendarDays,
+  formatDays,
+  formatDisplayDate,
+  formatDisplayDateFromDate,
+  getNextDay,
+  parseLocalDate,
+} from "@/utility/timeOffDate";
 
 type TimeOffType = (typeof PrismaTimeOffType)[keyof typeof PrismaTimeOffType] extends infer T
   ? T extends string
@@ -88,73 +96,13 @@ const balances: Record<TimeOffType, number> = {
   UNPAID: Infinity,
 };
 
-const initialForm: TimeOffFormValues = {
+const defaultFormData: TimeOffFormValues = {
   type: "VACATION",
   startDate: "",
   endDate: "",
   hours: "",
   reason: "",
 };
-
-function parseLocalDate(value: string) {
-  if (!value) return null;
-
-  const [year, month, day] = value.split("-").map(Number);
-
-  if (!year || !month || !day) return null;
-
-  return new Date(year, month - 1, day);
-}
-
-function countCalendarDays(startValue: string, endValue: string) {
-  const start = parseLocalDate(startValue);
-  const end = parseLocalDate(endValue);
-
-  if (!start || !end || start > end) return 0;
-
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const startTime = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-  const endTime = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
-
-  return Math.floor((endTime - startTime) / msPerDay) + 1;
-}
-
-function getNextDay(value: string) {
-  const date = parseLocalDate(value);
-
-  if (!date) return null;
-
-  const cursor = new Date(date);
-  cursor.setDate(cursor.getDate() + 1);
-
-  return cursor;
-}
-
-function formatDisplayDate(value: string) {
-  const date = parseLocalDate(value);
-
-  if (!date) return "Not selected";
-
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-}
-
-function formatDisplayDateFromDate(value: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(value);
-}
-
-function formatDays(value: number) {
-  return Number.isInteger(value) ? String(value) : value.toFixed(1);
-}
 
 function SectionCard({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
   return (
@@ -169,7 +117,7 @@ function SectionCard({ title, subtitle, children }: { title: string; subtitle: s
 }
 
 export default function TimeOffPage() {
-  const [form, setForm] = useState<TimeOffFormValues>(initialForm);
+  const [form, setForm] = useState<TimeOffFormValues>(defaultFormData);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const { isExecuting, executeAsync, hasSucceeded } = useAction(submitTimeOffRequestAction, {
@@ -219,7 +167,7 @@ export default function TimeOffPage() {
   };
 
   const resetForm = () => {
-    setForm(initialForm);
+    setForm(defaultFormData);
     setFieldErrors({});
   };
 

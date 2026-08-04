@@ -1,12 +1,9 @@
 "use server";
-import { auth } from "@/lib/auth";
+import { getServerSession } from "@/lib/server-session";
 import { Role } from "@/prisma/generated/prisma/enums";
-import { headers } from "next/headers";
 
 export async function requireAuthenticatedUserId() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getServerSession();
 
   const userId = session?.user?.id;
   if (!userId) {
@@ -17,9 +14,7 @@ export async function requireAuthenticatedUserId() {
 }
 
 export async function verifyAdminAccess() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getServerSession();
   const isAdmin = session?.user?.role === Role.ADMIN;
   if (!isAdmin) {
     throw new Error("Unauthorized");

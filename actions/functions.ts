@@ -48,7 +48,7 @@ const functionRegistry = {
     return location.Delete(args.id);
   },
   adminUpdateTimeOffRequestById: (args: { id: string; formData: any }) => {
-    return adminUpdateTimeOffRequestById(args.id, args.formData);
+    return adminUpdateTimeOffRequestById({ requestId: args.id, formData: args.formData });
   },
 } as const;
 

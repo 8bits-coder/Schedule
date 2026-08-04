@@ -67,13 +67,20 @@ export default function DeliveryPage() {
     try {
       // console.log("Submitting form data:", formData);
       // return;
-      const response = await executeTask("addDeliveryReceipt", { formData });
+      // const response = await executeTask("addDeliveryReceipt", { formData });
+      const response = await fetch("/api/items/receipt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      if (response.success) {
+      if (response.ok) {
         setFormData(defaultFormData);
         toast.success("Delivery receipt added successfully!");
       } else {
-        toast.error(response.error || "Failed to add delivery receipt");
+        toast.error(response.statusText || "Failed to add delivery receipt");
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "An error occurred");

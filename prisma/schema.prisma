@@ -12,11 +12,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 enum WeekDay {
   Monday
   Tuesday

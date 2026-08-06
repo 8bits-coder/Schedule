@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useEffectEvent, useState } from "react";
 import { toast } from "sonner";
-import { DeliveryDataResponse, Create } from "@/actions/deliveryActions";
+import { DeliveryDataResponse, Create, SubmitDeliveryReceiptForm } from "@/actions/deliveryActions";
 import {
   Select,
   SelectContent,
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { executeTask } from "@/actions/functions";
+import { useAction } from "next-safe-action/hooks";
 
 const defaultFormData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any } = {
   itemId: "",
@@ -32,26 +33,35 @@ const defaultFormData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> &
 };
 
 export default function DeliveryPage() {
-  const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState<DeliveryDataResponse["items"]>([]);
-  const [workLocations, setWorkLocations] = useState<DeliveryDataResponse["workLocations"]>([]);
-  const [receivedPerson, setReceivedPerson] = useState<DeliveryDataResponse["users"]>([]);
+  const { execute, result, isExecuting } = useAction(SubmitDeliveryReceiptForm, {
+    onError() {
+      if (result.serverError) {
+        toast.error(result.serverError || "Failed to submit delivery receipt");
+      }
+      if (result.validationErrors) {
+        toast.error("Validation error: " + JSON.stringify(result.validationErrors));
+      }
+    },
+  });
+  const [items, setAllItems] = useState<DeliveryDataResponse["items"]>([]);
+  const [workLocations, setAllWorkLocations] = useState<DeliveryDataResponse["workLocations"]>([]);
+  const [receivedPerson, setAllReceivedPerson] = useState<DeliveryDataResponse["users"]>([]);
   const [formData, setFormData] = useState<typeof defaultFormData>(defaultFormData);
 
-  const fetchItem = useEffectEvent(async () => {
-    const response = await executeTask("getDeliveryData");
-    if (response.error) {
-      toast.error(response.error || "Failed to fetch delivery data");
-      return;
-    }
-    if (response.success && response.data) {
-      setItems(response.data.items);
-      setWorkLocations(response.data.workLocations);
-      setReceivedPerson(response.data.users);
-    }
-  });
-
   useEffect(() => {
+    const fetchItem = async () => {
+      const response = await executeTask("getDeliveryData");
+      if (response.error) {
+        toast.error(response.error || "Failed to fetch delivery data");
+        return;
+      }
+      if (response.success && response.data) {
+        setAllItems(response.data.items);
+        setAllWorkLocations(response.data.workLocations);
+        setAllReceivedPerson(response.data.users);
+      }
+    };
+
     fetchItem();
   }, []);
 
@@ -62,31 +72,8 @@ export default function DeliveryPage() {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      // console.log("Submitting form data:", formData);
-      // return;
-      // const response = await executeTask("addDeliveryReceipt", { formData });
-      const response = await fetch("/api/items/receipt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setFormData(defaultFormData);
-        toast.success("Delivery receipt added successfully!");
-      } else {
-        toast.error(response.statusText || "Failed to add delivery receipt");
-      }
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setLoading(false);
-    }
+    execute(formData);
   };
 
   return (
@@ -202,8 +189,8 @@ export default function DeliveryPage() {
 
           <Input type="date" name="deliveryDate" value={formData.deliveryDate} onChange={handleChange} required />
 
-          <Button type="submit" disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
+          <Button type="submit" disabled={isExecuting}>
+            {isExecuting ? "Submitting..." : "Submit"}
           </Button>
         </form>
       </div>

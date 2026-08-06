@@ -3,6 +3,39 @@ import prisma from "../lib/prisma";
 import { DeliveryReceipt } from "@/prisma/generated/prisma/client";
 import { requireAuthenticatedUserId } from "./user";
 import { actionClient } from "@/lib/safe-action";
+import { zfd } from "zod-form-data";
+import z from "zod";
+
+const deliveryReceiptFormSchema = zfd.formData({
+  itemId: zfd.text(z.uuid()),
+  itemSerialNumber: zfd.text(),
+  workLocationId: zfd.text(z.uuid()),
+  quantity: zfd.text(z.number()),
+  receivedPersonId: zfd.text(z.uuid()),
+  receivedPersonTitle: zfd.text(),
+  deliveryDate: zfd.text(z.string()),
+});
+
+export const SubmitDeliveryReceiptForm = actionClient
+  .inputSchema(deliveryReceiptFormSchema)
+  .useValidated(async ({ next }) => {
+    const userId = await requireAuthenticatedUserId();
+    return next({ ctx: { userId } });
+  })
+  .action(async ({ parsedInput, ctx }) => {
+    return prisma.deliveryReceipt.create({
+      data: {
+        itemId: parsedInput.itemId,
+        itemSerialNumber: parsedInput.itemSerialNumber,
+        workLocationId: parsedInput.workLocationId,
+        quantity: parsedInput.quantity,
+        receivedPersonId: parsedInput.receivedPersonId,
+        receivedPersonTitle: parsedInput.receivedPersonTitle,
+        deliveryPersonId: ctx.userId,
+        deliveryDate: parsedInput.deliveryDate,
+      },
+    });
+  });
 
 export async function SubmitReceipt(
   formData: Omit<DeliveryReceipt, "id" | "createdAt" | "updatedAt"> & { [key: string]: any },

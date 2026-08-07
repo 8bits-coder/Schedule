@@ -7,13 +7,49 @@ import { zfd } from "zod-form-data";
 import z from "zod";
 
 const deliveryReceiptFormSchema = zfd.formData({
-  itemId: zfd.text(z.uuid()),
-  itemSerialNumber: zfd.text(),
-  workLocationId: zfd.text(z.uuid()),
-  quantity: zfd.text(z.number()),
-  receivedPersonId: zfd.text(z.uuid()),
-  receivedPersonTitle: zfd.text(),
-  deliveryDate: zfd.text(z.string()),
+  itemId: zfd.text(
+    z
+      .string({
+        message: "Item ID is required",
+      })
+      .min(1, { message: "Item ID is required" }),
+  ),
+  itemSerialNumber: zfd.text(
+    z
+      .string({
+        message: "Serial number is required",
+      })
+      .min(1, { message: "Serial number is required" }),
+  ),
+  workLocationId: zfd.text(
+    z.uuid({
+      message: "Choose a valid work location",
+    }),
+  ),
+  quantity: zfd.text(z.number({ message: "Quantity is required" }).min(1, { message: "Quantity must be at least 1" })),
+  receivedPersonId: zfd.text(
+    z
+      .string({
+        message: "Received person ID is required",
+      })
+      .length(32, {
+        message: "Received person ID must be a valid UUID",
+      }),
+  ),
+  receivedPersonTitle: zfd.text(
+    z
+      .string({
+        message: "Received person title is required",
+      })
+      .min(1, { message: "Received person title is required" }),
+  ),
+  deliveryDate: zfd.text(
+    z
+      .string({
+        message: "Delivery date is required",
+      })
+      .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Delivery date must be in YYYY-MM-DD format" }),
+  ),
 });
 
 export const SubmitDeliveryReceiptForm = actionClient
@@ -23,7 +59,8 @@ export const SubmitDeliveryReceiptForm = actionClient
     return next({ ctx: { userId } });
   })
   .action(async ({ parsedInput, ctx }) => {
-    return prisma.deliveryReceipt.create({
+    // throw new Error("SubmitDeliveryReceiptForm not implemented");
+    const result = await prisma.deliveryReceipt.create({
       data: {
         itemId: parsedInput.itemId,
         itemSerialNumber: parsedInput.itemSerialNumber,
@@ -35,6 +72,11 @@ export const SubmitDeliveryReceiptForm = actionClient
         deliveryDate: parsedInput.deliveryDate,
       },
     });
+
+    if (!result.id) {
+      throw new Error("Failed to submit delivery receipt");
+    }
+    return { ok: true };
   });
 
 export async function SubmitReceipt(
@@ -61,7 +103,7 @@ const BASE_SELECT = {
   name: true,
 } as const;
 
-export async function Create() {
+export async function RetrieveDeliveryEntities() {
   await requireAuthenticatedUserId();
 
   const [users, items, workLocations] = await Promise.all([
@@ -73,7 +115,7 @@ export async function Create() {
   return { users, items, workLocations };
 }
 
-export type DeliveryDataResponse = Awaited<ReturnType<typeof Create>>;
+export type DeliveryDataResponse = Awaited<ReturnType<typeof RetrieveDeliveryEntities>>;
 
 export const FetchAllDeliveryReceipts = actionClient.action(async () => {
   // throw new Error("FetchAllDeliveryReceipts not implemented");
@@ -103,7 +145,7 @@ export const FetchAllDeliveryReceipts = actionClient.action(async () => {
     },
   });
 });
-
+export type DeliveryReceiptTypeData = Awaited<ReturnType<typeof FetchAllDeliveryReceipts>>["data"];
 // export async function GetAll() {
 //   const userId = await requireAuthenticatedUserId();
 

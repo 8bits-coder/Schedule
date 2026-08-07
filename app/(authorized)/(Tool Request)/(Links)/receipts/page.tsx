@@ -1,6 +1,16 @@
-import { FetchAllDeliveryReceipts } from "@/actions/deliveryActions";
+import { DeliveryReceiptTypeData, FetchAllDeliveryReceipts } from "@/actions/deliveryActions";
 import ContentWrapper from "@/components/custom_ui/BodyWrapper";
 import { Spinner } from "@/components/ui/spinner";
+import { MoreHorizontalIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default async function ReceiptsPage() {
   const { data, serverError } = await FetchAllDeliveryReceipts();
@@ -28,35 +38,57 @@ export default async function ReceiptsPage() {
       {data.length === 0 ? (
         <p className="text-center text-gray-500 mt-4">No receipts found.</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border border-gray-300 px-4 py-2 text-left">Date</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Received Person</th>
-                <th className="border border-gray-300 px-4 py-2 text-center">Work Location</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Item</th>
-                <th className="border border-gray-300 px-4 py-2 text-right">Amount</th>
-                <th className="border border-gray-300 px-4 py-2 text-center">Serial Number</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((receipt) => (
-                <tr key={receipt.id} className="hover:bg-gray-50">
-                  <td className="border border-gray-300 px-4 py-2">{receipt.deliveryDate}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {receipt.receivedPerson?.name} - ({receipt.receivedPersonTitle})
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2 text-center">{receipt.workLocation?.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">{receipt.item?.name}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">{receipt.quantity}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">{receipt.itemSerialNumber}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TableActions data={data} />
       )}
     </ContentWrapper>
+  );
+}
+
+function TableActions({ data }: { data: DeliveryReceiptTypeData }) {
+  return (
+    <Table className="border bg-white">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Date</TableHead>
+          <TableHead>Received Person</TableHead>
+          <TableHead>Work Location</TableHead>
+          <TableHead>Item</TableHead>
+          <TableHead>Amount</TableHead>
+          <TableHead>Serial Number</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data!.map((receipt) => (
+          <TableRow>
+            <TableCell className="font-medium">{receipt.deliveryDate}</TableCell>
+            <TableCell>
+              {receipt.receivedPerson?.name} ({receipt.receivedPersonTitle})
+            </TableCell>
+            <TableCell>{receipt.workLocation?.name}</TableCell>
+            <TableCell>{receipt.item?.name}</TableCell>
+            <TableCell>{receipt.quantity}</TableCell>
+            <TableCell>{receipt.itemSerialNumber}</TableCell>
+            <TableCell className="text-right">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="ghost" size="icon" className="size-8">
+                      <MoreHorizontalIcon />
+                      <span className="sr-only">Open menu</span>
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

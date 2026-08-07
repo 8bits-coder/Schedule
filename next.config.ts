@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000", "54lvkmg2-3000.use.devtunnels.ms"],
+    },
+  },
   rewrites: async () => {
     return [
       {

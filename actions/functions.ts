@@ -12,7 +12,7 @@ const functionRegistry = {
     return delivery.SubmitReceipt(args.formData);
   },
   getDeliveryData: (args: Record<string, never>) => {
-    return delivery.Create();
+    return delivery.RetrieveDeliveryEntities();
   },
   getDeliveryReceipts: (args: Record<string, never>) => {
     return delivery.FetchAllDeliveryReceipts();

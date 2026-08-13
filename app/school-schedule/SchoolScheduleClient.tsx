@@ -301,34 +301,34 @@ function TeacherLogin({ onLogin }: { onLogin: (value: string) => void }) {
 /* ------------------------------ teacher view ------------------------------ */
 
 function TeacherDashboard(props: {
-  weeklySchedules: any;
-  setWeeklySchedules: any;
-  tasks: any;
-  setTasks: any;
-  messages: any;
-  setMessages: any;
-  requests: any;
-  setRequests: any;
-  students: any;
-  setStudents: any;
-  enrollments: any;
-  setEnrollments: any;
-  parents: any;
-  setParents: any;
+  weeklySchedules: { [key: string]: ScheduleItem[] };
+  setWeeklySchedules: React.Dispatch<React.SetStateAction<{ [key: string]: ScheduleItem[] }>>;
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  requests: Request[];
+  setRequests: React.Dispatch<React.SetStateAction<Request[]>>;
+  students: StudentProfile[];
+  setStudents: React.Dispatch<React.SetStateAction<StudentProfile[]>>;
+  enrollments: Enrollment[];
+  setEnrollments: React.Dispatch<React.SetStateAction<Enrollment[]>>;
+  parents: ParentProfile[];
+  setParents: React.Dispatch<React.SetStateAction<ParentProfile[]>>;
   gradeLevels: string[];
-  setGradeLevels: any;
-  grades: any;
-  setGrades: any;
-  consents: any;
-  setConsents: any;
-  consentResponses: any;
-  schoolYears: any;
-  setSchoolYears: any;
-  activeYear: any;
-  setActiveYear: any;
-  activeGrade: any;
-  setActiveGrade: any;
-  schoolGrades: any;
+  setGradeLevels: React.Dispatch<React.SetStateAction<string[]>>;
+  grades: Grade[];
+  setGrades: React.Dispatch<React.SetStateAction<Grade[]>>;
+  consents: Consent[];
+  setConsents: React.Dispatch<React.SetStateAction<Consent[]>>;
+  consentResponses: ConsentResponse[];
+  schoolYears: string[];
+  setSchoolYears: React.Dispatch<React.SetStateAction<string[]>>;
+  activeYear: string;
+  setActiveYear: React.Dispatch<React.SetStateAction<string>>;
+  activeGrade: string;
+  setActiveGrade: React.Dispatch<React.SetStateAction<string>>;
+  schoolGrades: string[];
 }) {
   const {
     weeklySchedules,
@@ -365,7 +365,7 @@ function TeacherDashboard(props: {
   const [activeTab, setActiveTab] = useState("schedule");
   const [weekOffset, setWeekOffset] = useState(0);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [clipboard, setClipboard] = useState<{ items: any[]; sourceLabel: string } | null>(null);
+  const [clipboard, setClipboard] = useState<{ items: ScheduleItem[]; sourceLabel: string } | null>(null);
   const [pasteDate, setPasteDate] = useState(() => weekKeyForOffset(1));
   const [pasteConfirm, setPasteConfirm] = useState("");
   const [filterGrade, setFilterGrade] = useState(ALL_GRADES);
@@ -375,12 +375,12 @@ function TeacherDashboard(props: {
   const weekKey = weekKeyForOffset(weekOffset);
   const scheduleWeekKey = scheduleKey(activeYear, weekKey);
   const weekItems = weeklySchedules[scheduleWeekKey] || [];
-  const editingItem = weekItems.find((s: { id: string | null }) => s.id === editingId) || null;
+  const editingItem = weekItems.find((s: ScheduleItem) => s.id === editingId) || null;
   const visibleWeekItems =
     filterGrade === ALL_GRADES
       ? weekItems
-      : weekItems.filter((it: { gradeLevel: string }) => it.gradeLevel === filterGrade || it.gradeLevel === ALL_GRADES);
-  const pendingRequestCount = requests.filter((r: { status: string }) => r.status === "Pending").length;
+      : weekItems.filter((it: ScheduleItem) => it.gradeLevel === filterGrade || it.gradeLevel === ALL_GRADES);
+  const pendingRequestCount = requests.filter((r: Request) => r.status === "Pending").length;
   const yearStudents = studentsForYear(students, enrollments, activeYear);
 
   useEffect(() => {
@@ -391,20 +391,20 @@ function TeacherDashboard(props: {
     return <TeacherLogin onLogin={setTeacherId} />;
   }
 
-  function handleSave(item: { id: any }) {
-    setWeeklySchedules((ws: { [x: string]: never[] }) => {
+  function handleSave(item: ScheduleItem) {
+    setWeeklySchedules((ws: { [key: string]: ScheduleItem[] }) => {
       const list = ws[scheduleWeekKey] || [];
-      const exists = list.some((x: { id: any }) => x.id === item.id);
-      const updated = exists ? list.map((x: { id: any }) => (x.id === item.id ? item : x)) : [...list, item];
+      const exists = list.some((x: ScheduleItem) => x.id === item.id);
+      const updated = exists ? list.map((x: ScheduleItem) => (x.id === item.id ? item : x)) : [...list, item];
       return { ...ws, [scheduleWeekKey]: updated };
     });
     setEditingId(null);
   }
 
-  function handleDelete(id: any) {
-    setWeeklySchedules((ws: { [x: string]: any }) => ({
+  function handleDelete(id: string) {
+    setWeeklySchedules((ws: { [key: string]: ScheduleItem[] }) => ({
       ...ws,
-      [scheduleWeekKey]: (ws[scheduleWeekKey] || []).filter((x: { id: any }) => x.id !== id),
+      [scheduleWeekKey]: (ws[scheduleWeekKey] || []).filter((x: ScheduleItem) => x.id !== id),
     }));
     setEditingId(null);
   }
@@ -419,9 +419,9 @@ function TeacherDashboard(props: {
     if (!clipboard || !pasteDate) return;
     const targetKey = scheduleKey(activeYear, weekKeyForDateString(pasteDate));
     const targetLabel = formatRangeForMonday(getMonday(new Date(`${pasteDate}T00:00:00`)));
-    setWeeklySchedules((ws: any) => ({
+    setWeeklySchedules((ws: { [key: string]: ScheduleItem[] }) => ({
       ...ws,
-      [targetKey]: clipboard.items.map((it: any) => ({ ...it, id: uid() })),
+      [targetKey]: clipboard.items.map((it: ScheduleItem) => ({ ...it, id: uid() })),
     }));
     setPasteConfirm(`Pasted ${clipboard.items.length} classes into ${targetLabel}.`);
     setTimeout(() => setPasteConfirm(""), 3500);
@@ -664,16 +664,16 @@ function SchoolYearGradeBar({
   schoolGrades: string[];
   setSchoolYears: React.Dispatch<React.SetStateAction<string[]>>;
   activeYear: string;
-  setActiveYear: (year: string) => void;
+  setActiveYear: React.Dispatch<React.SetStateAction<string>>;
   activeGrade: string;
-  setActiveGrade: (grade: string) => void;
+  setActiveGrade: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [newYear, setNewYear] = useState("");
 
   function addYear() {
     const v = newYear.trim();
     if (!v || schoolYears.includes(v)) return;
-    setSchoolYears((list: any) => [...list, v]);
+    setSchoolYears((list: string[]) => [...list, v]);
     setActiveYear(v);
     setNewYear("");
   }
@@ -1124,9 +1124,7 @@ function NotificationBoard({
 
   const editingNote = messages.find((m: Message) => m.id === editingId) || null;
   const visibleMessages = editable
-    ? messages
-        .filter((m: { year: any }) => m.year === activeYear)
-        .filter((m: { author: string }) => m.author === author)
+    ? messages.filter((m: Message) => m.year === activeYear).filter((m: Message) => m.author === author)
     : messages;
 
   function post() {
@@ -1137,7 +1135,7 @@ function NotificationBoard({
       hour: "numeric",
       minute: "2-digit",
     });
-    setMessages((m: any) => [{ id: uid(), author, text: text.trim(), time, gradeLevel, year: activeYear }, ...m]);
+    setMessages((m: Message[]) => [{ id: uid(), author, text: text.trim(), time, gradeLevel, year: activeYear }, ...m]);
     setText("");
   }
 

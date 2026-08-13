@@ -88,9 +88,51 @@ import { Card, Modal, PageIntro, RoleTab } from "./components/ui";
 import { ParentLogin, StudentLogin, TeacherLogin } from "./components/auth";
 import { ScheduleGrid } from "./components/ScheduleGrid";
 
-/* -------------------------------- shell -------------------------------- */
+type SchoolScheduleContextValue = {
+  role: string;
+  setRole: React.Dispatch<React.SetStateAction<string>>;
+  weeklySchedules: { [key: string]: ScheduleItem[] };
+  setWeeklySchedules: React.Dispatch<React.SetStateAction<{ [key: string]: ScheduleItem[] }>>;
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  requests: Request[];
+  setRequests: React.Dispatch<React.SetStateAction<Request[]>>;
+  students: StudentProfile[];
+  setStudents: React.Dispatch<React.SetStateAction<StudentProfile[]>>;
+  enrollments: Enrollment[];
+  setEnrollments: React.Dispatch<React.SetStateAction<Enrollment[]>>;
+  parents: ParentProfile[];
+  setParents: React.Dispatch<React.SetStateAction<ParentProfile[]>>;
+  gradeLevels: string[];
+  setGradeLevels: React.Dispatch<React.SetStateAction<string[]>>;
+  grades: Grade[];
+  setGrades: React.Dispatch<React.SetStateAction<Grade[]>>;
+  consents: Consent[];
+  setConsents: React.Dispatch<React.SetStateAction<Consent[]>>;
+  consentResponses: ConsentResponse[];
+  setConsentResponses: React.Dispatch<React.SetStateAction<ConsentResponse[]>>;
+  schoolYears: string[];
+  setSchoolYears: React.Dispatch<React.SetStateAction<string[]>>;
+  activeYear: string;
+  setActiveYear: React.Dispatch<React.SetStateAction<string>>;
+  activeGrade: string;
+  setActiveGrade: React.Dispatch<React.SetStateAction<string>>;
+  schoolGrades: string[];
+};
 
-export default function SchoolScheduleClient() {
+const SchoolScheduleContext = React.createContext<SchoolScheduleContextValue | null>(null);
+
+function useSchoolScheduleContext() {
+  const value = React.useContext(SchoolScheduleContext);
+  if (!value) {
+    throw new Error("SchoolScheduleContext is missing a provider.");
+  }
+  return value;
+}
+
+function SchoolScheduleProvider({ children }: { children: React.ReactNode }) {
   const [role, setRole] = useState("teacher");
   const [weeklySchedules, setWeeklySchedules] = useState(SEED_WEEKLY_SCHEDULES);
   const [tasks, setTasks] = useState(SEED_TASKS);
@@ -106,7 +148,66 @@ export default function SchoolScheduleClient() {
   const [schoolYears, setSchoolYears] = useState<string[]>(SCHOOL_YEARS);
   const [activeYear, setActiveYear] = useState(DEFAULT_YEAR);
   const [activeGrade, setActiveGrade] = useState(ALL_GRADES);
-  const [schoolGrades, setSchoolGrades] = useState(SEED_GRADE_LEVELS);
+  const [schoolGrades] = useState(SEED_GRADE_LEVELS);
+
+  const value = useMemo<SchoolScheduleContextValue>(
+    () => ({
+      role,
+      setRole,
+      weeklySchedules,
+      setWeeklySchedules,
+      tasks,
+      setTasks,
+      messages,
+      setMessages,
+      requests,
+      setRequests,
+      students,
+      setStudents,
+      enrollments,
+      setEnrollments,
+      parents,
+      setParents,
+      gradeLevels,
+      setGradeLevels,
+      grades,
+      setGrades,
+      consents,
+      setConsents,
+      consentResponses,
+      setConsentResponses,
+      schoolYears,
+      setSchoolYears,
+      activeYear,
+      setActiveYear,
+      activeGrade,
+      setActiveGrade,
+      schoolGrades,
+    }),
+    [
+      activeGrade,
+      activeYear,
+      consentResponses,
+      consents,
+      enrollments,
+      grades,
+      gradeLevels,
+      messages,
+      parents,
+      requests,
+      role,
+      schoolYears,
+      students,
+      tasks,
+      weeklySchedules,
+    ],
+  );
+
+  return <SchoolScheduleContext.Provider value={value}>{children}</SchoolScheduleContext.Provider>;
+}
+
+function SchoolScheduleShell() {
+  const { role, setRole } = useSchoolScheduleContext();
 
   return (
     <div className="sa-root">
@@ -129,101 +230,25 @@ export default function SchoolScheduleClient() {
       </header>
 
       <main className="sa-main">
-        {role === "teacher" && (
-          <TeacherDashboard
-            weeklySchedules={weeklySchedules}
-            setWeeklySchedules={setWeeklySchedules}
-            tasks={tasks}
-            setTasks={setTasks}
-            messages={messages}
-            setMessages={setMessages}
-            requests={requests}
-            setRequests={setRequests}
-            students={students}
-            setStudents={setStudents}
-            enrollments={enrollments}
-            setEnrollments={setEnrollments}
-            parents={parents}
-            setParents={setParents}
-            gradeLevels={gradeLevels}
-            setGradeLevels={setGradeLevels}
-            grades={grades}
-            setGrades={setGrades}
-            consents={consents}
-            setConsents={setConsents}
-            consentResponses={consentResponses}
-            schoolYears={schoolYears}
-            setSchoolYears={setSchoolYears}
-            activeYear={activeYear}
-            setActiveYear={setActiveYear}
-            activeGrade={activeGrade}
-            schoolGrades={schoolGrades}
-            setActiveGrade={setActiveGrade}
-          />
-        )}
-        {role === "student" && (
-          <StudentDashboard
-            weeklySchedules={weeklySchedules}
-            tasks={tasks}
-            messages={messages}
-            students={students}
-            enrollments={enrollments}
-            grades={grades}
-            activeYear={activeYear}
-          />
-        )}
-        {role === "parent" && (
-          <ParentDashboard
-            weeklySchedules={weeklySchedules}
-            messages={messages}
-            requests={requests}
-            setRequests={setRequests}
-            students={students}
-            enrollments={enrollments}
-            parents={parents}
-            grades={grades}
-            consents={consents}
-            consentResponses={consentResponses}
-            setConsentResponses={setConsentResponses}
-          />
-        )}
+        {role === "teacher" && <TeacherDashboard />}
+        {role === "student" && <StudentDashboard />}
+        {role === "parent" && <ParentDashboard />}
       </main>
     </div>
   );
 }
 
+export default function SchoolScheduleClient() {
+  return (
+    <SchoolScheduleProvider>
+      <SchoolScheduleShell />
+    </SchoolScheduleProvider>
+  );
+}
+
 /* ------------------------------ teacher view ------------------------------ */
 
-function TeacherDashboard(props: {
-  weeklySchedules: { [key: string]: ScheduleItem[] };
-  setWeeklySchedules: React.Dispatch<React.SetStateAction<{ [key: string]: ScheduleItem[] }>>;
-  tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
-  requests: Request[];
-  setRequests: React.Dispatch<React.SetStateAction<Request[]>>;
-  students: StudentProfile[];
-  setStudents: React.Dispatch<React.SetStateAction<StudentProfile[]>>;
-  enrollments: Enrollment[];
-  setEnrollments: React.Dispatch<React.SetStateAction<Enrollment[]>>;
-  parents: ParentProfile[];
-  setParents: React.Dispatch<React.SetStateAction<ParentProfile[]>>;
-  gradeLevels: string[];
-  setGradeLevels: React.Dispatch<React.SetStateAction<string[]>>;
-  grades: Grade[];
-  setGrades: React.Dispatch<React.SetStateAction<Grade[]>>;
-  consents: Consent[];
-  setConsents: React.Dispatch<React.SetStateAction<Consent[]>>;
-  consentResponses: ConsentResponse[];
-  schoolYears: string[];
-  setSchoolYears: React.Dispatch<React.SetStateAction<string[]>>;
-  activeYear: string;
-  setActiveYear: React.Dispatch<React.SetStateAction<string>>;
-  activeGrade: string;
-  setActiveGrade: React.Dispatch<React.SetStateAction<string>>;
-  schoolGrades: string[];
-}) {
+function TeacherDashboard() {
   const {
     weeklySchedules,
     setWeeklySchedules,
@@ -253,7 +278,7 @@ function TeacherDashboard(props: {
     activeGrade,
     setActiveGrade,
     schoolGrades,
-  } = props;
+  } = useSchoolScheduleContext();
 
   const [teacherId, setTeacherId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("schedule");
@@ -371,15 +396,7 @@ function TeacherDashboard(props: {
         </button>
       </div>
 
-      <SchoolYearGradeBar
-        schoolYears={schoolYears}
-        setSchoolYears={setSchoolYears}
-        activeYear={activeYear}
-        setActiveYear={setActiveYear}
-        activeGrade={activeGrade}
-        schoolGrades={schoolGrades}
-        setActiveGrade={setActiveGrade}
-      />
+      <SchoolYearGradeBar />
 
       <nav className="sa-subtabs">
         {TABS.map((t) => (
@@ -545,23 +562,9 @@ function TeacherDashboard(props: {
   );
 }
 
-function SchoolYearGradeBar({
-  schoolYears,
-  schoolGrades,
-  setSchoolYears,
-  activeYear,
-  setActiveYear,
-  activeGrade,
-  setActiveGrade,
-}: {
-  schoolYears: string[];
-  schoolGrades: string[];
-  setSchoolYears: React.Dispatch<React.SetStateAction<string[]>>;
-  activeYear: string;
-  setActiveYear: React.Dispatch<React.SetStateAction<string>>;
-  activeGrade: string;
-  setActiveGrade: React.Dispatch<React.SetStateAction<string>>;
-}) {
+function SchoolYearGradeBar() {
+  const { schoolYears, schoolGrades, setSchoolYears, activeYear, setActiveYear, activeGrade, setActiveGrade } =
+    useSchoolScheduleContext();
   const [newYear, setNewYear] = useState("");
 
   function addYear() {
@@ -2382,23 +2385,8 @@ function GradeLevelSummary({
 
 /* ------------------------------ student view ------------------------------ */
 
-function StudentDashboard({
-  weeklySchedules,
-  tasks,
-  messages,
-  students,
-  enrollments,
-  grades,
-  activeYear,
-}: {
-  weeklySchedules: Record<string, ScheduleItem[]>;
-  tasks: Task[];
-  messages: Message[];
-  students: StudentProfile[];
-  enrollments: Enrollment[];
-  grades: Grade[];
-  activeYear: string;
-}) {
+function StudentDashboard() {
+  const { weeklySchedules, tasks, messages, students, enrollments, grades, activeYear } = useSchoolScheduleContext();
   const [studentId, setStudentId] = useState<string | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
 
@@ -2512,31 +2500,20 @@ function StudentDashboard({
 
 /* ------------------------------ parent view ------------------------------ */
 
-function ParentDashboard({
-  weeklySchedules,
-  messages,
-  requests,
-  setRequests,
-  students,
-  enrollments,
-  parents,
-  grades,
-  consents,
-  consentResponses,
-  setConsentResponses,
-}: {
-  weeklySchedules: Record<string, ScheduleItem[]>;
-  messages: Message[];
-  requests: Request[];
-  setRequests: React.Dispatch<React.SetStateAction<Request[]>>;
-  students: StudentProfile[];
-  enrollments: Enrollment[];
-  parents: ParentProfile[];
-  grades: Grade[];
-  consents: Consent[];
-  consentResponses: ConsentResponse[];
-  setConsentResponses: React.Dispatch<React.SetStateAction<ConsentResponse[]>>;
-}) {
+function ParentDashboard() {
+  const {
+    weeklySchedules,
+    messages,
+    requests,
+    setRequests,
+    students,
+    enrollments,
+    parents,
+    grades,
+    consents,
+    consentResponses,
+    setConsentResponses,
+  } = useSchoolScheduleContext();
   const [parentId, setParentId] = useState<string | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
   const [activeChildId, setActiveChildId] = useState<string | null>(null);

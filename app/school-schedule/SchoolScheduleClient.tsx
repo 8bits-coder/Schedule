@@ -83,7 +83,7 @@ import {
   weekKeyForDateString,
   weekKeyForOffset,
 } from "./schedule-data";
-import { CSS } from "./css";
+import "./style.css";
 import { Card, Modal, PageIntro, RoleTab } from "./components/ui";
 import { ParentLogin, StudentLogin, TeacherLogin } from "./components/auth";
 import { ScheduleGrid } from "./components/ScheduleGrid";
@@ -211,7 +211,7 @@ function SchoolScheduleShell() {
 
   return (
     <div className="sa-root">
-      <style>{CSS}</style>
+      <style></style>
 
       <header className="sa-header">
         <div className="sa-brand">
@@ -272,12 +272,8 @@ function TeacherDashboard() {
     setConsents,
     consentResponses,
     schoolYears,
-    setSchoolYears,
     activeYear,
-    setActiveYear,
     activeGrade,
-    setActiveGrade,
-    schoolGrades,
   } = useSchoolScheduleContext();
 
   const [teacherId, setTeacherId] = useState<string | null>(null);
@@ -2461,7 +2457,7 @@ function StudentDashboard() {
           )}
         </Card>
 
-        <Card icon={<ClipboardList size={17} />} title="Class tasks">
+        <Card className="" icon={<ClipboardList size={17} />} title="Class tasks">
           <ul className="sa-tasklist">
             {tasks.map((t) => (
               <li key={t.id} className={`sa-task ${t.done ? "sa-task--done" : ""}`}>

@@ -1,5 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const RoleTab = React.memo(function RoleTab({
   id,
@@ -78,14 +79,16 @@ export function Card({
   title,
   children,
   wide,
+  className,
 }: {
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
   wide?: boolean;
+  className?: string;
 }) {
   return (
-    <section className={`sa-card ${wide ? "sa-card--wide" : ""}`}>
+    <section className={cn("sa-card", wide ? "sa-card--wide" : "", className ?? "")}>
       <header className="sa-card-head">
         <span className="sa-card-icon">{icon}</span>
         <h2>{title}</h2>
